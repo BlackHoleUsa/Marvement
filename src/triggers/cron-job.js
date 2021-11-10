@@ -10,5 +10,9 @@ const mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
 mongoose.connect(config.mongoose.url, config.mongoose.options).then(async () => {
   logger.info('Connected to MongoDB');
-  await auctionService.checkAndCompleteAuctionStatus();
+  try {
+    await auctionService.checkAndCompleteAuctionStatus();
+  } catch (e) {
+    console.log(e);
+  }
 });

@@ -7,27 +7,31 @@ const EVENT = require('../triggers/custom-events').customEvent;
 const { HISTORY_TYPE, TRANSACTION_TYPE, TRANSACTION_ACTIVITY_TYPE, AUCTION_STATUS, NOTIFICATION_TYPE, SALE_STATUS, STATS_UPDATE_TYPE } = require('../utils/enums');
 
 const updateCollectionAddress = async (CollectionAddress, owner, colName) => {
-  const user = await User.findOne({ address: owner });
+  try {
+    const user = await User.findOne({ address: owner });
 
-  const collection = await Collection.findOneAndUpdate(
-    { owner: user._id, name: colName },
-    {
-      collectionAddress: CollectionAddress,
-    }
-  );
+    const collection = await Collection.findOneAndUpdate(
+      { owner: user._id, name: colName },
+      {
+        collectionAddress: CollectionAddress,
+      }
+    );
 
-  await Artwork.findOneAndUpdate(
-    { collectionId: collection._id },
-    {
-      tokenId: 1,
-    }
-  );
+    await Artwork.findOneAndUpdate(
+      { collectionId: collection._id },
+      {
+        tokenId: 1,
+      }
+    );
 
-  EVENT.emit('stats-artwork-mint', {
-    userId: user._id,
-    type: STATS_UPDATE_TYPE.ownedArts
-  });
-  console.log('collection address and artwork token id updated successfully');
+    EVENT.emit('stats-artwork-mint', {
+      userId: user._id,
+      type: STATS_UPDATE_TYPE.ownedArts
+    });
+    console.log('collection address and artwork token id updated successfully');
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 const handleNewAuction = async (colAddress, tokenId, aucId) => {

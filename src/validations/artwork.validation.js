@@ -116,6 +116,16 @@ const nftClaimListVS = {
   }),
 };
 
+const getFilteredArtworks = {
+  query: Joi.object().keys({
+    isAuctionOpen: Joi.string().valid('TRUE').optional(),
+    openForSale: Joi.string().valid('TRUE').optional(),
+    userId: Joi.string().required(),
+    page: Joi.string().required(),
+    perPage: Joi.string().required(),
+  }),
+};
+
 module.exports = {
   createArtworkVS,
   getArtworksVS,
@@ -132,5 +142,6 @@ module.exports = {
   changeAuctionStatusVS,
   deleteArtworkVS,
   getHistoryVS,
-  nftClaimListVS
+  nftClaimListVS,
+  getFilteredArtworks,
 };

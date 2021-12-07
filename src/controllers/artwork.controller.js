@@ -17,8 +17,8 @@ const { addFilesToIPFS, pinMetaDataToIPFS } = require('../utils/helpers');
 const { HISTORY_TYPE, NOTIFICATION_TYPE, STATS_UPDATE_TYPE } = require('../utils/enums');
 
 const saveArtwork = catchAsync(async (req, res) => {
-  const body = req.body;
-  const files = req.files;
+  const { body } = req;
+  const { files } = req;
   const { name, description, creater, collectionId } = body;
   let imgData;
   if (files.length > 0) {
@@ -68,14 +68,14 @@ const getUserArtworks = catchAsync(async (req, res) => {
 
 const addToFavourite = catchAsync(async (req, res) => {
   const { artworkId } = req.body;
-  const user = req.user;
+  const { user } = req;
   const updatedUser = await userService.addArtworkToFavourites(user._id, artworkId);
   res.status(httpStatus.OK).send({ status: true, message: 'artwork added in favourites successfully' });
 });
 
 const removeFromFavourites = catchAsync(async (req, res) => {
   const { artworkId } = req.body;
-  const user = req.user;
+  const { user } = req;
 
   const updatedUser = await userService.removeArtworkFromFavourite(user._id, artworkId);
   res.status(httpStatus.OK).send({ status: true, message: 'artwork removed from favourites successfully' });
@@ -100,7 +100,7 @@ const createAuction = catchAsync(async (req, res) => {
   if (await auctionService.artworkExistsInAuction(artwork)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Artwork is already on auction');
   }
-  const body = req.body;
+  const { body } = req;
   const { owner, creater } = await artworkService.getArtworkById(artwork);
   body.owner = owner;
   body.creater = creater;
@@ -122,8 +122,8 @@ const createAuction = catchAsync(async (req, res) => {
 });
 
 const placeBid = catchAsync(async (req, res) => {
-  const body = req.body;
-  const user = req.user;
+  const { body } = req;
+  const { user } = req;
 
   const { artwork, auctionId } = body;
   const bid = await bidService.saveBid(body);
@@ -135,7 +135,7 @@ const placeBid = catchAsync(async (req, res) => {
   });
 
   EVENT.emit('update-artwork-history', {
-    artwork: artwork,
+    artwork,
     message: `Bid placed on artwork`,
     auction: auctionId,
     bid: bid._id,
@@ -180,11 +180,13 @@ const updateTokenId = catchAsync(async (req, res) => {
 
   EVENT.emit('stats-artwork-mint', {
     userId: artwork.owner,
-    type: STATS_UPDATE_TYPE.ownedArts
+    type: STATS_UPDATE_TYPE.ownedArts,
   });
 
   res.status(httpStatus.OK).send({
-    status: true, message: 'token id updated successfully', data: artwork
+    status: true,
+    message: 'token id updated successfully',
+    data: artwork,
   });
 });
 
@@ -230,23 +232,41 @@ const getArtworkHistory = catchAsync(async (req, res) => {
 const getWinnedAuctions = catchAsync(async (req, res) => {
   const { page, perPage } = req.query;
 
-  let winnedAuctions = await auctionService.getClosedAuctions(req.user._id, page, perPage);
+  const winnedAuctions = await auctionService.getClosedAuctions(req.user._id, page, perPage);
   res.status(httpStatus.OK).send({ status: true, message: 'Successfull', data: winnedAuctions });
 });
 
 const getSoldItems = catchAsync(async (req, res) => {
   const { page, perPage } = req.query;
 
-  let winnedAuctions = await auctionService.getSoldAuctions(req.user._id, page, perPage);
+  const winnedAuctions = await auctionService.getSoldAuctions(req.user._id, page, perPage);
   res.status(httpStatus.OK).send({ status: true, message: 'Successfull', data: winnedAuctions });
 });
 
 const getTimeoutItems = catchAsync(async (req, res) => {
   const { page, perPage } = req.query;
-  let winnedAuctions = await auctionService.getTimeoutAuctions(req.user._id, page, perPage);
+  const winnedAuctions = await auctionService.getTimeoutAuctions(req.user._id, page, perPage);
   res.status(httpStatus.OK).send({ status: true, message: 'Successfull', data: winnedAuctions });
 });
 
+const getLatestArtWorks = catchAsync(async (req, res) => {
+  const artWorks = await artworkService.getLatestArtworks();
+  res.status(httpStatus.OK).send(artWorks);
+});
+
+const getFilteredArtworks = catchAsync(async (req, res) => {
+  const { isAuctionOpen, openForSale, owner, page, perPage } = req.body;
+  if (isAuctionOpen) {
+    const artWorks = await artworkService.getAuctionOpenArtworks(owner, page, perPage);
+    res.status(httpStatus.OK).send(artWorks);
+  } else if (openForSale) {
+    const artWorks = await artworkService.getopenForSaleArtworks(owner, page, perPage);
+    res.status(httpStatus.OK).send(artWorks);
+  } else {
+    const artWorks = await artworkService.getUserFilteredArtworks(owner, page, perPage);
+    res.status(httpStatus.OK).send(artWorks);
+  }
+});
 module.exports = {
   saveArtwork,
   getUserArtworks,
@@ -266,4 +286,6 @@ module.exports = {
   getSoldItems,
   getArtworkHistory,
   getTimeoutItems,
+  getLatestArtWorks,
+  getFilteredArtworks,
 };

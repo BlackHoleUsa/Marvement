@@ -38,15 +38,15 @@ const closeArtworkAuction = async (artworkId) => {
 };
 
 const deleteArtworksByCollection = async (collectionId) => {
-  return await Artwork.deleteMany({ collectionId: collectionId });
+  return await Artwork.deleteMany({ collectionId });
 };
 
 const updateArtworkTokenId = async (artworkId, tokenId) => {
-  return await Artwork.findOneAndUpdate({ _id: artworkId }, { tokenId: tokenId }, { new: true }).lean();
+  return await Artwork.findOneAndUpdate({ _id: artworkId }, { tokenId }, { new: true }).lean();
 };
 
 const getArtworksByCollection = async (collectionId) => {
-  return await Artwork.find({ collectionId: collectionId }).lean();
+  return await Artwork.find({ collectionId }).lean();
 };
 
 const changeArtworkAuctionStatus = async (artworkId, status) => {
@@ -65,22 +65,22 @@ const deleteArtworkById = async (artworkId) => {
 };
 
 const searchArtworkByName = async (keyword, page, perPage, artist, min, max) => {
-  let query = {};
+  const query = {};
   if (keyword) {
-    query['name'] = { $regex: keyword, $options: 'i' };
+    query.name = { $regex: keyword, $options: 'i' };
   }
   if (artist) {
-    query['owner'] = artist;
+    query.owner = artist;
   }
   if (min && max) {
-    query['$and'] = [
+    query.$and = [
       {
-        price: { $gte: parseInt(min) }
+        price: { $gte: parseInt(min) },
       },
       {
-        price: { $lte: parseInt(max) }
-      }
-    ]
+        price: { $lte: parseInt(max) },
+      },
+    ];
   }
 
   return await Artwork.find(query)
@@ -88,6 +88,24 @@ const searchArtworkByName = async (keyword, page, perPage, artist, min, max) => 
     .skip(page * perPage);
 };
 
+const getLatestArtworks = async () => {
+  return await Artwork.find().sort({ _id: -1 });
+};
+
+const getAuctionOpenArtworks = async (userId, page, perPage) => {
+  return await Artwork.find({ isAuctionOpen: true, owner: userId }).limit(parseInt(perPage))
+    .skip(page * perPage);;
+};
+
+const getopenForSaleArtworks = async (userId, page, perPage) => {
+  return await Artwork.find({ openForSale: true, owner: userId }).limit(parseInt(perPage))
+    .skip(page * perPage);
+};
+
+const getUserFilteredArtworks = async (userId, page, perPage) => {
+  return await Artwork.find({ owner: userId }).limit(parseInt(perPage))
+    .skip(page * perPage);
+};
 module.exports = {
   saveArtwork,
   getUserArtworks,
@@ -103,4 +121,8 @@ module.exports = {
   changeArtworkAuctionStatus,
   deleteArtworkById,
   searchArtworkByName,
+  getLatestArtworks,
+  getAuctionOpenArtworks,
+  getopenForSaleArtworks,
+  getUserFilteredArtworks,
 };

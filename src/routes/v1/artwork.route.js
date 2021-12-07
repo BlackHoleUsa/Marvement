@@ -295,6 +295,8 @@ router.get('/getSingleArtwork', [validate(artworkValidation.getSingleArtVS)], ar
 
 router.get('/getAuctionBids', [validate(artworkValidation.getAuctionBidsVS)], artworkController.getAuctionBids);
 
+router.get('/getLatestArtWorks', [], artworkController.getLatestArtWorks);
+
 router.get(
   '/getCollectionArtworks',
   [validate(artworkValidation.getCollectionArtworksVS)],
@@ -332,5 +334,7 @@ router.get(
 );
 
 router.get('/getArtworkHistory', [validate(artworkValidation.getHistoryVS)], artworkController.getArtworkHistory);
+
+router.get('/getFilteredArtworks', [validate(artworkValidation.getFilteredArtworks)], artworkController.getFilteredArtworks);
 
 module.exports = router;

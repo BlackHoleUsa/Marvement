@@ -5,50 +5,47 @@ const httpStatus = require('http-status');
 const { SEARCH_FILTERS } = require('../utils/enums');
 
 const handleSearch = catchAsync(async (req, res) => {
-  const { keyword, artist, min, max, page, perPage } = req.query;
-  // if (keyword) {
-  // const users = await userService.searchUsersByName(keyword, page, perPage);
-  const artworks = await artworkService.searchArtworkByName(keyword, page, perPage, artist, min, max);
-  // const collections = await collectionService.searchCollectionByName(keyword, page, perPage);
+  const { keyword, artist, min, max, page, perPage, filter } = req.query;
+  if (keyword) {
+    const users = await userService.searchUsersByName(keyword, page, perPage);
+    const artworks = await artworkService.searchArtworkByName(keyword, page, perPage, artist, min, max);
+    const collections = await collectionService.searchCollectionByName(keyword, page, perPage);
 
-  let data = {
-    artworks
-  };
+    let data = {};
 
-  // switch (filter) {
-  //   case SEARCH_FILTERS.USERS:
-  //     data.users = users;
-  //     break;
+    switch (filter) {
+      case SEARCH_FILTERS.USERS:
+        data.users = users;
+        break;
 
-  //   case SEARCH_FILTERS.ARTWORKS:
-  //     data.artworks = artworks;
-  //     break;
+      case SEARCH_FILTERS.ARTWORKS:
+        data.artworks = artworks;
+        break;
 
-  //   case SEARCH_FILTERS.COLLECTIONS:
-  //     data.collections = collections;
-  //     break;
+      case SEARCH_FILTERS.COLLECTIONS:
+        data.collections = collections;
+        break;
 
-  //   default:
-  //     data = {
-  //       users,
-  //       artworks,
-  //       collections,
-  //     };
-  // }
+      default:
+        data = {
+          users,
+          artworks,
+          collections,
+        };
+    }
 
-  res.status(httpStatus.OK).send({
-    status: true,
-    message: 'Successfull',
-    page,
-    data,
-  });
-  // } else {
-  //   res.status(httpStatus.OK).send({
-  //     status: true,
-  //     message: 'Successfull',
-  //     data: [],
-  //   });
-  // }
+    res.status(httpStatus.OK).send({
+      status: true,
+      message: 'Successfull',
+      data,
+    });
+  } else {
+    res.status(httpStatus.OK).send({
+      status: true,
+      message: 'Successfull',
+      data: [],
+    });
+  }
 });
 
 const getAppActivity = catchAsync(async (req, res) => {

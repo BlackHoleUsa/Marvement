@@ -47,7 +47,7 @@ const getAllUserCollection = catchAsync(async (req, res) => {
 
 const getCollectionDetails = catchAsync(async (req, res) => {
   const { collectionId } = req.query;
-  const data = await collectionService.getPopulatedCollection(req.user._id, collectionId);
+  const data = await collectionService.getPopulatedCollection(req.user._id, collectionId);  
   res.status(httpStatus.OK).send({ status: true, message: 'successfull', data });
 });
 

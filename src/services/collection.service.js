@@ -68,6 +68,7 @@ const removeArtwork = async (artworkId, collectionId) => {
 
 const searchCollectionByName = async (keyword, page, perPage) => {
   return await Collection.find({ name: { $regex: keyword, $options: 'i' } })
+    .populate('artworks')
     .limit(parseInt(perPage))
     .skip(page * perPage);
 };

@@ -227,7 +227,12 @@ const fetchLeadingCollectors = async () => {
 
 const getUserStats = async (userId) => {
   return await Stats.findOne({ user: userId }).lean();
-}
+};
+
+const getSingleFavouriteArtWork = async (userId) => {
+  const result = await User.findOne({ _id: userId });
+  return result;
+};
 
 module.exports = {
   createUser,
@@ -248,5 +253,6 @@ module.exports = {
   searchUsersByName,
   getUsersByMostArtworks,
   fetchLeadingCollectors,
-  getUserStats
+  getUserStats,
+  getSingleFavouriteArtWork,
 };

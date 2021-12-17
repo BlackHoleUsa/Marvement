@@ -21,6 +21,14 @@ const increaseArtworkViews = async (artworkId) => {
   return await Artwork.findOneAndUpdate({ _id: artworkId }, { $inc: { views: 1 } }, { new: true }).lean();
 };
 
+const increaseArtworkLikes = async (artworkId) => {
+  return await Artwork.findOneAndUpdate({ _id: artworkId }, { $inc: { numberOfLikes: 1 } }, { new: true }).lean();
+};
+
+const decreaseArtworkLikes = async (artworkId) => {
+  return await Artwork.findOneAndUpdate({ _id: artworkId }, { $inc: { numberOfLikes: -1 } }, { new: true }).lean();
+};
+
 const updateArtwork = async (id, fieldToUpdate, value) => {
   return await Artwork.findOneAndUpdate({ _id: id }, { fieldToUpdate: value }, { new: true }).lean();
 };
@@ -125,4 +133,6 @@ module.exports = {
   getAuctionOpenArtworks,
   getopenForSaleArtworks,
   getUserFilteredArtworks,
+  increaseArtworkLikes,
+  decreaseArtworkLikes,
 };

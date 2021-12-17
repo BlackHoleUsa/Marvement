@@ -69,7 +69,12 @@ const getUserArtworks = catchAsync(async (req, res) => {
 const addToFavourite = catchAsync(async (req, res) => {
   const { artworkId } = req.body;
   const { user } = req;
-  const updatedUser = await userService.addArtworkToFavourites(user._id, artworkId);
+  const userObject = await userService.getSingleFavouriteArtWork(user._id);
+  const { favouriteArtworks } = userObject;
+  if (!favouriteArtworks.includes(artworkId)) {
+    await userService.addArtworkToFavourites(user._id, artworkId);
+    await artworkService.increaseArtworkLikes(artworkId);
+  }
   res.status(httpStatus.OK).send({ status: true, message: 'artwork added in favourites successfully' });
 });
 
@@ -78,6 +83,7 @@ const removeFromFavourites = catchAsync(async (req, res) => {
   const { user } = req;
 
   const updatedUser = await userService.removeArtworkFromFavourite(user._id, artworkId);
+  await artworkService.decreaseArtworkLikes(artworkId);
   res.status(httpStatus.OK).send({ status: true, message: 'artwork removed from favourites successfully' });
 });
 

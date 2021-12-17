@@ -65,6 +65,11 @@ const artworkSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    numberOfLikes: {
+      type: Number,
+      default: 0,
+      required: false,
+    },
     sale: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'BuySell',

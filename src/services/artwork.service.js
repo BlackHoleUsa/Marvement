@@ -12,6 +12,8 @@ const saveArtwork = async (params) => {
 
 const getUserArtworks = async (userId, page, perPage) => {
   return await Artwork.find({ owner: userId })
+    .populate('auction')
+    .populate('sale')
     .limit(parseInt(perPage))
     .skip(page * perPage)
     .lean();

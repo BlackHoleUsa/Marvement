@@ -20,6 +20,13 @@ const getUsers = {
   }),
 };
 
+const getAllUsers = {
+  query: Joi.object().keys({
+    page: Joi.string().required(),
+    perPage: Joi.string().required(),
+  }),
+};
+
 const getUser = {
   params: Joi.object().keys({
     userId: Joi.string().custom(objectId),
@@ -80,4 +87,5 @@ module.exports = {
   followUser,
   getUserFollowing,
   getUserFollowers,
+  getAllUsers,
 };

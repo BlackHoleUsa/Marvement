@@ -102,6 +102,15 @@ const getUserFollowing = catchAsync(async (req, res) => {
     data: following,
   });
 });
+const getAllUsers = catchAsync(async (req, res) => {
+  const { page, perPage } = req.query;
+  const users = await userService.getAllUsers(page, perPage);
+  res.status(httpStatus.OK).send({
+    status: true,
+    message: 'successfull',
+    data: users,
+  });
+});
 module.exports = {
   createUser,
   getUsers,
@@ -112,5 +121,6 @@ module.exports = {
   unfollowUser,
   getUserFollowing,
   getUserFollowers,
-  getUserStatistics
+  getUserStatistics,
+  getAllUsers,
 };

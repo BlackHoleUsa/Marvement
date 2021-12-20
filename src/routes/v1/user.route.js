@@ -11,6 +11,8 @@ const router = express.Router();
  *   name: Users
  *   description: Users
  */
+
+router.get('/getAllusers', userController.getAllUsers);
 router
   .route('/')
   .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
@@ -235,5 +237,4 @@ router.get(
   [auth('manageUsers'), validate(userValidation.getUserFollowing)],
   userController.getUserFollowing
 );
-
 module.exports = router;

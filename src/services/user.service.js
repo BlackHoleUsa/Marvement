@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
+const web3 = require('web3');
 const { User, Stats } = require('../models');
 const ApiError = require('../utils/ApiError');
-const web3 = require('web3');
 
 /**
  * Create a user
@@ -166,7 +166,8 @@ const removeArtwork = async (userId, artworkId) => {
 
 const searchUsersByName = async (keyword, page, perPage) => {
   return await User.find({ userName: { $regex: keyword, $options: 'i' } })
-    .populate('collections').populate('artworks')
+    .populate('collections')
+    .populate('artworks')
     .limit(parseInt(perPage))
     .skip(page * perPage);
 };
@@ -175,55 +176,60 @@ const getUsersByMostArtworks = async () => {
   return await Stats.aggregate([
     {
       $lookup: {
-        from: "users",
-        localField: "user",
-        foreignField: "_id",
-        as: "user"
-      }
-    }, {
+        from: 'users',
+        localField: 'user',
+        foreignField: '_id',
+        as: 'user',
+      },
+    },
+    {
       $match: {
-        $and: [{
-          'user.role': 'artist'
-        }, {
-          soldArts: { $gt: 0 }
-        }]
-      }
+        $and: [
+          {
+            'user.role': 'artist',
+          },
+          {
+            soldArts: { $gt: 0 },
+          },
+        ],
+      },
     },
     {
       $sort: {
-        soldArts: -1
-      }
+        soldArts: -1,
+      },
     },
     {
-      $unwind: "$user"
-    }
+      $unwind: '$user',
+    },
   ]).limit(5);
-}
+};
 
 const fetchLeadingCollectors = async () => {
   return await Stats.aggregate([
     {
       $lookup: {
-        from: "users",
-        localField: "user",
-        foreignField: "_id",
-        as: "user"
-      }
-    }, {
+        from: 'users',
+        localField: 'user',
+        foreignField: '_id',
+        as: 'user',
+      },
+    },
+    {
       $match: {
-        purchasedArts: { $gt: 0 }
-      }
+        purchasedArts: { $gt: 0 },
+      },
     },
     {
       $sort: {
-        purchasedArts: -1
-      }
+        purchasedArts: -1,
+      },
     },
     {
-      $unwind: "$user"
-    }
+      $unwind: '$user',
+    },
   ]).limit(5);
-}
+};
 
 const getUserStats = async (userId) => {
   return await Stats.findOne({ user: userId }).lean();
@@ -232,6 +238,14 @@ const getUserStats = async (userId) => {
 const getSingleFavouriteArtWork = async (userId) => {
   const result = await User.findOne({ _id: userId });
   return result;
+};
+const getAllUsers = async (page, perPage) => {
+  const users = await User.find({})
+    .sort({ _id: -1 })
+    .limit(parseInt(perPage))
+    .skip(page * perPage);
+  console.log(users);
+  return users;
 };
 
 module.exports = {
@@ -255,4 +269,5 @@ module.exports = {
   fetchLeadingCollectors,
   getUserStats,
   getSingleFavouriteArtWork,
+  getAllUsers,
 };

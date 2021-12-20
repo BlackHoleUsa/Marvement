@@ -141,17 +141,21 @@ const getAllArtworks = async (
   if (isAuctionOpen != undefined) {
     return await Artwork.find({ isAuctionOpen: true })
       .populate('owner')
+      .populate('auction')
       .limit(parseInt(perPage))
       .skip(page * perPage);
   }
   if (openForSale != undefined) {
     return await Artwork.find({ openForSale: true })
       .populate('owner')
+      .populate('sale')
       .limit(parseInt(perPage))
       .skip(page * perPage);
   }
   return await Artwork.find({})
     .populate('owner')
+    .populate('sale')
+    .populate('auction')
     .limit(parseInt(perPage))
     .skip(page * perPage);
 };

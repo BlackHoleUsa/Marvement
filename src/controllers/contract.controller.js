@@ -56,8 +56,8 @@ const handleNewAuction = async (colAddress, tokenId, aucId) => {
     };
 
     const auction = await Auction.create(params);
-    await User.findOneAndUpdate({ _id: owner }, { $pull: { artworks: artwork._id } });
-    await Artwork.findOneAndUpdate({ _id: artwork._id }, { owner: null });
+    // await User.findOneAndUpdate({ _id: owner }, { $pull: { artworks: artwork._id } });
+    // await Artwork.findOneAndUpdate({ _id: artwork._id }, { owner: null });
     LISTENERS.openArtworkAuction({ artworkId: artwork._id, auction: auction._id });
   } catch (err) {
     console.log(err);
@@ -79,8 +79,8 @@ const handleNewSale = async (saleFromContract) => {
       };
 
       const sale = await BuySell.create(params);
-      await User.findOneAndUpdate({ _id: owner }, { $pull: { artworks: artwork._id } });
-      await Artwork.findOneAndUpdate({ _id: artwork._id }, { owner: null, sale: sale._id, openForSale: true });
+      // await User.findOneAndUpdate({ _id: owner }, { $pull: { artworks: artwork._id } });
+      // await Artwork.findOneAndUpdate({ _id: artwork._id }, { owner: null, sale: sale._id, openForSale: true });
     } else {
       console.log('Artwork is already on sale');
     }

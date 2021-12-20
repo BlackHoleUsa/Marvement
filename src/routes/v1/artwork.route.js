@@ -293,6 +293,8 @@ router.post(
 
 router.get('/getSingleArtwork', [validate(artworkValidation.getSingleArtVS)], artworkController.getSingleArtwork);
 
+router.get('/getAllArtworks', validate(artworkValidation.getAllArtworks), artworkController.getAllArtworks);
+
 router.get('/getAuctionBids', [validate(artworkValidation.getAuctionBidsVS)], artworkController.getAuctionBids);
 
 router.get('/getLatestArtWorks', [], artworkController.getLatestArtWorks);

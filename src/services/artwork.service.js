@@ -124,6 +124,57 @@ const getAllArtworksPaginated = async (page, perPage) => {
   const count = await Artwork.find().countDocuments();
   return { artworks, count };
 };
+const getAllArtworks = async (
+  page,
+  perPage,
+  isAuctionOpen = undefined,
+  openForSale = undefined,
+  artwork_type = undefined
+) => {
+  if (artwork_type != undefined) {
+    return await Artwork.find({ artwork_type })
+      .populate('owner')
+      .limit(parseInt(perPage))
+      .skip(page * perPage);
+  }
+  if (isAuctionOpen != undefined) {
+    return await Artwork.find({ isAuctionOpen: true })
+      .populate('owner')
+      .limit(parseInt(perPage))
+      .skip(page * perPage);
+  }
+  if (openForSale != undefined) {
+    return await Artwork.find({ openForSale: true })
+      .populate('owner')
+      .limit(parseInt(perPage))
+      .skip(page * perPage);
+  }
+  return await Artwork.find({ owner: _id })
+    .populate('owner')
+    .limit(parseInt(perPage))
+    .skip(page * perPage);
+};
+
+const getAllArtworksCount = async (
+  isAuctionOpen = undefined,
+  openForSale = undefined,
+  artwork_type = undefined
+) => {
+  if (artwork_type != undefined) {
+    return await Artwork.find({ artwork_type })
+      .populate('owner').countDocuments();
+  }
+  if (isAuctionOpen != undefined) {
+    return await Artwork.find({ isAuctionOpen: true })
+      .populate('owner').countDocuments();
+  }
+  if (openForSale != undefined) {
+    return await Artwork.find({ openForSale: true })
+      .populate('owner').countDocuments();
+  }
+  return await Artwork.find({})
+    .populate('owner').countDocuments();
+};
 module.exports = {
   saveArtwork,
   getUserArtworks,
@@ -146,4 +197,6 @@ module.exports = {
   increaseArtworkLikes,
   decreaseArtworkLikes,
   getAllArtworksPaginated,
+  getAllArtworks,
+  getAllArtworksCount,
 };

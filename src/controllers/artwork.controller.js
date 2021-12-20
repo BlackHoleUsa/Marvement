@@ -235,6 +235,19 @@ const getArtworkHistory = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send({ status: true, message: 'Successfull', data: history });
 });
 
+const getAllArtworks = catchAsync(async (req, res) => {
+  const { artwork_type, page, perPage, isAuctionOpen, openForSale } = req.query;
+  if (!artwork_type) {
+    const artWorks = await artworkService.getAllArtworks(page, perPage, isAuctionOpen, openForSale);
+    const count = await artworkService.getAllArtworksCount(isAuctionOpen, openForSale);
+    res.status(httpStatus.OK).send({ status: true, message: 'Successfull', data: artWorks, count });
+  } else {
+    const artWorks = await artworkService.getAllArtworks(page, perPage, undefined, undefined, artwork_type);
+    const count = await artworkService.getAllArtworksCount(undefined, undefined, artwork_type);
+    res.status(httpStatus.OK).send({ status: true, message: 'Successfull', data: artWorks, count });
+  }
+});
+
 const getWinnedAuctions = catchAsync(async (req, res) => {
   const { page, perPage } = req.query;
 
@@ -294,4 +307,5 @@ module.exports = {
   getTimeoutItems,
   getLatestArtWorks,
   getFilteredArtworks,
+  getAllArtworks,
 };

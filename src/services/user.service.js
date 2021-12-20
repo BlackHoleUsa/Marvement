@@ -1,5 +1,6 @@
 const httpStatus = require('http-status');
 const web3 = require('web3');
+const { userService } = require('.');
 const { User, Stats } = require('../models');
 const ApiError = require('../utils/ApiError');
 
@@ -173,7 +174,7 @@ const searchUsersByName = async (keyword, page, perPage) => {
 };
 
 const getUsersByMostArtworks = async () => {
-  return await Stats.aggregate([
+  let data = await Stats.aggregate([
     {
       $lookup: {
         from: 'users',
@@ -203,6 +204,13 @@ const getUsersByMostArtworks = async () => {
       $unwind: '$user',
     },
   ]).limit(5);
+
+  for (let i = 0; i < data.length; i++) {
+    // eslint-disable-next-line no-await-in-loop
+    const updatedUser = await User.findOne(data[i].user._id).populate('artworks');
+    data[i].user = updatedUser;
+  }
+  return data;
 };
 
 const fetchLeadingCollectors = async () => {

@@ -149,7 +149,7 @@ const getAllArtworks = async (
       .limit(parseInt(perPage))
       .skip(page * perPage);
   }
-  return await Artwork.find({ owner: _id })
+  return await Artwork.find({})
     .populate('owner')
     .limit(parseInt(perPage))
     .skip(page * perPage);

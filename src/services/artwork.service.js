@@ -114,6 +114,18 @@ const getUserFilteredArtworks = async (userId, page, perPage) => {
   return await Artwork.find({ owner: userId }).limit(parseInt(perPage))
     .skip(page * perPage);
 };
+const getAllArtworksPaginated = async (page, perPage) => {
+  const artworks = await Artwork.find()
+    .populate('creater')
+    .populate('owner')
+    .populate('auction')
+    .limit(parseInt(perPage))
+    .skip(page * perPage)
+    .lean();
+
+  const count = await Artwork.find().countDocuments();
+  return { artworks, count };
+};
 module.exports = {
   saveArtwork,
   getUserArtworks,
@@ -135,4 +147,5 @@ module.exports = {
   getUserFilteredArtworks,
   increaseArtworkLikes,
   decreaseArtworkLikes,
+  getAllArtworksPaginated,
 };

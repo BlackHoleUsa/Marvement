@@ -117,6 +117,7 @@ const getUserFilteredArtworks = async (userId, page, perPage) => {
 const getAllArtworksPaginated = async (page, perPage) => {
   const artworks = await Artwork.find()
     .populate('creater')
+    .populate('auction')
     .limit(parseInt(perPage))
     .skip(page * perPage)
     .lean();

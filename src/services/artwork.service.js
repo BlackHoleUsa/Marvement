@@ -97,7 +97,11 @@ const searchArtworkByName = async (keyword, page, perPage, artist, min, max) => 
 };
 
 const getLatestArtworks = async () => {
-  return await Artwork.find().sort({ _id: -1 });
+  return await Artwork.find()
+    .populate('creater')
+    .populate('auction')
+    .populate('sale')
+    .sort({ _id: -1 });
 };
 
 const getAuctionOpenArtworks = async (userId, page, perPage) => {

@@ -8,12 +8,12 @@ const userSchema = mongoose.Schema(
   {
     userName: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     email: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
       lowercase: true,
       validate(value) {
@@ -29,7 +29,7 @@ const userSchema = mongoose.Schema(
     },
     address: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     bio: {

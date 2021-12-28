@@ -61,7 +61,7 @@ const router = express.Router();
  *         $ref: '#/components/responses/DuplicateEmail'
  */
 
-router.post('/register', validate(authValidation.register), authController.register);
+router.post('/register', authController.register);
 
 /**
  * @swagger

@@ -126,6 +126,7 @@ const getAllArtworksPaginated = async (page, perPage) => {
   const artworks = await Artwork.find()
     .populate('creater')
     .populate('auction')
+    .populate('sale')
     .limit(parseInt(perPage))
     .skip(page * perPage)
     .lean();
@@ -143,27 +144,32 @@ const getAllArtworks = async (
   if (artwork_type != undefined) {
     return await Artwork.find({ artwork_type })
       .populate('owner')
+      .populate('creater')
+      .populate('auction')
+      .populate('sale')
       .limit(parseInt(perPage))
       .skip(page * perPage);
   }
   if (isAuctionOpen != undefined) {
     return await Artwork.find({ isAuctionOpen: true })
-      .populate('owner')
+      .populate('creater')
       .populate('auction')
+      .populate('sale')
       .limit(parseInt(perPage))
       .skip(page * perPage);
   }
   if (openForSale != undefined) {
     return await Artwork.find({ openForSale: true })
-      .populate('owner')
+      .populate('creater')
+      .populate('auction')
       .populate('sale')
       .limit(parseInt(perPage))
       .skip(page * perPage);
   }
   return await Artwork.find({})
-    .populate('owner')
-    .populate('sale')
+    .populate('creater')
     .populate('auction')
+    .populate('sale')
     .limit(parseInt(perPage))
     .skip(page * perPage);
 };

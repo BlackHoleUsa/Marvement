@@ -28,7 +28,7 @@ const getOpenAuctions = async (page, perPage, sort, whereQuery) => {
 const getOpenSales = async (page, perPage, sort, whereQuery) => {
   const sales = await BuySell.find(whereQuery)
     .sort(sort)
-    .populate('artwork owner')
+    .populate('artwork owner creator')
     .limit(parseInt(perPage))
     .skip(page * perPage)
     .lean();

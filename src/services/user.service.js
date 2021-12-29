@@ -253,7 +253,10 @@ const getAllUsers = async (page, perPage) => {
   console.log(users);
   return users;
 };
-
+const removeCollection = async (collectionId, userId) => {
+  const response = User.findOneAndUpdate({ _id: userId }, { $pull: { collections: collectionId } });
+  return response;
+};
 module.exports = {
   createUser,
   queryUsers,
@@ -276,4 +279,5 @@ module.exports = {
   getUserStats,
   getSingleFavouriteArtWork,
   getAllUsers,
+  removeCollection,
 };

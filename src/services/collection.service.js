@@ -72,6 +72,10 @@ const searchCollectionByName = async (keyword, page, perPage) => {
     .limit(parseInt(perPage))
     .skip(page * perPage);
 };
+const collectionExistsWithSymbol = async (owner, symbol) => {
+  const collection = await Collection.find({ owner, symbol });
+  return collection.length > 0;
+};
 
 module.exports = {
   saveCollection,
@@ -86,4 +90,5 @@ module.exports = {
   getAllCollections,
   removeArtwork,
   searchCollectionByName,
+  collectionExistsWithSymbol,
 };

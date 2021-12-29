@@ -7,10 +7,10 @@ const EVENT = require('../triggers/custom-events').customEvent;
 const ApiError = require('../utils/ApiError');
 
 const createCollection = catchAsync(async (req, res) => {
-  const { owner, name } = req.body;
+  const { owner, name, symbol } = req.body;
   const files = req.files;
-  if (await collectionService.collectionExists(owner, name)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Collection with name already exists');
+  if (await collectionService.collectionExistsWithSymbol(owner, symbol)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Collection with symbol already exists');
   }
   let col = await collectionService.saveCollection(req.body);
   let cover, profile;
@@ -47,7 +47,7 @@ const getAllUserCollection = catchAsync(async (req, res) => {
 
 const getCollectionDetails = catchAsync(async (req, res) => {
   const { collectionId } = req.query;
-  const data = await collectionService.getPopulatedCollection(req.user._id, collectionId);  
+  const data = await collectionService.getPopulatedCollection(req.user._id, collectionId);
   res.status(httpStatus.OK).send({ status: true, message: 'successfull', data });
 });
 
@@ -74,10 +74,12 @@ const updateCollection = catchAsync(async (req, res) => {
 });
 
 const deleteCollection = catchAsync(async (req, res) => {
+  const { user } = req;
   const { collectionId } = req.body;
 
   await collectionService.deleteCollectionById(collectionId);
   await artworkService.deleteArtworksByCollection(collectionId);
+  await userService.removeCollection(collectionId, user._id);
   res.send({ status: true, message: 'collection deleted successfully' });
 });
 

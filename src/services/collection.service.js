@@ -1,8 +1,7 @@
 const { Collection, Artwork } = require('../models');
 
 const saveCollection = async (params) => {
-  const col = await Collection.create(params);
-  return col.toObject();
+  return await Collection.create(params);
 };
 
 const getCollectionById = async (id) => {

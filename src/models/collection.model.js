@@ -33,7 +33,7 @@ const collectionSchema = mongoose.Schema(
       trim: true,
     },
     description: {
-      typetype: String,
+      type: String,
       required: false,
     },
     artworks: [

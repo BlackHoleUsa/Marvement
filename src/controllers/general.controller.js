@@ -37,7 +37,7 @@ const handleSearch = catchAsync(async (req, res) => {
     res.status(httpStatus.OK).send({
       status: true,
       message: 'Successfull',
-      data,
+      data: { ...data },
     });
   } else {
     res.status(httpStatus.OK).send({

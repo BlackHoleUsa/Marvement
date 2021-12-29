@@ -102,6 +102,7 @@ const searchArtworkByName = async (keyword, page, perPage, artist, min, max) => 
 const getLatestArtworks = async () => {
   console.log("a");
   return await Artwork.find()
+    .populate('owner')
     .populate('creater')
     .populate('auction')
     .populate('sale')

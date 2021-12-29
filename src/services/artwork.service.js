@@ -153,6 +153,7 @@ const getAllArtworks = async (
   }
   if (isAuctionOpen != undefined) {
     return await Artwork.find({ isAuctionOpen: true })
+      .populate('owner')
       .populate('creater')
       .populate('auction')
       .populate('sale')
@@ -161,6 +162,7 @@ const getAllArtworks = async (
   }
   if (openForSale != undefined) {
     return await Artwork.find({ openForSale: true })
+      .populate('owner')
       .populate('creater')
       .populate('auction')
       .populate('sale')
@@ -168,6 +170,7 @@ const getAllArtworks = async (
       .skip(page * perPage);
   }
   return await Artwork.find({})
+    .populate('owner')
     .populate('creater')
     .populate('auction')
     .populate('sale')

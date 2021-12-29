@@ -57,7 +57,7 @@ const updateArtworkTokenId = async (artworkId, tokenId) => {
 };
 
 const getArtworksByCollection = async (collectionId) => {
-  return await Artwork.find({ collectionId }).lean();
+  return await Artwork.find({ collectionId }).populate('owner').populate('sale').populate('auction').lean();
 };
 
 const changeArtworkAuctionStatus = async (artworkId, status) => {

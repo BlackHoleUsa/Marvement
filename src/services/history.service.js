@@ -4,9 +4,9 @@ const { HISTORY_TYPE } = require('../utils/enums');
 const getArtworkHistory = async (artworkId, page, perPage, fieldsToPopulate) => {
   return await History.find({ artwork: artworkId })
     .populate(fieldsToPopulate)
-    .sort({ createdAt: -1 })
+    .sort({ _id: -1 })
     .limit(parseInt(perPage))
-    .skip(page * perPage);
+    .skip(page * perPage).lean();
 };
 
 const getAllHistoriesPaginated = async (page, perPage) => {

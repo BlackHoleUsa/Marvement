@@ -115,11 +115,27 @@ const removeArtworkFromFavourite = async (userId, artworkId) => {
 const getFavouriteArtworks = async (userId, page, perPage) => {
   const user = await User.findOne({ _id: userId })
     .select(['favouriteArtworks'])
-    .populate('favouriteArtworks')
-    .populate('sale')
-    .populate('auction')
-    .populate('owner')
-    .populate('creator')
+    .populate({
+      path: 'favouriteArtworks',
+      populate: [
+        {
+          path: 'owner',
+          model: 'User',
+        },
+        {
+          path: 'creater',
+          model: 'User',
+        },
+        {
+          path: 'sale',
+          model: 'BuySell',
+        },
+        {
+          path: 'auction',
+          model: 'Auction',
+        },
+      ],
+    })
     .limit(parseInt(perPage))
     .skip(page * perPage)
     .lean();

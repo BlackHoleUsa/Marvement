@@ -4,7 +4,7 @@ const { password } = require('./custom.validation');
 const createCollectionVS = {
   body: Joi.object().keys({
     name: Joi.string().required(),
-    description: Joi.string().required(),
+    description: Joi.string().optional(),
     owner: Joi.string().required(),
     coverImage: Joi.string().optional(),
     profileImage: Joi.string().optional(),

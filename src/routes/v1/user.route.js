@@ -11,7 +11,58 @@ const router = express.Router();
  *   name: Users
  *   description: Users
  */
-
+router.get(
+  '/getUserFollowers',
+  [auth('manageUsers'), validate(userValidation.getUserFollowers)],
+  userController.getUserFollowers
+);
+/**
+ * @swagger
+ * /users/getUserFollowing?page={page}&perPage={perPage}&userId={userId}&:
+ *   get:
+ *     security:
+ *      - bearerAuth: []
+ *     summary: Get User Followers
+ *     tags: [Users]
+ *     parameters:
+ *      - in: path
+ *        name: page
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: Page Number
+ *      - in: path
+ *        name: perPage
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: Number of Followers Per Page
+ *      - in: path
+ *        name: userId
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: User Id
+ *     responses:
+ *       "201":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 collection:
+ *                   $ref: '#/components/schemas/User'
+ *                 tokens:
+ *                   $ref: '#/components/schemas/AuthTokens'
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
+ */
+router.get(
+  '/getUserFollowing',
+  [auth('manageUsers'), validate(userValidation.getUserFollowing)],
+  userController.getUserFollowing
+);
 router.get('/getAllusers', userController.getAllUsers);
 router
   .route('/')
@@ -185,56 +236,5 @@ router.post('/unfollowUser', [auth('manageUsers'), validate(userValidation.unfol
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  */
-router.get(
-  '/getUserFollowers',
-  [auth('manageUsers'), validate(userValidation.getUserFollowers)],
-  userController.getUserFollowers
-);
-/**
- * @swagger
- * /users/getUserFollowing?page={page}&perPage={perPage}&userId={userId}&:
- *   get:
- *     security:
- *      - bearerAuth: []
- *     summary: Get User Followers
- *     tags: [Users]
- *     parameters:
- *      - in: path
- *        name: page
- *        schema:
- *          type: string
- *        required: true
- *        description: Page Number
- *      - in: path
- *        name: perPage
- *        schema:
- *          type: string
- *        required: true
- *        description: Number of Followers Per Page
- *      - in: path
- *        name: userId
- *        schema:
- *          type: string
- *        required: true
- *        description: User Id
- *     responses:
- *       "201":
- *         description: OK
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 collection:
- *                   $ref: '#/components/schemas/User'
- *                 tokens:
- *                   $ref: '#/components/schemas/AuthTokens'
- *       "401":
- *         $ref: '#/components/responses/Unauthorized'
- */
-router.get(
-  '/getUserFollowing',
-  [auth('manageUsers'), validate(userValidation.getUserFollowing)],
-  userController.getUserFollowing
-);
+
 module.exports = router;

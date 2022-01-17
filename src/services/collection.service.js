@@ -75,7 +75,14 @@ const collectionExistsWithSymbol = async (owner, symbol) => {
   const collection = await Collection.find({ owner, symbol });
   return collection.length > 0;
 };
-
+const getAllCollectionsperPage = async (page, perPage) => {
+  return await Collection.find()
+    .limit(parseInt(perPage))
+    .skip(page * perPage);
+};
+const getAllCollectionsCount = async () => {
+  return await Collection.find().countDocuments();
+};
 module.exports = {
   saveCollection,
   getCollectionById,
@@ -90,4 +97,6 @@ module.exports = {
   removeArtwork,
   searchCollectionByName,
   collectionExistsWithSymbol,
+  getAllCollectionsperPage,
+  getAllCollectionsCount,
 };

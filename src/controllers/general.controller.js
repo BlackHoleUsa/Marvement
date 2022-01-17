@@ -61,8 +61,9 @@ const handleSearch = catchAsync(async (req, res) => {
         break;
 
       case SEARCH_FILTERS.COLLECTIONS:
-        collections = await collectionService.getAllCollections();
+        collections = await collectionService.getAllCollectionsperPage(page, perPage);
         data.collections = collections;
+        count = await collectionService.getAllCollectionsCount();
         break;
 
       default:

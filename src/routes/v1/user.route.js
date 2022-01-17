@@ -119,7 +119,7 @@ router.get('/getUserStatistics/:userId', validate(userValidation.getUser), userC
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  */
-router.put('/:userId', [auth('manageUsers'), validate(userValidation.updateUser)], userController.updateUser);
+router.put('/:userId', [auth('manageUsers')], userController.updateUser);
 /**
  * @swagger
  * /users/followUser:

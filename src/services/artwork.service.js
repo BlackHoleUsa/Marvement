@@ -199,6 +199,36 @@ const getAllArtworksCount = async (
   return await Artwork.find({})
     .populate('owner').countDocuments();
 };
+const searchArtworkByNameTotal = async (keyword, page, perPage, artist, min, max) => {
+  const query = {};
+  if (keyword) {
+    query.name = { $regex: keyword, $options: 'i' };
+  }
+  if (artist) {
+    query.owner = artist;
+  }
+  if (min && max) {
+    query.$and = [
+      {
+        price: { $gte: parseInt(min) },
+      },
+      {
+        price: { $lte: parseInt(max) },
+      },
+    ];
+  }
+
+  return await Artwork.find(query)
+    .populate('sale')
+    .populate('auction').countDocuments();
+};
+const getAllArtworksCount1 = async () => {
+  return await Artwork.find().countDocuments();
+};
+const getAllArtwork = async (page, perPage) => {
+  return await Artwork.find().populate('owner').populate('group').populate('sale').populate('auction').limit(parseInt(perPage))
+    .skip(page * perPage);
+};
 module.exports = {
   saveArtwork,
   getUserArtworks,
@@ -223,4 +253,7 @@ module.exports = {
   getAllArtworksPaginated,
   getAllArtworks,
   getAllArtworksCount,
+  searchArtworkByNameTotal,
+  getAllArtworksCount1,
+  getAllArtwork,
 };

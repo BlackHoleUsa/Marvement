@@ -277,6 +277,12 @@ const removeCollection = async (collectionId, userId) => {
   const response = User.findOneAndUpdate({ _id: userId }, { $pull: { collections: collectionId } });
   return response;
 };
+const searchUsersByNameTotal = async (keyword, page, perPage) => {
+  return await User.find({ userName: { $regex: keyword, $options: 'i' } }).countDocuments();
+};
+const getAllUsersCount = async () => {
+  return await User.find().countDocuments();
+};
 module.exports = {
   createUser,
   queryUsers,
@@ -300,4 +306,6 @@ module.exports = {
   getSingleFavouriteArtWork,
   getAllUsers,
   removeCollection,
+  searchUsersByNameTotal,
+  getAllUsersCount,
 };

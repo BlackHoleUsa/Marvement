@@ -283,6 +283,10 @@ const searchUsersByNameTotal = async (keyword, page, perPage) => {
 const getAllUsersCount = async () => {
   return await User.find().countDocuments();
 };
+const removeOwnedArtworks = async (userId) => {
+  // eslint-disable-next-line no-return-await
+  return await Stats.findOneAndUpdate({ user: userId }, { $inc: { ownedArts: -1 } });
+};
 module.exports = {
   createUser,
   queryUsers,
@@ -308,4 +312,5 @@ module.exports = {
   removeCollection,
   searchUsersByNameTotal,
   getAllUsersCount,
+  removeOwnedArtworks,
 };

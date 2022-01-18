@@ -224,6 +224,7 @@ const deleteArtwork = catchAsync(async (req, res) => {
 
   await collectionService.removeArtwork(artworkId, artwork.collectionId);
   await userService.removeArtwork(artwork.creater, artworkId);
+  await userService.removeOwnedArtworks(artwork.creater);
   await artworkService.deleteArtworkById(artworkId);
 
   res.status(httpStatus.OK).send({ status: true, message: 'artwork deleted successfully', data: artworkId });

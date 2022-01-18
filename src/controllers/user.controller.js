@@ -53,21 +53,28 @@ const deleteUser = catchAsync(async (req, res) => {
 
 const followUser = catchAsync(async (req, res) => {
   const { otherUserId } = req.body;
-  const user = req.user;
-  await userService.followOtherUser(user._id, otherUserId);
+  const { user } = req;
+  if (otherUserId === user._id) {
+    res.status(httpStatus.BAD_REQUEST).send({
+      status: false,
+      message: 'otherUserId is equal to UserId',
+    });
+  } else {
+    await userService.followOtherUser(user._id, otherUserId);
 
-  EVENT.emit('send-and-save-notification', {
-    receiver: user._id,
-    type: NOTIFICATION_TYPE.NEW_FOLLOWER,
-    extraData: {
-      follower: otherUserId,
-    },
-  });
+    EVENT.emit('send-and-save-notification', {
+      receiver: user._id,
+      type: NOTIFICATION_TYPE.NEW_FOLLOWER,
+      extraData: {
+        follower: otherUserId,
+      },
+    });
 
-  res.status(httpStatus.OK).send({
-    status: true,
-    message: 'user followed successfully',
-  });
+    res.status(httpStatus.OK).send({
+      status: true,
+      message: 'user followed successfully',
+    });
+  }
 });
 
 const unfollowUser = catchAsync(async (req, res) => {

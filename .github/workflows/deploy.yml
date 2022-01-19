@@ -19,3 +19,8 @@ jobs:
           REMOTE_HOST: "ec2-13-52-165-77.us-west-1.compute.amazonaws.com"
           REMOTE_USER: "ec2-user"
           TARGET: "/home/ec2-user/Blackholeusa/Marvement"
+      
+      - name: Rerun the application
+        run: pm2 stop index
+      - run: pm2 start index
+      - run: pm2 save              

@@ -82,6 +82,7 @@ const unfollowUser = catchAsync(async (req, res) => {
   const user = req.user;
 
   await userService.unFollowUser(user._id, otherUserId);
+  console.log("is")
   res.status(httpStatus.OK).send({
     status: true,
     message: 'user unfollowed successfully',

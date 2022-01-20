@@ -61,7 +61,7 @@ const handleNewAuction = async (colAddress, tokenId, aucId) => {
 
     const auction = await Auction.create(params);
     await User.findOneAndUpdate({ _id: owner }, { $pull: { artworks: artwork._id } });
-    await Artwork.findOneAndUpdate({ _id: artwork._id }, { owner: owner });
+    await Artwork.findOneAndUpdate({ _id: artwork._id }, { owner, isAuctionOpen: true, endTime: new Date(endTime * 1000) });
     // await Artwork.findOneAndUpdate({ _id: artwork._id }, { owner: null });
     LISTENERS.openArtworkAuction({ artworkId: artwork._id, auction: auction._id });
   } catch (err) {

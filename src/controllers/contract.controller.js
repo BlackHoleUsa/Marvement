@@ -120,9 +120,10 @@ const handleCancelSale = async (saleFromContract) => {
 };
 
 const handleSaleComplete = async (saleFromContract) => {
-  const { saleId, newOwner_ } = saleFromContract;
+  const { saleId, newOwner } = saleFromContract;
+  console.log(saleFromContract);
   try {
-    console.log('new owner address', newOwner_);
+    console.log('new owner address', newOwner);
     const sale = await BuySell.findOneAndUpdate({ contractSaleId: saleId }, { status: SALE_STATUS.COMPLETED }).populate(
       'artwork'
     );
@@ -133,7 +134,7 @@ const handleSaleComplete = async (saleFromContract) => {
       message: `${usr.userName} was the owner`,
       type: HISTORY_TYPE.OWNERSHIP,
     });
-    const newArtworkOwner = await User.findOneAndUpdate({ address: newOwner_ }, { $push: { artworks: artwork._id } });
+    const newArtworkOwner = await User.findOneAndUpdate({ address: newOwner }, { $push: { artworks: artwork._id } });
     console.log('newArtworkOWner', newArtworkOwner);
     await Artwork.findOneAndUpdate(
       { _id: artwork._id },

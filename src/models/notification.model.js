@@ -11,6 +11,9 @@ const notificationSchema = mongoose.Schema(
     type: {
       type: String,
     },
+    message: {
+      type: String,
+    },
     extraData: {
       follower: {
         type: mongoose.SchemaTypes.ObjectId,

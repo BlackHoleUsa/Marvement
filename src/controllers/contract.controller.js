@@ -128,6 +128,11 @@ const handleSaleComplete = async (saleFromContract) => {
     );
     const { artwork } = sale;
     const usr = await User.findOneAndUpdate({ _id: sale.owner }, { $pull: { artworks: artwork._id } });
+    EVENT.emit('update-artwork-history', {
+      artwork: artwork._id,
+      message: `${usr.userName} was the owner`,
+      type: HISTORY_TYPE.OWNERSHIP,
+    });
     const newArtworkOwner = await User.findOneAndUpdate({ address: newOwner_ }, { $push: { artworks: artwork._id } });
     console.log('newArtworkOWner', newArtworkOwner);
     await Artwork.findOneAndUpdate(
@@ -176,6 +181,7 @@ const handleSaleComplete = async (saleFromContract) => {
     EVENT.emit('send-and-save-notification', {
       receiver: sale.owner,
       type: NOTIFICATION_TYPE.NFT_BUY,
+      message: `${newArtworkOwner.userName} has bought the artwork`,
       extraData: {
         sale: sale._id,
       },
@@ -214,7 +220,7 @@ const handleNewBid = async (par) => {
 
   EVENT.emit('update-artwork-history', {
     artwork: artwork._id,
-    message: `Bid placed on artwork`,
+    message: `${dbBidder.userName} has placed the bid`,
     auction: auction._id,
     bid: dbBid._id,
     type: HISTORY_TYPE.BID_PLACED,
@@ -223,6 +229,7 @@ const handleNewBid = async (par) => {
   EVENT.emit('send-and-save-notification', {
     receiver: dbOwner._id,
     type: NOTIFICATION_TYPE.NEW_BID,
+    message: `${dbBidder.userName} has placed the bid`,
     extraData: {
       bid: dbBid._id,
     },
@@ -235,7 +242,12 @@ const handleNFTClaim = async (values) => {
   const auction = await Auction.findOneAndUpdate({ contractAucId: aucId }, { nftClaim: true }).populate('artwork');
   const { artwork } = auction;
   const usr = await User.findOneAndUpdate({ _id: artwork.owner }, { $pull: artwork._id });
-  const newArtworkOwner = await User.findOneAndUpdate({ address: newOwner }, { $push: artwork._id });
+  EVENT.emit('update-artwork-history', {
+    artwork: artwork._id,
+    message: `${usr.userName} was the owner`,
+    type: HISTORY_TYPE.OWNERSHIP,
+  });
+  const newArtworkOwner = await User.findOneAndUpdate({ address: newOwner }, { $push: { artworks: artwork._id } });
   await Artwork.findOneAndUpdate(
     { _id: artwork._id },
     {
@@ -269,6 +281,7 @@ const handleNFTClaim = async (values) => {
 
   EVENT.emit('send-and-save-notification', {
     receiver: auction.owner,
+    message: `${newArtworkOwner.userName} has claimed the artwork`,
     type: NOTIFICATION_TYPE.AUCTION_WIN,
     extraData: {
       auction: auction._id,
@@ -306,10 +319,9 @@ const handleClaimBack = async (values) => {
     { contractAucId: aucId },
     { cancelled: true, status: AUCTION_STATUS.CLOSED }
   ).populate('artwork');
-  const { artwork } = auction;
-  const usr = await User.findOneAndUpdate({ _id: auction.owner }, { $push: artwork._id });
+  const usr = await User.findOneAndUpdate({ _id: auction.owner }, { $push: { artworks: auction.artwork } });
   await Artwork.findOneAndUpdate(
-    { _id: artwork._id },
+    { _id: auction.artwork },
     {
       owner: auction.owner,
       isAuctionOpen: false,

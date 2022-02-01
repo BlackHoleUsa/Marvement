@@ -7,6 +7,7 @@ let server;
 mongoose.set('useFindAndModify', false);
 mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
   logger.info('Connected to MongoDB');
+  logger.info('Connected and tested');
   server = app.listen(process.env.PORT || config.port, () => {
     logger.info(`Listening to port ${config.port}`);
   });

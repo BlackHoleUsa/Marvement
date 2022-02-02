@@ -419,6 +419,12 @@ module.exports = {
             "internalType": "uint256",
             "name": "saleId",
             "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
           }
         ],
         "name": "saleCompleted",

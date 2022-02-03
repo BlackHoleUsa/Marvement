@@ -30,8 +30,11 @@ const saveArtwork = catchAsync(async (req, res) => {
   const artwork = await artworkService.saveArtwork(body);
   const user = await userService.getUserById(creater);
   const metaUrl = await pinMetaDataToIPFS({
-    name,
-    description,
+    // eslint-disable-next-line object-shorthand
+    name: name,
+    // eslint-disable-next-line object-shorthand
+    description: description,
+    image: imgData,
     creater: {
       name: user.userName,
       id: user._id,

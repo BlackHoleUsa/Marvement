@@ -93,6 +93,7 @@ const userSchema = mongoose.Schema(
         ref: 'Artwork',
       },
     ],
+    platformfee: { type: Number, required: false },
   },
   {
     timestamps: true,

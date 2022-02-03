@@ -118,6 +118,17 @@ const getAllUsers = catchAsync(async (req, res) => {
     data: users,
   });
 });
+const setPlatformFee = catchAsync(async (req, res) => {
+  const { address } = req.query;
+  const platFormFee = req.body;
+  const response = await userService.setPlatformFee(address, platFormFee);
+  res.status(httpStatus.CREATED).send(response);
+});
+const getPlatformFee = catchAsync(async (req, res) => {
+  const { address } = req.query;
+  const response = await userService.getPlatformFee(address);
+  res.status(httpStatus.OK).send(response);
+});
 module.exports = {
   createUser,
   getUsers,
@@ -130,4 +141,6 @@ module.exports = {
   getUserFollowers,
   getUserStatistics,
   getAllUsers,
+  setPlatformFee,
+  getPlatformFee,
 };

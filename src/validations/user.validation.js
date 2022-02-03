@@ -77,6 +77,20 @@ const unfollowUser = {
     otherUserId: Joi.string().required(),
   }),
 };
+const setPlatformFee = {
+  query: Joi.object().keys({
+    address: Joi.string().required(),
+  }),
+  body: Joi.object().keys({
+    platFormFee: Joi.number().required(),
+  }),
+};
+
+const getPlatformFee = {
+  query: Joi.object().keys({
+    address: Joi.string().required(),
+  }),
+};
 
 module.exports = {
   createUser,
@@ -89,4 +103,6 @@ module.exports = {
   getUserFollowing,
   getUserFollowers,
   getAllUsers,
+  getPlatformFee,
+  setPlatformFee,
 };

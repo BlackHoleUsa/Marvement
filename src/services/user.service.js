@@ -287,6 +287,12 @@ const removeOwnedArtworks = async (userId) => {
   // eslint-disable-next-line no-return-await
   return await Stats.findOneAndUpdate({ user: userId }, { $inc: { ownedArts: -1 } });
 };
+const setPlatformFee = async (userAddress, platformFee) => {
+  return await User.findOneAndUpdate({ address: userAddress }, { platformfee: platformFee }, { new: true });
+};
+const getPlatformFee = async (userAddress) => {
+  return await User.findOne({ address: userAddress }, { platformfee: 1 });
+};
 module.exports = {
   createUser,
   queryUsers,
@@ -313,4 +319,6 @@ module.exports = {
   searchUsersByNameTotal,
   getAllUsersCount,
   removeOwnedArtworks,
+  setPlatformFee,
+  getPlatformFee,
 };

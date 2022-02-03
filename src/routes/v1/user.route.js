@@ -11,6 +11,12 @@ const router = express.Router();
  *   name: Users
  *   description: Users
  */
+router.post(
+  '/setPlatFormFee',
+  [auth('manageUsers'), validate(userValidation.setPlatformFee)],
+  userController.setPlatformFee
+);
+router.get('/getPlatFormFee', [auth('manageUsers'), validate(userValidation.getPlatformFee)], userController.getPlatformFee);
 router.get(
   '/getUserFollowers',
   [auth('manageUsers'), validate(userValidation.getUserFollowers)],

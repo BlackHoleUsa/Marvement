@@ -35,6 +35,9 @@ const saveArtwork = catchAsync(async (req, res) => {
     // eslint-disable-next-line object-shorthand
     description: description,
     image: imgData,
+    artist_name: user.name,
+    artist_description: user.description,
+    artist_url: user.profilePic,
     creater: {
       name: user.userName,
       id: user._id,

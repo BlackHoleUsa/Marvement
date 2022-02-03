@@ -288,10 +288,10 @@ const removeOwnedArtworks = async (userId) => {
   return await Stats.findOneAndUpdate({ user: userId }, { $inc: { ownedArts: -1 } });
 };
 const setPlatformFee = async (userAddress, platformFee) => {
-  return await User.findOneAndUpdate({ address: userAddress }, { platformfee: platformFee }, { new: true });
+  return await User.findOneAndUpdate({ address: userAddress }, { platformfee: platformFee }, { new: true }).lean();
 };
 const getPlatformFee = async (userAddress) => {
-  return await User.findOne({ address: userAddress }, { platformfee: 1 });
+  return await User.findOne({ address: userAddress }, { platformfee: 1 }).lean();
 };
 module.exports = {
   createUser,

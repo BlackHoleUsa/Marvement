@@ -120,7 +120,8 @@ const getAllUsers = catchAsync(async (req, res) => {
 });
 const setPlatformFee = catchAsync(async (req, res) => {
   const { address } = req.query;
-  const platFormFee = req.body;
+  // eslint-disable-next-line radix
+  const platFormFee = parseInt(req.body.platFormFee);
   const response = await userService.setPlatformFee(address, platFormFee);
   res.status(httpStatus.CREATED).send(response);
 });

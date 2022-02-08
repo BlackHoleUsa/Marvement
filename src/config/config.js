@@ -175,6 +175,11 @@ module.exports = {
             "internalType": "string",
             "name": "_baseuri",
             "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "tokenUri_",
+            "type": "string"
           }
         ],
         "name": "newCollectionMint",
@@ -229,7 +234,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    AUC_ABI: [
+    AUC_ABI:[
       {
         "inputs": [],
         "stateMutability": "nonpayable",
@@ -419,12 +424,6 @@ module.exports = {
             "internalType": "uint256",
             "name": "saleId",
             "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "newOwner",
-            "type": "address"
           }
         ],
         "name": "saleCompleted",
@@ -817,7 +816,7 @@ module.exports = {
         "stateMutability": "nonpayable",
         "type": "function"
       }
-    ],
+    ] ,
     WEB_SOCKET_INFURA_URL: 'wss://rinkeby.infura.io/ws/v3/c944b72ce9b74c77aac906c6a59f4e99',
   },
 };

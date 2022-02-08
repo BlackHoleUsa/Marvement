@@ -37,7 +37,7 @@ app.use(express.urlencoded());
 app.use(
   fileParser({
     rawBodyOptions: {
-      limit: '30mb', //file size limit
+      limit: '500mb', //file size limit
     },
     busboyOptions: {
       limits: {

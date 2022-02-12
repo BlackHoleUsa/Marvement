@@ -28,7 +28,7 @@ const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
   let owner = user._id;
   await helper(owner, 'ART');
-  await helper(owner, 'AUDIO');
+  await helper(owner, 'MUSIC');
   await helper(owner, 'VIDEO');
   await helper(owner, 'GIF');
   EVENT.emit('create-stats', {

@@ -3,9 +3,34 @@ const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
 const { User } = require('../models');
 const EVENT = require('../triggers/custom-events').customEvent;
+const collectionService = require('../services/collection.service');
+
+
+async function helper(owner, symbol) {
+  if (await collectionService.collectionExistsWithSymbol(owner, symbol)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Collection with symbol already exists');
+  }
+  let col1 = await collectionService.saveCollection({
+    name: symbol,
+    owner: owner,
+    description: symbol,
+    symbol: symbol
+  });
+  const data = await collectionService.getCollectionById(col1._id);
+  EVENT.emit('add-collection-in-user', {
+    collectionId: col1._id,
+    userId: owner,
+  });
+  console.log("in helper");
+}
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
+  let owner = user._id;
+  await helper(owner, 'GIF');
+  await helper(owner, 'VIDEO');
+  await helper(owner, 'IMAGE');
+  await helper(owner, 'ART');
   EVENT.emit('create-stats', {
     userId: user._id
   });

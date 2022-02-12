@@ -136,10 +136,10 @@ const handleSaleComplete = async (saleFromContract) => {
     const newArtworkOwner = await User.findOneAndUpdate({ address: newOwner }, { $push: { artworks: artwork._id } });
     const artwork1 = await Artwork.findOne({ _id: artwork._id });
     console.log("artwork1", artwork1);
-    const collection1 = await Collection.findOne({ _id: artwork1.collection });
+    const collection1 = await Collection.findOne({ _id: artwork1.collectionId });
     console.log("collection1", collection1);
     const response = await Collection.findOneAndUpdate(
-      { _id: artwork1.collection },
+      { _id: artwork1.collectionId },
       { $pull: { artworks: artwork1._id } },
       { new: true }
     );

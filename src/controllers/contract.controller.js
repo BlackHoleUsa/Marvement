@@ -123,7 +123,6 @@ const handleSaleComplete = async (saleFromContract) => {
   const { saleId, newOwner } = saleFromContract;
   console.log(saleFromContract);
   try {
-    console.log('new owner address', newOwner);
     const sale = await BuySell.findOneAndUpdate({ contractSaleId: saleId }, { status: SALE_STATUS.COMPLETED }).populate(
       'artwork'
     );
@@ -135,8 +134,10 @@ const handleSaleComplete = async (saleFromContract) => {
       type: HISTORY_TYPE.OWNERSHIP,
     });
     const newArtworkOwner = await User.findOneAndUpdate({ address: newOwner }, { $push: { artworks: artwork._id } });
-    console.log('newArtworkOWner', newArtworkOwner);
     const artwork1 = Artwork.findOne({ _id: artwork._id });
+    console.log("artwork1", artwork1);
+    const collection1 = await Collection.findOne({ _id: artwork1.collection });
+    console.log("collection1", collection1);
     const response = await Collection.findOneAndUpdate(
       { _id: artwork1.collection },
       { $pull: { artworks: artwork1._id } },

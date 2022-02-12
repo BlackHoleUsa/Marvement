@@ -136,7 +136,12 @@ const handleSaleComplete = async (saleFromContract) => {
     });
     const newArtworkOwner = await User.findOneAndUpdate({ address: newOwner }, { $push: { artworks: artwork._id } });
     console.log('newArtworkOWner', newArtworkOwner);
-    const response = await Collection.findOneAndUpdate({ _id: artwork.collection }, { $pull: { artworks: artwork._id } }, { new: true });
+    const artwork1 = Artwork.findOne({ _id: artwork._id });
+    const response = await Collection.findOneAndUpdate(
+      { _id: artwork1.collection },
+      { $pull: { artworks: artwork1._id } },
+      { new: true }
+    );
     console.log('artwork removed from collection successfully', response);
     await Artwork.findOneAndUpdate(
       { _id: artwork._id },
@@ -251,9 +256,10 @@ const handleNFTClaim = async (values) => {
     type: HISTORY_TYPE.OWNERSHIP,
   });
   const newArtworkOwner = await User.findOneAndUpdate({ address: newOwner }, { $push: { artworks: artwork._id } });
+  const artwork1 = Artwork.findOne({ _id: artwork._id });
   const response = await Collection.findOneAndUpdate(
-    { _id: artwork.collection },
-    { $pull: { artworks: artwork._id } },
+    { _id: artwork1.collection },
+    { $pull: { artworks: artwork1._id } },
     { new: true }
   );
   console.log('artwork removed from collection successfully', response);
@@ -329,12 +335,13 @@ const handleClaimBack = async (values) => {
     { cancelled: true, status: AUCTION_STATUS.CLOSED }
   ).populate('artwork');
   const usr = await User.findOneAndUpdate({ _id: auction.owner }, { $push: { artworks: auction.artwork } });
+  const artwork1 = Artwork.findOne({ _id: auction.artwork });
   const response = await Collection.findOneAndUpdate(
-    { _id: auction.artwork.collection },
-    { $push: { artworks: auction.artwork._id } },
+    { _id: artwork1.collection },
+    { $pull: { artworks: artwork1._id } },
     { new: true }
   );
-  console.log('artwork added in  collection successfully', response);
+  console.log('artwork removed from collection successfully', response);
   await Artwork.findOneAndUpdate(
     { _id: auction.artwork },
     {

@@ -27,10 +27,10 @@ async function helper(owner, symbol) {
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
   let owner = user._id;
-  await helper(owner, 'GIF');
-  await helper(owner, 'VIDEO');
-  await helper(owner, 'IMAGE');
   await helper(owner, 'ART');
+  await helper(owner, 'AUDIO');
+  await helper(owner, 'VIDEO');
+  await helper(owner, 'GIF');
   EVENT.emit('create-stats', {
     userId: user._id
   });

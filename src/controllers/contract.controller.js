@@ -238,7 +238,10 @@ const handleNewBid = async (par) => {
 const handleNFTClaim = async (values) => {
   const { aucId, newOwner, collection } = values;
   const { latestBid } = await AUCTION_CONTRACT_INSTANCE.methods.AuctionList(aucId).call();
-  const auction = await Auction.findOneAndUpdate({ contractAucId: aucId }, { nftClaim: true }).populate('artwork');
+  const auction = await Auction.findOneAndUpdate(
+    { contractAucId: aucId },
+    { nftClaim: true, status: AUCTION_STATUS.CLOSED }
+  ).populate('artwork');
   const { artwork } = auction;
   const usr = await User.findOneAndUpdate({ _id: artwork.owner }, { $pull: artwork._id });
   EVENT.emit('update-artwork-history', {

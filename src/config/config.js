@@ -82,8 +82,8 @@ module.exports = {
     bucket: envVars.AWS_BUCKET,
   },
   ETH_CONTRACTS: {
-    MINT_NFT_CONTRACT_ADDRESS: '0x0A3F88538b0c951BDe40E8c27110F913c427Bc90',
-    AUCTION_CONTRACT_ADDRESS: '0x833a4BB372C169FBFBcDbA6cABDba03C685b01b8',
+    MINT_NFT_CONTRACT_ADDRESS: '0xC269891e0A6FE6dbac2498cF804aBf1d222A1940',
+    AUCTION_CONTRACT_ADDRESS: '0xFA4B6b2bbfc66f2DaEF8eF4bf48F2d55B4431CB4',
     MINT_NFT_ABI: [
       {
         "inputs": [
@@ -656,7 +656,7 @@ module.exports = {
             "type": "uint256"
           }
         ],
-        "name": "canelSale",
+        "name": "cancelSale",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -835,7 +835,7 @@ module.exports = {
         "stateMutability": "nonpayable",
         "type": "function"
       }
-    ] ,
+    ],
     WEB_SOCKET_INFURA_URL: 'wss://rinkeby.infura.io/ws/v3/c944b72ce9b74c77aac906c6a59f4e99',
   },
 };

@@ -9,28 +9,12 @@ const router = express.Router();
 router.get('/search', generalController.handleSearch);
 router.get('/getAppActivity', validate(generalValidation.getActivityVS), generalController.getAppActivity);
 
-router.get(
-  '/getNotifications',
-  [auth('manageUsers'), validate(generalValidation.getActivityVS)],
-  generalController.getNotifications
-);
+router.get('/getNotifications', [auth('manageUsers')], generalController.getNotifications);
 
-router.get(
-  '/getTranscendingArtists',
-  [],
-  generalController.getTranscendingArtists
-);
+router.get('/getTranscendingArtists', [], generalController.getTranscendingArtists);
 
-router.get(
-  '/getLeadingCollectors',
-  [],
-  generalController.getLeadingCollectors
-);
+router.get('/getLeadingCollectors', [], generalController.getLeadingCollectors);
 
-router.get(
-  '/tempUdateUser',
-  [],
-  generalController.tempUdateUser
-);
+router.get('/tempUdateUser', [], generalController.tempUdateUser);
 
 module.exports = router;

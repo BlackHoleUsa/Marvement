@@ -261,7 +261,7 @@ const handleNFTClaim = async (values) => {
     {
       owner: newArtworkOwner._id,
       basePrice: artwork.price,
-      price: latestBid,
+      price: convertFromWei(latestBid),
       isAuctionOpen: false,
       auction: null,
       auctionMintStatus: null,
@@ -274,7 +274,7 @@ const handleNFTClaim = async (values) => {
   EVENT.emit('record-transaction', {
     user: newArtworkOwner._id,
     type: TRANSACTION_TYPE.DEBIT,
-    amount: latestBid,
+    amount: convertFromWei(latestBid),
     extraData: {
       activityType: TRANSACTION_ACTIVITY_TYPE.NFT_CLAIM,
       auction: auction._id,

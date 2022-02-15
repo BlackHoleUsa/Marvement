@@ -57,7 +57,7 @@ const handleNewAuction = async (colAddress, tokenId, aucId) => {
     const { endTime, startPrice } = auctionData;
     const { owner, creater } = artwork;
     const params = {
-      initialPrice: convertToWei(startPrice),
+      initialPrice: startPrice,
       artwork: artwork._id,
       endTime: new Date(endTime * 1000),
       owner,
@@ -83,7 +83,7 @@ const handleNewSale = async (saleFromContract) => {
     if (!artwork.openForSale) {
       const { owner } = artwork;
       const params = {
-        price: convertToWei(price),
+        price: price,
         artwork: artwork._id,
         owner,
         contractSaleId: saleId,
@@ -210,7 +210,7 @@ const handleNewBid = async (par) => {
   const params = {
     bidder: dbBidder._id,
     artwork: artwork._id,
-    bid_amount: convertToWei(bid),
+    bid_amount: bid,
     owner: dbOwner._id,
     auction: auction._id,
   };

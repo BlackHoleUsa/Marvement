@@ -15,9 +15,9 @@ const {
   STATS_UPDATE_TYPE,
 } = require('../utils/enums');
 
-const convertToWei = (amount) => {
+const convertFromWei = (amount) => {
   console.log('converttoWei');
-  return Web3.utils.toWei(`${amount}`, 'ether');
+  return Web3.utils.fromWei(`${amount}`, 'ether');
 };
 
 const updateCollectionAddress = async (CollectionAddress, owner, colName) => {
@@ -57,7 +57,7 @@ const handleNewAuction = async (colAddress, tokenId, aucId) => {
     const { endTime, startPrice } = auctionData;
     const { owner, creater } = artwork;
     const params = {
-      initialPrice: startPrice,
+      initialPrice: convertFromWei(startPrice),
       artwork: artwork._id,
       endTime: new Date(endTime * 1000),
       owner,
@@ -83,7 +83,7 @@ const handleNewSale = async (saleFromContract) => {
     if (!artwork.openForSale) {
       const { owner } = artwork;
       const params = {
-        price: price,
+        price: convertFromWei(price),
         artwork: artwork._id,
         owner,
         contractSaleId: saleId,

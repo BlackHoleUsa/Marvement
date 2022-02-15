@@ -4,6 +4,7 @@ const { AUCTION_CONTRACT_INSTANCE } = require('../config/contract.config');
 const LISTENERS = require('./listeners.controller');
 const { auctionService, bidService, artworkService } = require('../services');
 const EVENT = require('../triggers/custom-events').customEvent;
+const Web3 = require('web3');
 const {
   HISTORY_TYPE,
   TRANSACTION_TYPE,
@@ -13,6 +14,16 @@ const {
   SALE_STATUS,
   STATS_UPDATE_TYPE,
 } = require('../utils/enums');
+
+const isFloat = (n) => {
+  return Number(n) === n && n % 1 !== 0;
+};
+const convertToEther = (amount) => {
+  console.log('convertToEther');
+  if (isFloat(amount)) return amount;
+  if (amount) return Web3.utils.fromWei(`${amount}`, 'ether');
+  return '--';
+};
 
 const updateCollectionAddress = async (CollectionAddress, owner, colName) => {
   const user = await User.findOne({ address: owner });
@@ -51,7 +62,7 @@ const handleNewAuction = async (colAddress, tokenId, aucId) => {
     const { endTime, startPrice } = auctionData;
     const { owner, creater } = artwork;
     const params = {
-      initialPrice: startPrice,
+      initialPrice: convertToEther(startPrice),
       artwork: artwork._id,
       endTime: new Date(endTime * 1000),
       owner,
@@ -77,7 +88,7 @@ const handleNewSale = async (saleFromContract) => {
     if (!artwork.openForSale) {
       const { owner } = artwork;
       const params = {
-        price,
+        price: convertToEther(price),
         artwork: artwork._id,
         owner,
         contractSaleId: saleId,
@@ -204,7 +215,7 @@ const handleNewBid = async (par) => {
   const params = {
     bidder: dbBidder._id,
     artwork: artwork._id,
-    bid_amount: bid,
+    bid_amount: convertToEther(bid),
     owner: dbOwner._id,
     auction: auction._id,
   };

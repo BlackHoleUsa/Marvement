@@ -210,7 +210,7 @@ const handleNewBid = async (par) => {
   const params = {
     bidder: dbBidder._id,
     artwork: artwork._id,
-    bid_amount: bid,
+    bid_amount: convertFromWei(bid),
     owner: dbOwner._id,
     auction: auction._id,
   };

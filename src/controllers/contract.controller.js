@@ -16,6 +16,7 @@ const {
 } = require('../utils/enums');
 
 const convertToWei = (amount) => {
+  console.log('converttoWei');
   return Web3.utils.toWei(`${amount}`, 'ether');
 };
 

@@ -98,7 +98,8 @@ const getFavouriteArtworks = catchAsync(async (req, res) => {
   const { userId, page, perPage } = req.query;
 
   const artworks = await userService.getFavouriteArtworks(userId, page, perPage);
-  res.status(httpStatus.OK).send({ status: true, message: 'successfull', data: artworks });
+  const count = await userService.getFavouriteArtworksCount(userId);
+  res.status(httpStatus.OK).send({ status: true, message: 'successfull', data: artworks, count });
 });
 
 const increaseArtworkViews = catchAsync(async (req, res) => {

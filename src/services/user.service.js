@@ -142,7 +142,9 @@ const getFavouriteArtworks = async (userId, page, perPage) => {
 
   return user ? user.favouriteArtworks : [];
 };
-
+const getFavouriteArtworksCount = async (userId) => {
+  return await User.find({ _id: userId }).countDocuments();
+}
 const followOtherUser = async (userId, otherUserId) => {
   await User.findOneAndUpdate({ _id: otherUserId }, { $push: { followers: userId } }, { new: true });
   return await User.findOneAndUpdate({ _id: userId }, { $push: { following: otherUserId } }, { new: true }).lean();
@@ -313,6 +315,7 @@ module.exports = {
   getUsersByMostArtworks,
   fetchLeadingCollectors,
   getUserStats,
+  getFavouriteArtworksCount,
   getSingleFavouriteArtWork,
   getAllUsers,
   removeCollection,

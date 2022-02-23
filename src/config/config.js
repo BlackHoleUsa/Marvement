@@ -83,7 +83,7 @@ module.exports = {
   },
   ETH_CONTRACTS: {
     MINT_NFT_CONTRACT_ADDRESS: '0x0176F2e3549d045996598B546e0A4D1F465A1088',
-    AUCTION_CONTRACT_ADDRESS: '0x96dCeFf9C344fcCa65254F9455E723fb3c0447c0',
+    AUCTION_CONTRACT_ADDRESS: '0x27F6E307d5AcF4De955016E04f0B07Dc9DF895ac',
     MINT_NFT_ABI: [
       {
         "inputs": [
@@ -234,12 +234,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    AUC_ABI:[
-      {
-        "inputs": [],
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-      },
+    AUC_ABI: [
       {
         "anonymous": false,
         "inputs": [
@@ -439,80 +434,6 @@ module.exports = {
         "inputs": [
           {
             "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "name": "AuctionList",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "auctionid",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "tokenId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "startTime",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "endTime",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "colAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "startPrice",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "latestBid",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "bidderAdd",
-            "type": "address"
-          },
-          {
-            "internalType": "bool",
-            "name": "nftClaim",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "cancelled",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "ownerclaim",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
             "name": "aucId",
             "type": "uint256"
           }
@@ -520,106 +441,6 @@ module.exports = {
         "name": "Bid",
         "outputs": [],
         "stateMutability": "payable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "collectionAddress_",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "tokenId_",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "startTime",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "endTime",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "startPrice",
-            "type": "uint256"
-          }
-        ],
-        "name": "NewAuction",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "name": "SaleList",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "saleId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "tokenId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "colAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "price",
-            "type": "uint256"
-          },
-          {
-            "internalType": "bool",
-            "name": "ended",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "collectionAddress_",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "tokenId_",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "price_",
-            "type": "uint256"
-          }
-        ],
-        "name": "SaleNFT",
-        "outputs": [],
-        "stateMutability": "nonpayable",
         "type": "function"
       },
       {
@@ -704,7 +525,201 @@ module.exports = {
         "inputs": [
           {
             "internalType": "address",
-            "name": "collection_",
+            "name": "collectionAddress_",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tokenId_",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startPrice",
+            "type": "uint256"
+          }
+        ],
+        "name": "NewAuction",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "collectionAddress_",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tokenId_",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "price_",
+            "type": "uint256"
+          }
+        ],
+        "name": "SaleNFT",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address payable",
+            "name": "admin_",
+            "type": "address"
+          }
+        ],
+        "name": "setAdminWallet",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "percentage_",
+            "type": "uint256"
+          }
+        ],
+        "name": "setPlatformFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "percentage_",
+            "type": "uint256"
+          }
+        ],
+        "name": "setRoyalty",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "AuctionList",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "auctionid",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "colAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "latestBid",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "bidderAdd",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "nftClaim",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "cancelled",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "ownerclaim",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "user_",
             "type": "address"
           }
         ],
@@ -772,67 +787,47 @@ module.exports = {
         "type": "function"
       },
       {
-        "inputs": [],
-        "name": "renounceOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address payable",
-            "name": "admin_",
-            "type": "address"
-          }
-        ],
-        "name": "setAdminWallet",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
         "inputs": [
           {
             "internalType": "uint256",
-            "name": "percentage_",
+            "name": "",
             "type": "uint256"
           }
         ],
-        "name": "setPlatformFee",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
+        "name": "SaleList",
+        "outputs": [
           {
             "internalType": "uint256",
-            "name": "percentage_",
+            "name": "saleId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tokenId",
             "type": "uint256"
           },
           {
             "internalType": "address",
-            "name": "collection_",
+            "name": "colAddress",
             "type": "address"
-          }
-        ],
-        "name": "setRoyalty",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
+          },
           {
             "internalType": "address",
-            "name": "newOwner",
+            "name": "owner",
             "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "price",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "ended",
+            "type": "bool"
           }
         ],
-        "name": "transferOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
+        "stateMutability": "view",
         "type": "function"
       }
     ],

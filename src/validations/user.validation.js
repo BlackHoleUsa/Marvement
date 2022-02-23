@@ -85,13 +85,25 @@ const setPlatformFee = {
     platFormFee: Joi.number().required(),
   }),
 };
+const setRoyality = {
+  query: Joi.object().keys({
+    address: Joi.string().required(),
+  }),
+  body: Joi.object().keys({
+    royality: Joi.number().required(),
+  }),
+};
 
 const getPlatformFee = {
   query: Joi.object().keys({
     address: Joi.string().required(),
   }),
 };
-
+const getRoyality = {
+  query: Joi.object().keys({
+    address: Joi.string().required(),
+  }),
+};
 module.exports = {
   createUser,
   getUsers,
@@ -105,4 +117,6 @@ module.exports = {
   getAllUsers,
   getPlatformFee,
   setPlatformFee,
+  setRoyality,
+  getRoyality,
 };

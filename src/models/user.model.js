@@ -98,6 +98,11 @@ const userSchema = mongoose.Schema(
       required: false,
       default: 0,
     },
+    royality: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
   },
   {
     timestamps: true,

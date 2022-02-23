@@ -36,10 +36,6 @@ const collectionSchema = mongoose.Schema(
       type: String,
       required: false,
     },
-    royality: {
-      type: Number,
-      required: false,
-    },
     artworks: [
       {
         type: mongoose.SchemaTypes.ObjectId,

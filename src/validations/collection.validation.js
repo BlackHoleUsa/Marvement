@@ -8,7 +8,6 @@ const createCollectionVS = {
     owner: Joi.string().required(),
     coverImage: Joi.string().optional(),
     profileImage: Joi.string().optional(),
-    royality: Joi.number().optional(),
     symbol: Joi.string().optional(),
   }),
 };
@@ -19,7 +18,6 @@ const updateCollectionVS = {
     name: Joi.string().optional(),
     description: Joi.string().optional(),
     coverImage: Joi.string().optional(),
-    royality: Joi.number().optional(),
     profileImage: Joi.string().optional(),
   }),
 };

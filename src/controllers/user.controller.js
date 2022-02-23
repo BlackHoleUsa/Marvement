@@ -125,6 +125,20 @@ const setPlatformFee = catchAsync(async (req, res) => {
   const response = await userService.setPlatformFee(address, platFormFee);
   res.status(httpStatus.CREATED).send(response);
 });
+const setRoyality = catchAsync(async (req, res) => {
+  const { address } = req.query;
+  // eslint-disable-next-line radix
+  const royality = parseInt(req.body.royality);
+  const response = await userService.setRoyality(address, royality);
+  res.status(httpStatus.CREATED).send(response);
+});
+
+const getRoyality = catchAsync(async (req, res) => {
+  const { address } = req.query;
+  const response = await userService.getRoyality(address);
+  res.status(httpStatus.OK).send(response);
+});
+
 const getPlatformFee = catchAsync(async (req, res) => {
   const { address } = req.query;
   const response = await userService.getPlatformFee(address);
@@ -144,4 +158,6 @@ module.exports = {
   getAllUsers,
   setPlatformFee,
   getPlatformFee,
+  setRoyality,
+  getRoyality,
 };

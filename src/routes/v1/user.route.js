@@ -11,6 +11,8 @@ const router = express.Router();
  *   name: Users
  *   description: Users
  */
+router.post('/setRoyality', [auth('manageUsers'), validate(userValidation.setRoyality)], userController.setRoyality);
+router.get('/getRoyality', [auth('manageUsers'), validate(userValidation.getRoyality)], userController.getRoyality);
 router.post(
   '/setPlatFormFee',
   [auth('manageUsers'), validate(userValidation.setPlatformFee)],

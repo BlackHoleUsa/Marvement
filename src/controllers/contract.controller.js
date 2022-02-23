@@ -204,7 +204,7 @@ const handleNewBid = async (par) => {
   const dbBidder = await User.findOne({ address: bidder });
   const dbOwner = await User.findOne({ address: owner });
   const collection = await Collection.findOne({ collectionAddress: colAddress });
-  const artwork = await Artwork.findOne({ collectionId: collection._id, tokenId });
+  const artwork = await Artwork.findOne({ tokenId });
   const auction = await Auction.findOne({ artwork: artwork._id, contractAucId: aucId });
 
   const params = {

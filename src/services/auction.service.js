@@ -178,11 +178,11 @@ const getAuctionsWithBids = async (page, perPage) => {
 };
 
 const setAuctionBidders = async (artworkId, userId) => {
-  return await Auction.findOneAndUpdate({ artwork: artworkId }, { $push: { bidders: userId } }, { new: true });
+  return await Auction.findOneAndUpdate({ artwork: artworkId, status: AUCTION_STATUS.OPEN }, { $push: { bidders: userId } }, { new: true });
 
 };
 const setmaxBid = async (artworkId, maxBid) => {
-  return await Auction.findOneAndUpdate({ artwork: artworkId }, { maxBid: maxBid }, { new: true });
+  return await Auction.findOneAndUpdate({ artwork: artworkId, status: AUCTION_STATUS.OPEN }, { maxBid: maxBid }, { new: true });
 };
 module.exports = {
   saveAuction,

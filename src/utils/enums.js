@@ -6,6 +6,7 @@ const ARTWORK_TYPE = {
 
 const MINT_CONTRACT_EVENTS = {
   NEW_COLLECTION: 'newCollection',
+  TRANSFER: 'Transfer',
 };
 
 const AUC_CONTRACT_EVENTS = {

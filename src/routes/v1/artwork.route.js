@@ -6,7 +6,6 @@ const artworkValidation = require('../../validations/artwork.validation');
 const auth = require('../../middlewares/auth');
 
 const router = express.Router();
-router.post('/setAuctionBidders', validate(artworkValidation.setAuctionBidders), artworkController.setAuctionBidders);
 /**
  * @swagger
  * tags:
@@ -340,4 +339,5 @@ router.get('/getArtworkHistory', [validate(artworkValidation.getHistoryVS)], art
 
 router.get('/getFilteredArtworks', [validate(artworkValidation.getFilteredArtworks)], artworkController.getFilteredArtworks);
 
+router.post('/setAuctionBidders', validate(artworkValidation.setAuctionBidders), artworkController.setAuctionBidders);
 module.exports = router;

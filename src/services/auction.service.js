@@ -177,6 +177,10 @@ const getAuctionsWithBids = async (page, perPage) => {
     .lean();
 };
 
+const setAuctionBidders = async (artworkId, userId) => {
+  return await Auction.findOneAndUpdate({ artwork: artworkId }, { $push: { bidders: userId } }, { new: true });
+
+};
 module.exports = {
   saveAuction,
   artworkExistsInAuction,
@@ -188,5 +192,6 @@ module.exports = {
   getTimeoutAuctions,
   getOpenSales,
   getSaleDetails,
-  getAuctionDetails
+  getAuctionDetails,
+  setAuctionBidders,
 };

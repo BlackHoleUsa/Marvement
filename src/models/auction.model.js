@@ -65,6 +65,12 @@ const auctionSchema = mongoose.Schema(
       type: String,
       default: AUCTION_STATUS.OPEN,
     },
+    bidders: [
+      {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'User',
+      },
+    ],
   },
   {
     timestamps: true,

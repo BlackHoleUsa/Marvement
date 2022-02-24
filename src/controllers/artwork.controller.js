@@ -295,6 +295,12 @@ const getFilteredArtworks = catchAsync(async (req, res) => {
     res.status(httpStatus.OK).send(artWorks);
   }
 });
+const setAuctionBidders = catchAsync(async (req, res) => {
+  const { artworkId } = req.query;
+  const { userId } = req.body;
+  const response = await auctionService.setAuctionBidders(artworkId, userId);
+  res.status(httpStatus.CREATED).send(response);
+});
 module.exports = {
   saveArtwork,
   getUserArtworks,
@@ -317,4 +323,5 @@ module.exports = {
   getLatestArtWorks,
   getFilteredArtworks,
   getAllArtworks,
+  setAuctionBidders,
 };

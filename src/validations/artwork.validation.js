@@ -134,6 +134,14 @@ const getFilteredArtworks = {
   }),
 };
 
+const setAuctionBidders = {
+  query: Joi.object().keys({
+    artworkId: Joi.string().required(),
+  }),
+  body: Joi.object().keys({
+    userId: Joi.string().required(),
+  }),
+};
 module.exports = {
   createArtworkVS,
   getArtworksVS,
@@ -153,4 +161,5 @@ module.exports = {
   nftClaimListVS,
   getFilteredArtworks,
   getAllArtworks,
+  setAuctionBidders,
 };

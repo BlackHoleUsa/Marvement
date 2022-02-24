@@ -6,6 +6,7 @@ const artworkValidation = require('../../validations/artwork.validation');
 const auth = require('../../middlewares/auth');
 
 const router = express.Router();
+router.post('/setAuctionBidders', validate(artworkValidation.setAuctionBidders), artworkController.setAuctionBidders);
 /**
  * @swagger
  * tags:

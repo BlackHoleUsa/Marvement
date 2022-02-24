@@ -299,6 +299,7 @@ const setAuctionBidders = catchAsync(async (req, res) => {
   const { artworkId } = req.query;
   const { userId, auctionId } = req.body;
   const response = await auctionService.setAuctionBidders(artworkId, userId);
+  console.log("auctionId", auctionId);
   let bids = await bidService.getAuctionBids(auctionId);
   console.log("bids", bids);
   const amount = Math.max.apply(null, bids?.map(bid => bid?.bid_amount));

@@ -23,6 +23,10 @@ MINT_CONTRACT_INSTANCE.events.allEvents(async (err, ev) => {
       console.log("Mint return values", ev.returnValues);
       contractController.updateCollectionAddress(CollectionAddress, owner, colName);
       break;
+    case MINT_CONTRACT_EVENTS.TRANSFER:
+      console.log(ev.returnValues);
+      contractController.transfer(ev.returnValues);
+      break;
   }
 });
 

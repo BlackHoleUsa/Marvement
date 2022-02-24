@@ -20,6 +20,31 @@ const convertFromWei = (amount) => {
   return Web3.utils.fromWei(`${amount}`, 'ether');
 };
 
+const transfer = async (transferContract) => {
+  const { from, to, tokenId } = transferContract;
+  console.log("transferContract", transferContract);
+  const result = await User.find({ address: to });
+  console.log(result);
+  try {
+    if (
+      from.toString() !== '0x0000000000000000000000000000000000000000' &&
+      result.length === 0 &&
+      to.toString() !== '0x27F6E307d5AcF4De955016E04f0B07Dc9DF895ac' && // auction contract
+      from.toString() !== '0x0176F2e3549d045996598B546e0A4D1F465A1088' // mint contract
+    ) {
+      const artwork = await Artwork.findOne({ tokenId });
+      await User.findOneAndUpdate({ address: from }, { $pull: { artworks: artwork._id } });
+      await Auction.findOneAndDelete({ artwork: artwork._id });
+      await BuySell.findOneAndDelete({ artwork: artwork._id });
+      await Artwork.findOneAndDelete({ _id: artwork._id });
+      console.log('transfer event called unregistered');
+    } else {
+      console.log('mint');
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 const updateCollectionAddress = async (CollectionAddress, owner, colName) => {
   const user = await User.findOne({ address: owner });
 
@@ -352,4 +377,5 @@ module.exports = {
   handleNewSale,
   handleCancelSale,
   handleSaleComplete,
+  transfer,
 };

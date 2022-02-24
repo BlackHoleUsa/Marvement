@@ -338,6 +338,4 @@ router.get(
 router.get('/getArtworkHistory', [validate(artworkValidation.getHistoryVS)], artworkController.getArtworkHistory);
 
 router.get('/getFilteredArtworks', [validate(artworkValidation.getFilteredArtworks)], artworkController.getFilteredArtworks);
-
-router.post('/setAuctionBidders', validate(artworkValidation.setAuctionBidders), artworkController.setAuctionBidders);
 module.exports = router;

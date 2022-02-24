@@ -181,6 +181,9 @@ const setAuctionBidders = async (artworkId, userId) => {
   return await Auction.findOneAndUpdate({ artwork: artworkId }, { $push: { bidders: userId } }, { new: true });
 
 };
+const setmaxBid = async (artworkId, maxBid) => {
+  return await Auction.findOneAndUpdate({ artwork: artworkId }, { maxBid: maxBid }, { new: true });
+};
 module.exports = {
   saveAuction,
   artworkExistsInAuction,
@@ -194,4 +197,5 @@ module.exports = {
   getSaleDetails,
   getAuctionDetails,
   setAuctionBidders,
+  setmaxBid,
 };

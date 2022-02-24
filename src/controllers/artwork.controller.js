@@ -297,8 +297,12 @@ const getFilteredArtworks = catchAsync(async (req, res) => {
 });
 const setAuctionBidders = catchAsync(async (req, res) => {
   const { artworkId } = req.query;
-  const { userId } = req.body;
+  const { userId, auctionId } = req.body;
   const response = await auctionService.setAuctionBidders(artworkId, userId);
+  let bids = await bidService.getAuctionBids(auctionId);
+  const amount = Math.max.apply(null, bids?.map(bid => bid?.bid_amount));
+  console.log('amounts -> ', amount);
+  await auctionService.setmaxBid(artworkId, amount);
   res.status(httpStatus.CREATED).send(response);
 });
 module.exports = {

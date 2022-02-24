@@ -140,6 +140,7 @@ const setAuctionBidders = {
   }),
   body: Joi.object().keys({
     userId: Joi.string().required(),
+    aucId: Joi.string().required(),
   }),
 };
 module.exports = {

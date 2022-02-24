@@ -71,6 +71,9 @@ const auctionSchema = mongoose.Schema(
         ref: 'User',
       },
     ],
+    maxBid: {
+      type: Number,
+    },
   },
   {
     timestamps: true,

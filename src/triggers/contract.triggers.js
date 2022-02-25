@@ -27,6 +27,8 @@ MINT_CONTRACT_INSTANCE.events.allEvents(async (err, ev) => {
       console.log(ev.returnValues);
       contractController.transfer(ev.returnValues);
       break;
+    default:
+      console.log("In Mint events")
   }
 });
 

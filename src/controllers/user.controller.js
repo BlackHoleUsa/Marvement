@@ -4,6 +4,7 @@ const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const { userService } = require('../services');
 const { uploadToAws } = require('../utils/helpers');
+const { addFilesToIPFS, pinMetaDataToIPFS } = require('../utils/helpers');
 const EVENT = require('../triggers/custom-events').customEvent;
 const { NOTIFICATION_TYPE } = require('../utils/enums');
 
@@ -39,8 +40,9 @@ const getUserStatistics = catchAsync(async (req, res) => {
 
 const updateUser = catchAsync(async (req, res) => {
   if (req.files.length > 0) {
-    let img = await uploadToAws(req.files[0].buffer, `${req.params.userId}/${req.params.userId}-profile-pic.png`);
-    req.body.profilePic = img.Location;
+    // let img = await uploadToAws(req.files[0].buffer, `${req.params.userId}/${req.params.userId}-profile-pic.png`);
+    const img = await addFilesToIPFS(req.files[0].buffer, 'image');
+    req.body.profilePic = img;
   }
   const user = await userService.updateUserById(req.params.userId, req.body);
   res.send(user);

@@ -256,14 +256,14 @@ const handleNewBid = async (par) => {
     type: HISTORY_TYPE.BID_PLACED,
   });
 
-  EVENT.emit('send-and-save-notification', {
-    receiver: dbOwner._id,
-    type: NOTIFICATION_TYPE.NEW_BID,
-    message: `${dbBidder.userName} has placed the bid`,
-    extraData: {
-      bid: dbBid._id,
-    },
-  });
+  // EVENT.emit('send-and-save-notification', {
+  //   receiver: dbOwner._id,
+  //   type: NOTIFICATION_TYPE.NEW_BID,
+  //   message: `${dbBidder.userName} has placed the bid`,
+  //   extraData: {
+  //     bid: dbBid._id,
+  //   },
+  // });
 };
 
 const handleNFTClaim = async (values) => {

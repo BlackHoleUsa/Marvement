@@ -148,13 +148,13 @@ const placeBid = catchAsync(async (req, res) => {
     auctionId,
   });
 
-  EVENT.emit('update-artwork-history', {
-    artwork,
-    message: `Bid placed on artwork`,
-    auction: auctionId,
-    bid: bid._id,
-    type: HISTORY_TYPE.BID_PLACED,
-  });
+  // EVENT.emit('update-artwork-history', {
+  //   artwork,
+  //   message: `Bid placed on artwork`,
+  //   auction: auctionId,
+  //   bid: bid._id,
+  //   type: HISTORY_TYPE.BID_PLACED,
+  // });
 
   EVENT.emit('send-and-save-notification', {
     receiver: user._id,

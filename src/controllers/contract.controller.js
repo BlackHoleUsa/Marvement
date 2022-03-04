@@ -227,6 +227,7 @@ const handleNewBid = async (par) => {
   const auctionData = await AUCTION_CONTRACT_INSTANCE.methods.AuctionList(aucId).call();
   const { colAddress, owner, tokenId } = auctionData;
   const dbBidder = await User.findOne({ address: bidder });
+  console.log("dbBidder", dbBidder);
   const dbOwner = await User.findOne({ address: owner });
   const collection = await Collection.findOne({ collectionAddress: colAddress });
   const artwork = await Artwork.findOne({ tokenId });

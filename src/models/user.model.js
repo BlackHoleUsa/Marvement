@@ -15,7 +15,6 @@ const userSchema = mongoose.Schema(
       type: String,
       required: false,
       trim: true,
-      lowercase: true,
       validate(value) {
         if (!validator.isEmail(value)) {
           throw new Error('Invalid email');
@@ -30,7 +29,6 @@ const userSchema = mongoose.Schema(
     address: {
       type: String,
       required: false,
-      trim: true,
     },
     bio: {
       type: String,

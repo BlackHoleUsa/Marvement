@@ -330,7 +330,8 @@ const handleNFTClaim = async (values) => {
 };
 
 const handleNFTSale = async (values) => {
-  const { aucId, owner, amount } = values;
+  let { aucId, owner, amount } = values;
+  owner = owner.toLowerCase();
   const auction = await Auction.findOneAndUpdate({ contractAucId: aucId }, { ownerclaim: true }).populate('artwork');
   const { artwork } = auction;
   const user = await User.findOneAndUpdate({ address: owner }, { $pull: artwork._id });

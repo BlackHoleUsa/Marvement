@@ -23,14 +23,16 @@ const convertFromWei = (amount) => {
 const transfer = async (transferContract) => {
   const { from, to, tokenId } = transferContract;
   console.log("transferContract", transferContract);
+  let auctionContractAddress = "0x27F6E307d5AcF4De955016E04f0B07Dc9DF895ac";
+  let mintContractAddress = "0x82b5b428c2067eF2e044c7168150d74D9F78C280";
   const result = await User.find({ address: to });
   console.log(result);
   try {
     if (
       from.toString() !== '0x0000000000000000000000000000000000000000' &&
       result.length === 0 &&
-      to.toString() !== '0x27F6E307d5AcF4De955016E04f0B07Dc9DF895ac' && // auction contract
-      from.toString() !== '0x82b5b428c2067eF2e044c7168150d74D9F78C280' // mint contract
+      to.toString() !== auctionContractAddress.toLowerCase() && // auction contract
+      from.toString() !== mintContractAddress.toLowerCase() // mint contract
     ) {
       const artwork = await Artwork.findOne({ tokenId });
       await User.findOneAndUpdate({ address: from }, { $pull: { artworks: artwork._id } });
@@ -151,7 +153,8 @@ const handleCancelSale = async (saleFromContract) => {
 };
 
 const handleSaleComplete = async (saleFromContract) => {
-  const { saleId, newOwner } = saleFromContract;
+  let { saleId, newOwner } = saleFromContract;
+  newOwner = newOwner.toLowerCase();
   console.log(saleFromContract);
   try {
     const sale = await BuySell.findOneAndUpdate({ contractSaleId: saleId }, { status: SALE_STATUS.COMPLETED }).populate(
@@ -222,8 +225,8 @@ const handleSaleComplete = async (saleFromContract) => {
 };
 
 const handleNewBid = async (par) => {
-  const { bid, bidder, aucId } = par;
-
+  let { bid, bidder, aucId } = par;
+  bidder = bidder.toLowerCase();
   const auctionData = await AUCTION_CONTRACT_INSTANCE.methods.AuctionList(aucId).call();
   const { colAddress, owner, tokenId } = auctionData;
   const dbBidder = await User.findOne({ address: bidder });
@@ -269,7 +272,8 @@ const handleNewBid = async (par) => {
 };
 
 const handleNFTClaim = async (values) => {
-  const { aucId, newOwner, collection } = values;
+  let { aucId, newOwner } = values;
+  newOwner = newOwner.toLowerCase();
   const { latestBid } = await AUCTION_CONTRACT_INSTANCE.methods.AuctionList(aucId).call();
   const auction = await Auction.findOneAndUpdate(
     { contractAucId: aucId },

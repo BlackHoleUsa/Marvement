@@ -21,31 +21,35 @@ const convertFromWei = (amount) => {
 };
 
 const transfer = async (transferContract) => {
-  // const { from, to, tokenId } = transferContract;
-  // console.log("transferContract", transferContract);
-  // let auctionContractAddress = "0x27F6E307d5AcF4De955016E04f0B07Dc9DF895ac";
-  // let mintContractAddress = "0x82b5b428c2067eF2e044c7168150d74D9F78C280";
-  // const result = await User.find({ address: to });
-  // console.log(result);
-  // try {
-  //   if (
-  //     from.toString() !== '0x0000000000000000000000000000000000000000' &&
-  //     result.length === 0 &&
-  //     to.toString() !== '0x27F6E307d5AcF4De955016E04f0B07Dc9DF895ac' && // auction contract
-  //     from.toString() !== '0x82b5b428c2067eF2e044c7168150d74D9F78C280' // mint contract
-  //   ) {
-  //     const artwork = await Artwork.findOne({ tokenId });
-  //     await User.findOneAndUpdate({ address: from }, { $pull: { artworks: artwork._id } });
-  //     await Auction.findOneAndDelete({ artwork: artwork._id });
-  //     await BuySell.findOneAndDelete({ artwork: artwork._id });
-  //     await Artwork.findOneAndDelete({ _id: artwork._id });
-  //     console.log('transfer event called unregistered');
-  //   } else {
-  //     console.log('mint');
-  //   }
-  // } catch (error) {
-  //   console.log(error);
-  // }
+  let { from, to, tokenId } = transferContract;
+  from = from.toLowerCase();
+  to = to.toLowerCase();
+  console.log("transferContract", transferContract);
+  let auctionContractAddress = "0x27F6E307d5AcF4De955016E04f0B07Dc9DF895ac";
+  auctionContractAddress = auctionContractAddress.toLowerCase();
+  let mintContractAddress = "0x82b5b428c2067eF2e044c7168150d74D9F78C280";
+  mintContractAddress = mintContractAddress.toLowerCase();
+  const result = await User.find({ address: to });
+  console.log(result);
+  try {
+    if (
+      from.toString() !== '0x0000000000000000000000000000000000000000' &&
+      result.length === 0 &&
+      to.toString() !== auctionContractAddress && // auction contract
+      from.toString() !== mintContractAddress // mint contract
+    ) {
+      const artwork = await Artwork.findOne({ tokenId });
+      await User.findOneAndUpdate({ address: from }, { $pull: { artworks: artwork._id } });
+      await Auction.findOneAndDelete({ artwork: artwork._id });
+      await BuySell.findOneAndDelete({ artwork: artwork._id });
+      await Artwork.findOneAndDelete({ _id: artwork._id });
+      console.log('transfer event called unregistered');
+    } else {
+      console.log('mint');
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 const updateCollectionAddress = async (CollectionAddress, owner, colName) => {
   const user = await User.findOne({ address: owner });

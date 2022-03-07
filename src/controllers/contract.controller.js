@@ -228,7 +228,8 @@ const handleNewBid = async (par) => {
   let { bid, bidder, aucId } = par;
   bidder = bidder.toLowerCase();
   const auctionData = await AUCTION_CONTRACT_INSTANCE.methods.AuctionList(aucId).call();
-  const { colAddress, owner, tokenId } = auctionData;
+  let { colAddress, owner, tokenId } = auctionData;
+  owner = owner.toLowerCase();
   const dbBidder = await User.findOne({ address: bidder });
   console.log("dbBidder", dbBidder);
   const dbOwner = await User.findOne({ address: owner });

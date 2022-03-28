@@ -19,14 +19,19 @@ const { HISTORY_TYPE, NOTIFICATION_TYPE, STATS_UPDATE_TYPE } = require('../utils
 const saveArtwork = catchAsync(async (req, res) => {
   const { body } = req;
   const { files } = req;
-  const { name, description, creater, collectionId } = body;
+  const { name, description, creater, collectionId, isAudioNFT } = body;
   let imgData;
+  let thumbNailData;
   if (files.length > 0) {
     imgData = await addFilesToIPFS(files[0].buffer, 'image');
     body.artwork_url = imgData;
+    if (isAudioNFT) {
+      thumbNailData = await addFilesToIPFS(files[1].buffer, 'image');
+    }
   }
   body.owner = body.creater;
   body.basePrice = body.price;
+  body.thumbNail_url = thumbNailData;
   const artwork = await artworkService.saveArtwork(body);
   const user = await userService.getUserById(creater);
   const metaUrl = await pinMetaDataToIPFS({

@@ -26,6 +26,11 @@ const artworkSchema = mongoose.Schema(
       required: false,
       trim: true,
     },
+    thumbNail_url: {
+      type: String,
+      required: false,
+      trim: true,
+    },
     price: {
       type: Number,
       required: true,
@@ -62,6 +67,10 @@ const artworkSchema = mongoose.Schema(
       default: false,
     },
     openForSale: {
+      type: Boolean,
+      default: false,
+    },
+    isAudionNFT: {
       type: Boolean,
       default: false,
     },

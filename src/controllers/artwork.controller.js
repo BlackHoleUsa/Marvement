@@ -26,7 +26,7 @@ const saveArtwork = catchAsync(async (req, res) => {
     imgData = await addFilesToIPFS(files[0].buffer, 'image');
     body.artwork_url = imgData;
     if (isAudioNFT) {
-      thumbNailData = await addFilesToIPFS(files[1].buffer, 'image');
+      thumbNailData = await addFilesToIPFS(files[1].buffer, 'artwork_thumbnail_image');
     }
   }
   body.owner = body.creater;

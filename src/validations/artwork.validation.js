@@ -9,6 +9,7 @@ const createArtworkVS = {
     image: Joi.string().optional(),
     collectionId: Joi.string().required(),
     artwork_type: Joi.string().required(),
+    artwork_thumbnail_image: Joi.string().required(),
     tokenId: Joi.string().optional(),
     isAudioNFT: Joi.string().optional(),
     youtubeLink: Joi.string().optional(),

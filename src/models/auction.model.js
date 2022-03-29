@@ -38,7 +38,7 @@ const auctionSchema = mongoose.Schema(
     },
     bidAmount: {
       type: String,
-      required: false
+      required: false,
     },
     nftClaim: {
       type: Boolean,

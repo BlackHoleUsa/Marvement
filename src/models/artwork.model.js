@@ -94,7 +94,6 @@ const artworkSchema = mongoose.Schema(
     genre: [
       {
         type: String,
-        enum: ['jaaz', 'pop', 'hip pop', 'funk'],
       },
       //
     ]

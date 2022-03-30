@@ -19,7 +19,6 @@ const { HISTORY_TYPE, NOTIFICATION_TYPE, STATS_UPDATE_TYPE } = require('../utils
 const saveArtwork = catchAsync(async (req, res) => {
   const { body } = req;
   const { files } = req;
-  console.log(body);
   const { name, description, creater, collectionId, isAudioNFT } = body;
   let imgData;
   let thumbNailData;
@@ -30,7 +29,7 @@ const saveArtwork = catchAsync(async (req, res) => {
       thumbNailData = await addFilesToIPFS(files[1].buffer, 'artwork_thumbnail_image');
     }
   }
-  // let gen = ["jazz", "hipop"];
+  let gen = ["jazz", "hipop"];
   // let arr = req.body.genre;
   // console.log(arr);
   // let arr2 = JSON.parse(arr);
@@ -38,8 +37,8 @@ const saveArtwork = catchAsync(async (req, res) => {
   // let gen = genre.map((item) => {
   //   return item;
   // });
-  console.log("Genre =>", req.body.genre);
-  // body.genre = genre
+  // console.log("Genre =>", req.body.genre);
+  body.genre = gen
   body.owner = body.creater;
   body.basePrice = body.price;
   body.thumbNail_url = thumbNailData;

@@ -26,6 +26,26 @@ const artworkSchema = mongoose.Schema(
       required: false,
       trim: true,
     },
+    youtubeLink: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    spotifyLink: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    websiteLink: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    ituneLink: {
+      type: String,
+      required: false,
+      trim: true,
+    }
     thumbNail_url: {
       type: String,
       required: false,

@@ -45,7 +45,7 @@ const artworkSchema = mongoose.Schema(
       type: String,
       required: false,
       trim: true,
-    }
+    },
     thumbNail_url: {
       type: String,
       required: false,

@@ -95,9 +95,7 @@ const artworkSchema = mongoose.Schema(
       {
         type: String,
       },
-      //
-    ]
-
+    ],
   },
   {
     timestamps: true,

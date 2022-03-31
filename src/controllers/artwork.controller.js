@@ -29,9 +29,9 @@ const saveArtwork = catchAsync(async (req, res) => {
       thumbNailData = await addFilesToIPFS(files[1].buffer, 'artwork_thumbnail_image');
     }
   }
-  let genre = req.body.genre;
-  genre = genre?.split(',');
-  req.body.genre = genre;
+  // let genre = req.body.genre;
+  // genre = genre?.split(',');
+  // req.body.genre = genre;
   // let arr = req.body.genre;
   // console.log(arr);
   // let arr2 = JSON.parse(arr);
@@ -41,7 +41,6 @@ const saveArtwork = catchAsync(async (req, res) => {
   // });
   console.log("Genre =>", req.body.genre);
 
-  // body.genre = gen
   body.owner = body.creater;
   body.basePrice = body.price;
   body.thumbNail_url = thumbNailData;

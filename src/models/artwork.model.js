@@ -111,11 +111,9 @@ const artworkSchema = mongoose.Schema(
       type: String,
       default: 'closed',
     },
-    genre: [
-      {
-        type: String,
-      },
-    ],
+    genre: {
+      type: String,
+    },
   },
   {
     timestamps: true,

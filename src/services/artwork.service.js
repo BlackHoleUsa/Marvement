@@ -238,6 +238,18 @@ const getAllArtwork = async (page, perPage) => {
 const getUserArtworksCount = async (userId) => {
   return await Artwork.find({ owner: userId }).countDocuments();
 };
+
+const getArtworkByGenre = async (genre, page, perPage) => {
+  const artwork = await Artwork.find({ genre: genre })
+    .populate('creater')
+    .limit(parseInt(perPage))
+    .skip(page * perPage)
+    .lean();
+
+  return artwork;
+};
+
+
 module.exports = {
   saveArtwork,
   getUserArtworks,
@@ -266,4 +278,5 @@ module.exports = {
   getAllArtworksCount1,
   getAllArtwork,
   getUserArtworksCount,
+  getArtworkByGenre,
 };

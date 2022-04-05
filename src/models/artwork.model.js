@@ -114,6 +114,13 @@ const artworkSchema = mongoose.Schema(
     genre: {
       type: String,
     },
+    isAuctionOpen: {
+      type: Boolean,
+      default: false,
+    },
+    isMeta: {
+      type: Boolean,
+    },
   },
   {
     timestamps: true,

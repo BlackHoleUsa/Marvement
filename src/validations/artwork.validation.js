@@ -17,6 +17,7 @@ const createArtworkVS = {
     websiteLink: Joi.string().optional(),
     ituneLink: Joi.string().optional(),
     genre: Joi.string().optional(),
+    isMeta: Joi.string().optional(),
   }),
 };
 

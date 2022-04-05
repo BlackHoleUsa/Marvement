@@ -338,4 +338,7 @@ router.get(
 router.get('/getArtworkHistory', [validate(artworkValidation.getHistoryVS)], artworkController.getArtworkHistory);
 
 router.get('/getFilteredArtworks', [validate(artworkValidation.getFilteredArtworks)], artworkController.getFilteredArtworks);
+
+router.get('/getArtworkByGenre', [validate(artworkValidation.getArtworkByGenre)], artworkController.getArtworkByGenre);
+
 module.exports = router;

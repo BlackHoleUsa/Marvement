@@ -150,6 +150,16 @@ const setAuctionBidders = {
     aucId: Joi.string().required(),
   }),
 };
+
+const getArtworkByGenre = {
+  query: Joi.object().keys({
+    genre: Joi.string().required(),
+    page: Joi.string().required(),
+    perPage: Joi.string().required(),
+  }),
+};
+
+
 module.exports = {
   createArtworkVS,
   getArtworksVS,
@@ -170,4 +180,5 @@ module.exports = {
   getFilteredArtworks,
   getAllArtworks,
   setAuctionBidders,
+  getArtworkByGenre,
 };

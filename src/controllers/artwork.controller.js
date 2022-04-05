@@ -29,19 +29,8 @@ const saveArtwork = catchAsync(async (req, res) => {
       thumbNailData = await addFilesToIPFS(files[1].buffer, 'artwork_thumbnail_image');
     }
   }
-  let genre = req.body.genre;
-  genre = genre?.split(',');
-  req.body.genre = genre;
-  // let arr = req.body.genre;
-  // console.log(arr);
-  // let arr2 = JSON.parse(arr);
-  // console.log(arr2);
-  // let gen = genre.map((item) => {
-  //   return item;
-  // });
   console.log("Genre =>", req.body.genre);
 
-  // body.genre = gen
   body.owner = body.creater;
   body.basePrice = body.price;
   body.thumbNail_url = thumbNailData;
@@ -325,6 +314,15 @@ const setAuctionBidders = catchAsync(async (req, res) => {
   await auctionService.setmaxBid(artworkId, amount);
   res.status(httpStatus.CREATED).send(response);
 });
+
+const getArtworkByGenre = catchAsync(async (req, res) => {
+  let = { genre, page, perPage } = req.query;
+  genre = genre.toLowerCase();
+  const artWorks = await artworkService.getArtworkByGenre(genre, page, perPage);
+  res.status(httpStatus.OK).send(artWorks);
+});
+
+
 module.exports = {
   saveArtwork,
   getUserArtworks,
@@ -348,4 +346,5 @@ module.exports = {
   getFilteredArtworks,
   getAllArtworks,
   setAuctionBidders,
+  getArtworkByGenre,
 };

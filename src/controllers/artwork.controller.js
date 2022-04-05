@@ -46,22 +46,43 @@ const saveArtwork = catchAsync(async (req, res) => {
   body.thumbNail_url = thumbNailData;
   const artwork = await artworkService.saveArtwork(body);
   const user = await userService.getUserById(creater);
-  const metaUrl = await pinMetaDataToIPFS({
-    // eslint-disable-next-line object-shorthand
-    name: name,
-    // eslint-disable-next-line object-shorthand
-    description: description,
-    image: imgData,
-    artist_name: user.name,
-    artist_description: user.description,
-    artist_url: user.profilePic,
-    creater: {
-      name: user.userName,
-      id: user._id,
-    },
-    collectionId,
-    artwork_url: imgData,
-  });
+  let metaUrl;
+  if (isAudioNFT) {
+    metaUrl = await pinMetaDataToIPFS({
+      // eslint-disable-next-line object-shorthand
+      name: name,
+      // eslint-disable-next-line object-shorthand
+      description: description,
+      animation_url: imgData,
+      image: thumbNailData,
+      artist_name: user.name,
+      artist_description: user.description,
+      artist_url: user.profilePic,
+      creater: {
+        name: user.userName,
+        id: user._id,
+      },
+      collectionId,
+      artwork_url: imgData,
+    });
+  } else {
+    metaUrl = await pinMetaDataToIPFS({
+      // eslint-disable-next-line object-shorthand
+      name: name,
+      // eslint-disable-next-line object-shorthand
+      description: description,
+      image: imgData,
+      artist_name: user.name,
+      artist_description: user.description,
+      artist_url: user.profilePic,
+      creater: {
+        name: user.userName,
+        id: user._id,
+      },
+      collectionId,
+      artwork_url: imgData,
+    });
+  }
   const updatedArtwork = await artworkService.updateArtworkMetaUrl(artwork._id, metaUrl);
   EVENT.emit('add-artwork-in-user', {
     artworkId: artwork._id,

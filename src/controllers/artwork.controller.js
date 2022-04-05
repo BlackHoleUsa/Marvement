@@ -29,16 +29,6 @@ const saveArtwork = catchAsync(async (req, res) => {
       thumbNailData = await addFilesToIPFS(files[1].buffer, 'artwork_thumbnail_image');
     }
   }
-  // let genre = req.body.genre;
-  // genre = genre?.split(',');
-  // req.body.genre = genre;
-  // let arr = req.body.genre;
-  // console.log(arr);
-  // let arr2 = JSON.parse(arr);
-  // console.log(arr2);
-  // let gen = genre.map((item) => {
-  //   return item;
-  // });
   console.log("Genre =>", req.body.genre);
 
   body.owner = body.creater;

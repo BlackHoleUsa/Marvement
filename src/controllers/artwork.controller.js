@@ -326,7 +326,9 @@ const setAuctionBidders = catchAsync(async (req, res) => {
 });
 
 const getArtworkByGenre = catchAsync(async (req, res) => {
-  const { genre, page, perPage } = req.query;
+  let = { genre, page, perPage } = req.query;
+  genre = genre.toLowerCase();
+  // console.log(genre);
   const artWorks = await artworkService.getArtworkByGenre(genre, page, perPage);
   res.status(httpStatus.OK).send(artWorks);
 });

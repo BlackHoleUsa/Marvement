@@ -41,6 +41,8 @@ const SEARCH_FILTERS = {
   USERS: 'users',
   ARTWORKS: 'artworks',
   COLLECTIONS: 'collections',
+  MUSICS: 'musics',
+  VIDEOS: 'videos',
 };
 
 const AUCTION_FILTERS = {

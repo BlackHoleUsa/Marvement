@@ -12,6 +12,8 @@ const handleSearch = catchAsync(async (req, res) => {
     let usersCount = await userService.searchUsersByNameTotal(keyword);
     const artworks = await artworkService.searchArtworkByName(keyword, page, perPage);
     let artworksCount = await artworkService.searchArtworkByNameTotal(keyword);
+    let musicArtwork = await artworkService.searchArtworkByMusic(keyword, page, perPage);
+    let videoArtwork = await artworkService.searchArtworkByVideo(keyword, page, perPage);
 
     let count = 0;
     let data = {};
@@ -26,6 +28,17 @@ const handleSearch = catchAsync(async (req, res) => {
         data.artworks = artworks;
         count = artworksCount;
         break;
+
+      case SEARCH_FILTERS.MUSICS:
+        data.artworks = musicArtwork;
+        count = musicArtwork.length;
+        break;
+
+      case SEARCH_FILTERS.VIDEOS:
+        data.artworks = videoArtwork;
+        count = videoArtwork.length;
+        break;
+
 
       default:
         data = {
@@ -64,6 +77,18 @@ const handleSearch = catchAsync(async (req, res) => {
         collections = await collectionService.getAllCollectionsperPage(page, perPage);
         data.collections = collections;
         count = await collectionService.getAllCollectionsCount();
+        break;
+
+      case SEARCH_FILTERS.MUSICS:
+        artworks = await artworkService.getAllArtworkOfMusic(page, perPage);
+        data.artwork = artworks;
+        count = await artworkService.getCountOfArtworkOfMusic();
+        break;
+
+      case SEARCH_FILTERS.VIDEOS:
+        artworks = await artworkService.getAllArtworkOfVideo(page, perPage);
+        data.artwork = artworks;
+        count = await artworkService.getCountOfArtworkOfVideo();
         break;
 
       default:

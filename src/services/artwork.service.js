@@ -249,6 +249,64 @@ const getArtworkByGenre = async (genre, page, perPage) => {
   return artwork;
 };
 
+const getAllArtworkOfMusic = async (page, perPage) => {  // get all artwork of music
+  return await Artwork.find({ artwork_type: 'music' })
+    .populate('owner')
+    .populate('creater')
+    .populate('auction')
+    .populate('sale')
+    .sort({ _id: -1 })
+    .limit(parseInt(perPage))
+    .skip(page * perPage);
+
+};
+
+const getAllArtworkOfVideo = async (page, perPage) => {  // get all artwork of music
+  return await Artwork.find({ artwork_type: 'videos' })
+    .populate('owner')
+    .populate('creater')
+    .populate('auction')
+    .populate('sale')
+    .sort({ _id: -1 })
+    .limit(parseInt(perPage))
+    .skip(page * perPage);
+
+};
+
+const getCountOfArtworkOfMusic = async () => {  // get all artwork of music
+  return await Artwork.find({ artwork_type: 'music' }).countDocuments();
+};
+
+const getCountOfArtworkOfVideo = async () => {  // get all artwork of music
+  return await Artwork.find({ artwork_type: 'video' }).countDocuments();
+};
+
+
+const searchArtworkByMusic = async (keyword, page, perPage) => {
+  let query = {};
+  if (keyword) {
+    query.name = { $regex: keyword, $options: 'i' };
+  }
+  const musicArtwork = await Artwork.find(query);
+  const musics = musicArtwork.filter((music) => {
+    return music.artwork_type === 'videos';
+  })
+  return musics;
+};
+
+const searchArtworkByVideo = async (keyword, page, perPage) => {
+  let query = {};
+  if (keyword) {
+    query.name = { $regex: keyword, $options: 'i' };
+  }
+  const videoArtwork = await Artwork.find(query);
+  const videos = videoArtwork.filter((video) => {
+    return video.artwork_type === 'videos';
+  })
+  return videos;
+};
+
+
 
 module.exports = {
   saveArtwork,
@@ -279,4 +337,10 @@ module.exports = {
   getAllArtwork,
   getUserArtworksCount,
   getArtworkByGenre,
+  getAllArtworkOfMusic,
+  getAllArtworkOfVideo,
+  getCountOfArtworkOfMusic,
+  getCountOfArtworkOfVideo,
+  searchArtworkByMusic,
+  searchArtworkByVideo,
 };

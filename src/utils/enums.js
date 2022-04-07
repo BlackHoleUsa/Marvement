@@ -41,7 +41,7 @@ const SEARCH_FILTERS = {
   USERS: 'users',
   ARTWORKS: 'artworks',
   COLLECTIONS: 'collections',
-  MUSICS: 'musics',
+  AUDIO: "audio",
   VIDEOS: 'videos',
 };
 

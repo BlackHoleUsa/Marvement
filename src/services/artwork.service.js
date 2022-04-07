@@ -250,7 +250,7 @@ const getArtworkByGenre = async (genre, page, perPage) => {
 };
 
 const getAllArtworkOfMusic = async (page, perPage) => {  // get all artwork of music
-  return await Artwork.find({ artwork_type: 'music' })
+  return await Artwork.find({ artwork_type: 'audio' })
     .populate('owner')
     .populate('creater')
     .populate('auction')
@@ -274,7 +274,7 @@ const getAllArtworkOfVideo = async (page, perPage) => {  // get all artwork of m
 };
 
 const getCountOfArtworkOfMusic = async () => {  // get all artwork of music
-  return await Artwork.find({ artwork_type: 'music' }).countDocuments();
+  return await Artwork.find({ artwork_type: 'audio' }).countDocuments();
 };
 
 const getCountOfArtworkOfVideo = async () => {  // get all artwork of music
@@ -289,7 +289,7 @@ const searchArtworkByMusic = async (keyword, page, perPage) => {
   }
   const musicArtwork = await Artwork.find(query);
   const musics = musicArtwork.filter((music) => {
-    return music.artwork_type === 'videos';
+    return music.artwork_type === 'audio';
   })
   return musics;
 };

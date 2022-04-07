@@ -29,7 +29,7 @@ const handleSearch = catchAsync(async (req, res) => {
         count = artworksCount;
         break;
 
-      case SEARCH_FILTERS.MUSICS:
+      case SEARCH_FILTERS.AUDIO:
         data.artworks = musicArtwork;
         count = musicArtwork.length;
         break;
@@ -79,7 +79,7 @@ const handleSearch = catchAsync(async (req, res) => {
         count = await collectionService.getAllCollectionsCount();
         break;
 
-      case SEARCH_FILTERS.MUSICS:
+      case SEARCH_FILTERS.AUDIO:
         artworks = await artworkService.getAllArtworkOfMusic(page, perPage);
         data.artwork = artworks;
         count = await artworkService.getCountOfArtworkOfMusic();

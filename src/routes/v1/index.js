@@ -7,6 +7,7 @@ const artworkRoute = require('./artwork.route');
 const salesRoute = require('./sales.route');
 const auctionRoute = require('./auction.route');
 const generalRoute = require('./general.route');
+const musicRoute = require('./musicAlbum.route');
 
 const config = require('../../config/config');
 
@@ -41,6 +42,10 @@ const defaultRoutes = [
     path: '/general',
     route: generalRoute,
   },
+  {
+    path: '/album',
+    route: musicRoute,
+  }
 ];
 
 const devRoutes = [

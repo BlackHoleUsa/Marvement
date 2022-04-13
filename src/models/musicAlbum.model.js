@@ -22,6 +22,10 @@ const musicAlbum = mongoose.Schema(
         ref: 'Artwork',
       },
     ],
+    creater: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'User',
+    },
   },
   {
     timestamps: true,

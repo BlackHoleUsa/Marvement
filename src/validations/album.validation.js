@@ -19,9 +19,11 @@ const updateAlbum = {
   }),
 };
 
-const getAlbumArtworks = {
+const getArtworksFromAlbum = {
   query: Joi.object().keys({
-    albumId: Joi.string().required()
+    albumId: Joi.string().required(),
+    page: Joi.number().required(),
+    perPage: Joi.number().required(),
   }),
 };
 
@@ -34,9 +36,11 @@ const getSingleAlbum = {
 
 
 
+
+
 module.exports = {
   createAlbum,
   updateAlbum,
-  getAlbumArtworks,
+  getArtworksFromAlbum,
   getSingleAlbum,
 };

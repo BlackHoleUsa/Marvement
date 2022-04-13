@@ -301,6 +301,7 @@ const getPlatformFee = async (userAddress) => {
 const getRoyality = async (userAddress) => {
   return await User.findOne({ address: userAddress }, { royality: 1 }).lean();
 };
+
 module.exports = {
   createUser,
   queryUsers,

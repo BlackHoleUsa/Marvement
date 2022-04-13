@@ -1,4 +1,4 @@
-const { User, Collection, Artwork, Auction, History, Notification, Transaction, Stats } = require('../models');
+const { User, Collection, MusicAlbum, Artwork, Auction, History, Notification, Transaction, Stats, Album } = require('../models');
 const { MINT_STATUS, STATS_UPDATE_TYPE } = require('../utils/enums');
 
 const addCollectionInUser = async (params) => {
@@ -65,6 +65,30 @@ const openArtworkAuction = async (params) => {
   );
   console.log('auction opened for artwork successfully');
 };
+
+const addAlbumInUser = async (params) => {
+  const { albumId, userId } = params;
+  await User.findOneAndUpdate(
+    { _id: userId },
+    {
+      $push: { musicAlbum: albumId },
+    }
+  );
+  console.log('Album added in user successfully');
+
+};
+
+const addArtworkInAlbum = async (params) => {
+  const { artwork, albumId } = params;
+  const art = await MusicAlbum.findOneAndUpdate(
+    { _id: albumId },
+    {
+      $push: { artworks: artwork },
+    }
+  );
+
+  console.log('artwork added in album successfully');
+}
 
 const updateArtworkHistory = async (params) => {
   await History.create(params);
@@ -148,5 +172,7 @@ module.exports = {
   createNotification,
   createTransaction,
   createStats,
-  userStatsUpdate
+  userStatsUpdate,
+  addAlbumInUser,
+  addArtworkInAlbum,
 };

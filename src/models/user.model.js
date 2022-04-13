@@ -91,6 +91,18 @@ const userSchema = mongoose.Schema(
         ref: 'Artwork',
       },
     ],
+    creations: [
+      {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'Artwork',
+      },
+    ],
+    musicAlbum: [
+      {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'MusicAlbum',
+      }
+    ],
     platformfee: {
       type: Number,
       required: false,

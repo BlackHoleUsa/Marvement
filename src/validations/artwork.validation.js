@@ -18,6 +18,8 @@ const createArtworkVS = {
     ituneLink: Joi.string().optional(),
     genre: Joi.string().optional(),
     isMeta: Joi.string().optional(),
+    isAlbum: Joi.string().optional(),
+    albumId: Joi.string().optional(),
   }),
 };
 

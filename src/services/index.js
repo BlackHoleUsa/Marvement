@@ -8,3 +8,4 @@ module.exports.bidService = require('./bid.service');
 module.exports.auctionService = require('./auction.service');
 module.exports.historyService = require('./history.service');
 module.exports.notificationService = require('./notification.service');
+module.exports.musicAlbumService = require('./musicAlbum.service')

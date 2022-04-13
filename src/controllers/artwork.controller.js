@@ -15,6 +15,8 @@ const {
 const EVENT = require('../triggers/custom-events').customEvent;
 const { addFilesToIPFS, pinMetaDataToIPFS } = require('../utils/helpers');
 const { HISTORY_TYPE, NOTIFICATION_TYPE, STATS_UPDATE_TYPE } = require('../utils/enums');
+const { MusicAlbum } = require('../models');
+
 
 const saveArtwork = catchAsync(async (req, res) => {
   const { body } = req;
@@ -27,6 +29,14 @@ const saveArtwork = catchAsync(async (req, res) => {
     body.artwork_url = imgData;
     if (isAudioNFT) {
       thumbNailData = await addFilesToIPFS(files[1].buffer, 'artwork_thumbnail_image');
+    }
+  }
+  if (req.body.isAlbum) {
+    const album = await MusicAlbum.findById(req.body.albumId);
+    if (album.tracks <= album.artworks.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Album is full');
+      res.status(httpStatus.BAD_REQUEST).send('Album is full');
+      return;
     }
   }
   console.log("Genre =>", req.body.genre);
@@ -89,7 +99,12 @@ const saveArtwork = catchAsync(async (req, res) => {
     message: `${user.userName} created the artwork`,
     type: HISTORY_TYPE.ARTWORK_CREATED,
   });
-
+  if (req.body.isAlbum) {
+    EVENT.emit('insert-artwork-in album', {
+      albumId: body.albumId,
+      artwork: artwork._id,
+    });
+  }
   res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork });
 });
 

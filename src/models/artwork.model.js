@@ -121,6 +121,14 @@ const artworkSchema = mongoose.Schema(
     isMeta: {
       type: Boolean,
     },
+    isAlbum: {
+      type: Boolean,
+      default: false,
+    },
+    albumDescription: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'Album',
+    },
   },
   {
     timestamps: true,

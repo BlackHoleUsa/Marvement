@@ -12,6 +12,7 @@ const createArtworkVS = {
     artwork_thumbnail_image: Joi.string().optional(),
     tokenId: Joi.string().optional(),
     isAudioNFT: Joi.string().optional(),
+    isAlbum: Joi.string().optional(),
     youtubeLink: Joi.string().optional(),
     spotifyLink: Joi.string().optional(),
     websiteLink: Joi.string().optional(),

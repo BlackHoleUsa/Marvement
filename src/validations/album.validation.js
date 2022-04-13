@@ -14,14 +14,16 @@ const updateAlbum = {
   body: Joi.object().keys({
     name: Joi.string().optional(),
     coverImage: Joi.string().optional(),
-    track: Joi.number().optional(),
+    tracks: Joi.number().optional(),
     genre: Joi.string().optional(),
   }),
 };
 
-const getAlbumArtworks = {
+const getArtworksFromAlbum = {
   query: Joi.object().keys({
-    albumId: Joi.string().required()
+    albumId: Joi.string().required(),
+    page: Joi.number().required(),
+    perPage: Joi.number().required(),
   }),
 };
 
@@ -34,9 +36,11 @@ const getSingleAlbum = {
 
 
 
+
+
 module.exports = {
   createAlbum,
   updateAlbum,
-  getAlbumArtworks,
+  getArtworksFromAlbum,
   getSingleAlbum,
 };

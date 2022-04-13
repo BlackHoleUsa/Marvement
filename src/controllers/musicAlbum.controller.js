@@ -15,6 +15,7 @@ const createAlbum = catchAsync(async (req, res) => {
       const img = await addFilesToIPFS(req.files[0].buffer, 'image');
       req.body.coverImage = img;
     }
+    req.body.creater = user._id;
 
     const album = await musicAlbumService.createAlbum(req.body);
     // Add the album to the user's album collection
@@ -37,9 +38,11 @@ const getSingleAlbum = catchAsync(async (req, res) => {
 const getUserAlbum = catchAsync(async (req, res) => {
   const { user } = req;
   const getUser = await userService.getUserById(user._id);
+
   if (getUser) {
     const albums = await musicAlbumService.getUserAlbums(user._id);
-    res.status(httpStatus.OK).send({ status: true, message: 'ALbum created successfully', albums: albums });
+    const totalAlbums = await musicAlbumService.getUserAlbumsCount(user._id);
+    res.status(httpStatus.OK).send({ status: true, message: 'ALbum created successfully', albums: albums, count: totalAlbums });
   } else {
     res.status(httpStatus.BAD_REQUEST).send({ status: false, message: 'User not found' });
   }
@@ -63,9 +66,11 @@ const updateAlbum = catchAsync(async (req, res) => {
 });
 
 const getArtworksFromAlbum = catchAsync(async (req, res) => {
-  const { albumId } = req.query;
-  const artworks = await musicAlbumService.getArtworksFromAlbum(albumId);
-  res.status(httpStatus.OK).send({ status: true, message: 'Artworks fetched successfully', artworks });
+  const { albumId, page, perPage } = req.query;
+  const artworks = await musicAlbumService.getArtworksFromAlbum(albumId, perPage, page);
+  let count = artworks.count;
+  let artwork = artworks.artworks;
+  res.status(httpStatus.OK).send({ status: true, message: 'Artworks fetched successfully', artworks: artwork, count: count });
 });
 
 

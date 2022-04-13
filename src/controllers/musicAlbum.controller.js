@@ -6,16 +6,6 @@ const { SEARCH_FILTERS } = require('../utils/enums');
 const { addFilesToIPFS, pinMetaDataToIPFS } = require('../utils/helpers');
 var jwt = require("jsonwebtoken");
 
-function paginate(array, page_size, page_number) {
-  console.log("array", array);
-  console.log("page_size", page_size);
-  console.log("page_number", page_number);
-  // human-readable page numbers usually start with 1, so we reduce 1 in the first argument
-  return array.slice((page_number - 1) * page_size, page_number * page_size);
-}
-
-
-
 const createAlbum = catchAsync(async (req, res) => {
   const { user } = req;
   const getUser = await userService.getUserById(user._id);

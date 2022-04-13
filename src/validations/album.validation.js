@@ -14,7 +14,7 @@ const updateAlbum = {
   body: Joi.object().keys({
     name: Joi.string().optional(),
     coverImage: Joi.string().optional(),
-    track: Joi.number().optional(),
+    tracks: Joi.number().optional(),
     genre: Joi.string().optional(),
   }),
 };

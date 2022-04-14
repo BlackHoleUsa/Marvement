@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const ApiError = require('../utils/ApiError');
+
 const {
   authService,
   userService,
@@ -44,8 +45,16 @@ const saveArtwork = catchAsync(async (req, res) => {
   body.owner = body.creater;
   body.basePrice = body.price;
   body.thumbNail_url = thumbNailData;
-  const artwork = await artworkService.saveArtwork(body);
   const user = await userService.getUserById(creater);
+  let price;
+  if (user.isNewUser) {
+    price = await artworkService.ethToUsd(20);
+    const userUpdate = await userService.updateUserStatus(user._id);
+  }
+  else {
+    price = await artworkService.ethToUsd(5);
+  }
+  const artwork = await artworkService.saveArtwork(body);
   let metaUrl;
   if (isAudioNFT) {
     metaUrl = await pinMetaDataToIPFS({
@@ -105,7 +114,7 @@ const saveArtwork = catchAsync(async (req, res) => {
       artwork: artwork._id,
     });
   }
-  res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork });
+  res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork, price });
 });
 
 const getUserArtworks = catchAsync(async (req, res) => {

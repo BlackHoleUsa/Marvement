@@ -71,6 +71,12 @@ const updateUserById = async (userId, updateBody) => {
   return user;
 };
 
+const updateUserStatus = async (userId) => {
+  const user = await User.findByIdAndUpdate({ _id: userId }, { $set: { isNewUser: 'false' } }, { new: true }).lean();
+  return user;
+};
+
+
 /**
  * Delete user by id
  * @param {ObjectId} userId
@@ -333,4 +339,5 @@ module.exports = {
   getPlatformFee,
   setRoyality,
   getRoyality,
+  updateUserStatus,
 };

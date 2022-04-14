@@ -1,5 +1,9 @@
 const { Artwork } = require('../models');
 const { MINT_STATUS } = require('../utils/enums');
+const axios = require('axios');
+const Web3 = require('web3');
+
+const web3 = new Web3();
 
 const getPopulatedArtwork = async (artworkId, fieldsToPopulate) => {
   return await Artwork.findOne({ _id: artworkId }).populate(fieldsToPopulate).lean();
@@ -310,6 +314,29 @@ const searchArtworkByVideo = async (keyword, page, perPage) => {
   return videos;
 };
 
+const ethToUsd = async (value) => {
+  try {
+    value = parseFloat(value);
+    const response = await axios.get('https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD');
+    if (response.status === 200) {
+      let price = response.data.RAW.ETH.USD.PRICE;
+      price = parseFloat(price);
+      const dollorPrice = value / price;
+      return dollorPrice;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
+
+const getSignatureHash = async (userAddress, price, tokenUrl) => {
+  price = price.toFixed(18);
+  price = await web3.utils.toWei(price.toString(), 'ether');
+  const data = web3.utils.soliditySha3(userAddress, price, tokenUrl);
+  return data;
+};
 
 
 module.exports = {
@@ -347,4 +374,6 @@ module.exports = {
   getCountOfArtworkOfVideo,
   searchArtworkByMusic,
   searchArtworkByVideo,
+  ethToUsd,
+  getSignatureHash,
 };

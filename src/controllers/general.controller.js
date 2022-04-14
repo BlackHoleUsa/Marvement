@@ -111,7 +111,6 @@ const getAppActivity = catchAsync(async (req, res) => {
   const { page, perPage } = req.query;
 
   const histories = await artworkService.getAllArtworksPaginated(page, perPage);
-
   res.status(httpStatus.OK).send({
     status: true,
     message: 'Successfull',

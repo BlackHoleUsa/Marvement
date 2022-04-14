@@ -113,6 +113,10 @@ const userSchema = mongoose.Schema(
       required: false,
       default: 0,
     },
+    isNewUser: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,

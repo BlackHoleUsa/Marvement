@@ -328,10 +328,10 @@ const ethToUsd = async (value) => {
 }
 
 
-const getSignatureHash = async (userAddress, price) => {
-  price = web3.utils.toWei(price.toString(), 'ether');
-  const data = web3.utils.soliditySha3(userAddress, price);
-  console.log(data);
+const getSignatureHash = async (userAddress, price, tokenUrl) => {
+  price = price.toFixed(18);
+  price = await web3.utils.toWei(price.toString(), 'ether');
+  const data = web3.utils.soliditySha3(userAddress, price, tokenUrl);
   return data;
 };
 

@@ -40,8 +40,6 @@ const saveArtwork = catchAsync(async (req, res) => {
       return;
     }
   }
-  console.log("Genre =>", req.body.genre);
-
   body.owner = body.creater;
   body.basePrice = body.price;
   body.thumbNail_url = thumbNailData;
@@ -55,7 +53,7 @@ const saveArtwork = catchAsync(async (req, res) => {
     price = await artworkService.ethToUsd(5);
   }
   const artwork = await artworkService.saveArtwork(body);
-  const signature = await artworkService.getSignatureHash(user.address, price);
+
   let metaUrl;
   if (isAudioNFT) {
     metaUrl = await pinMetaDataToIPFS({
@@ -94,6 +92,8 @@ const saveArtwork = catchAsync(async (req, res) => {
     });
   }
   const updatedArtwork = await artworkService.updateArtworkMetaUrl(artwork._id, metaUrl);
+  const signature = await artworkService.getSignatureHash(user.address, price, metaUrl);
+
   EVENT.emit('add-artwork-in-user', {
     artworkId: artwork._id,
     userId: body.creater,

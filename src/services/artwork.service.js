@@ -130,6 +130,7 @@ const getAllArtworksPaginated = async (page, perPage) => {
     .populate('owner')
     .populate('auction')
     .populate('sale')
+    .populate('albumDetails')
     .sort({ _id: -1 })
     .limit(parseInt(perPage))
     .skip(page * perPage)

@@ -1,6 +1,9 @@
 const { Artwork } = require('../models');
 const { MINT_STATUS } = require('../utils/enums');
 const axios = require('axios');
+const Web3 = require('web3');
+
+const web3 = new Web3();
 
 const getPopulatedArtwork = async (artworkId, fieldsToPopulate) => {
   return await Artwork.findOne({ _id: artworkId }).populate(fieldsToPopulate).lean();
@@ -325,6 +328,14 @@ const ethToUsd = async (value) => {
 }
 
 
+const getSignatureHash = async (userAddress, price) => {
+  price = web3.utils.toWei(price.toString(), 'ether');
+  const data = web3.utils.soliditySha3(userAddress, price);
+  console.log(data);
+  return data;
+};
+
+
 module.exports = {
   saveArtwork,
   getUserArtworks,
@@ -361,4 +372,5 @@ module.exports = {
   searchArtworkByMusic,
   searchArtworkByVideo,
   ethToUsd,
+  getSignatureHash,
 };

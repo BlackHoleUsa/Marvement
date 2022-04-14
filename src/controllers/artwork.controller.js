@@ -55,6 +55,7 @@ const saveArtwork = catchAsync(async (req, res) => {
     price = await artworkService.ethToUsd(5);
   }
   const artwork = await artworkService.saveArtwork(body);
+  const signature = await artworkService.getSignatureHash(user.address, price);
   let metaUrl;
   if (isAudioNFT) {
     metaUrl = await pinMetaDataToIPFS({
@@ -114,7 +115,7 @@ const saveArtwork = catchAsync(async (req, res) => {
       artwork: artwork._id,
     });
   }
-  res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork, price });
+  res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork, price, signature });
 });
 
 const getUserArtworks = catchAsync(async (req, res) => {

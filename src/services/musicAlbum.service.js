@@ -22,6 +22,7 @@ const createAlbum = async (userBody) => {
     creater: userBody.creater,
     price: 0,
     image: userBody.coverImage,
+    artwork_url: userBody.coverImage,
     collectionId: null,
     artwork_type: null,
     artwork_thumbnail_image: null,

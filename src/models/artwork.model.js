@@ -125,9 +125,9 @@ const artworkSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    albumDescription: {
+    albumDetails: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'Album',
+      ref: 'MusicAlbum',
     },
   },
   {

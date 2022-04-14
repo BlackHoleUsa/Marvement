@@ -25,7 +25,7 @@ const createAlbum = async (userBody) => {
     collectionId: null,
     artwork_type: null,
     artwork_thumbnail_image: null,
-    albumDescription: usr._id,
+    albumDetails: usr._id,
   }
   await artworkService.saveArtwork(albumArt);
 

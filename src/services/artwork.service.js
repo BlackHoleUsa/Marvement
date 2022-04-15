@@ -334,7 +334,11 @@ const getSignatureHash = async (userAddress, price, tokenUrl) => {
   return data;
 };
 
-
+const signMessage = async (msgHash, adminAddress, adminKey) => {
+  web3.eth.defaultAccount = adminAddress;
+  const signObj = web3.eth.accounts.sign(msgHash, adminKey);
+  return signObj;
+};
 module.exports = {
   saveArtwork,
   getUserArtworks,
@@ -372,4 +376,5 @@ module.exports = {
   searchArtworkByVideo,
   ethToUsd,
   getSignatureHash,
+  signMessage,
 };

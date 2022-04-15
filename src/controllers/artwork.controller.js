@@ -17,6 +17,7 @@ const EVENT = require('../triggers/custom-events').customEvent;
 const { addFilesToIPFS, pinMetaDataToIPFS } = require('../utils/helpers');
 const { HISTORY_TYPE, NOTIFICATION_TYPE, STATS_UPDATE_TYPE } = require('../utils/enums');
 const { MusicAlbum } = require('../models');
+const { ADMIN_DETAILS } = require('../config/config');
 
 
 const saveArtwork = catchAsync(async (req, res) => {
@@ -97,7 +98,9 @@ const saveArtwork = catchAsync(async (req, res) => {
     });
   }
   const updatedArtwork = await artworkService.updateArtworkMetaUrl(artwork._id, metaUrl);
-  const signature = await artworkService.getSignatureHash(user.address, price, metaUrl);
+  const messageHash = await artworkService.getSignatureHash(user.address, price, metaUrl);
+  const signMessage = await artworkService.signMessage(messageHash, ADMIN_DETAILS.ADMIN_ADDRESS, ADMIN_DETAILS.ADMIN_PRIVATE_KEY);
+  const signature = signMessage.signature;
 
   EVENT.emit('add-artwork-in-user', {
     artworkId: artwork._id,

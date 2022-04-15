@@ -82,7 +82,7 @@ module.exports = {
     bucket: envVars.AWS_BUCKET,
   },
   ETH_CONTRACTS: {
-    MINT_NFT_CONTRACT_ADDRESS: '0xF610A19aBF2C4035650b11d9CD0E0ff9cE448f5e',    // ERC 721 address   
+    MINT_NFT_CONTRACT_ADDRESS: '0xF610A19aBF2C4035650b11d9CD0E0ff9cE448f5e',    // ERC 721 address
     AUCTION_CONTRACT_ADDRESS: '0xad2fB2710eC42297FB159fb502d6251a11FA896c',    // Auction address
     MINT_NFT_ABI: [
       {
@@ -1393,4 +1393,8 @@ module.exports = {
     ],
     WEB_SOCKET_INFURA_URL: 'wss://mainnet.infura.io/ws/v3/a3b23a55e0f04ba6bb97420b6bdd284c',
   },
+  ADMIN_DETAILS: {
+    ADMIN_PRIVATE_KEY: 'c3982c0de5b9e25fb0953663584f52474c673a79dfc6184652791acdbd63b9cd',
+    ADMIN_ADDRESS: '0x192DDbb00E5aA7E3107f82030C4C8AAB1EB903B7'
+  }
 };

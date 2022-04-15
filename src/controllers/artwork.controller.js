@@ -1,9 +1,6 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const ApiError = require('../utils/ApiError');
-const Web3 = require('web3');
-
-const web3 = new Web3();
 
 const {
   authService,
@@ -26,7 +23,6 @@ const { ADMIN_DETAILS } = require('../config/config');
 const saveArtwork = catchAsync(async (req, res) => {
   const { body } = req;
   const { files } = req;
-  console.log(body)
   body.genre = body.genre.toLowerCase();
   const { name, description, creater, collectionId, isAudioNFT } = body;
   let imgData;
@@ -54,13 +50,13 @@ const saveArtwork = catchAsync(async (req, res) => {
   let price;
   if (user.isNewUser) {
     price = await artworkService.ethToUsd(20);
-    price = await web3.utils.toWei(price.toString(), 'ether');
+    price = price.toFixed(17);
     const userUpdate = await userService.updateUserStatus(user._id);
 
   }
   else {
     price = await artworkService.ethToUsd(5);
-    price = await web3.utils.toWei(price.toString(), 'ether');
+    price = price.toFixed(17);
   }
   const artwork = await artworkService.saveArtwork(body);
 

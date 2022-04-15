@@ -129,6 +129,10 @@ const artworkSchema = mongoose.Schema(
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'MusicAlbum',
     },
+    isInAlbum: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

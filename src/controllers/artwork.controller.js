@@ -33,8 +33,9 @@ const saveArtwork = catchAsync(async (req, res) => {
       thumbNailData = await addFilesToIPFS(files[1].buffer, 'artwork_thumbnail_image');
     }
   }
-  if (req.body.isAlbum) {
+  if (req.body.albumId) {
     const album = await MusicAlbum.findById(req.body.albumId);
+    body.isInAlbum = true;
     if (album.tracks <= album.artworks.length) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Album is full');
       res.status(httpStatus.BAD_REQUEST).send('Album is full');
@@ -117,7 +118,7 @@ const saveArtwork = catchAsync(async (req, res) => {
     message: `${user.userName} created the artwork`,
     type: HISTORY_TYPE.ARTWORK_CREATED,
   });
-  if (req.body.isAlbum) {
+  if (req.body.albumId) {
     EVENT.emit('insert-artwork-in album', {
       albumId: body.albumId,
       artwork: artwork._id,

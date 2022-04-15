@@ -129,7 +129,7 @@ const getUserFilteredArtworks = async (userId, page, perPage) => {
     .skip(page * perPage);
 };
 const getAllArtworksPaginated = async (page, perPage) => {
-  const artworks = await Artwork.find()
+  const artworks = await Artwork.find({ isInAlbum: 'false' }).sort({ _id: -1 }).populate('owner').populate('group').populate('sale').populate('auction').limit(parseInt(perPage))
     .populate('creater')
     .populate('owner')
     .populate('auction')
@@ -140,7 +140,7 @@ const getAllArtworksPaginated = async (page, perPage) => {
     .skip(page * perPage)
     .lean();
 
-  const count = await Artwork.find().countDocuments();
+  const count = await Artwork.find({ isInAlbum: 'false' }).countDocuments();
   return { artworks, count };
 };
 const getAllArtworks = async (
@@ -180,8 +180,7 @@ const getAllArtworks = async (
       .limit(parseInt(perPage))
       .skip(page * perPage);
   }
-  return await Artwork.find({})
-    .populate('owner')
+  return await Artwork.find({ isInAlbum: 'false' })
     .populate('creater')
     .populate('auction')
     .populate('sale')

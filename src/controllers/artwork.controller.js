@@ -1,7 +1,8 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const ApiError = require('../utils/ApiError');
-
+const Web3 = require('web3');
+const web3 = new Web3();
 const {
   authService,
   userService,
@@ -50,13 +51,13 @@ const saveArtwork = catchAsync(async (req, res) => {
   let price;
   if (user.isNewUser) {
     price = await artworkService.ethToUsd(20);
-    price = price.toFixed(17);
+    price = price.toFixed(16);
     const userUpdate = await userService.updateUserStatus(user._id);
 
   }
   else {
     price = await artworkService.ethToUsd(5);
-    price = price.toFixed(17);
+    price = price.toFixed(16);
   }
   const artwork = await artworkService.saveArtwork(body);
 
@@ -103,6 +104,7 @@ const saveArtwork = catchAsync(async (req, res) => {
   const messageHash = await artworkService.getSignatureHash(user.address, price, metaUrl);
   const signMessage = await artworkService.signMessage(messageHash, ADMIN_DETAILS.ADMIN_ADDRESS, ADMIN_DETAILS.ADMIN_PRIVATE_KEY);
   const signature = signMessage.signature;
+  price = await web3.utils.toWei(price.toString(), 'ether');
 
   EVENT.emit('add-artwork-in-user', {
     artworkId: artwork._id,

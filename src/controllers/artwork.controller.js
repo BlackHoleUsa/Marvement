@@ -47,12 +47,17 @@ const saveArtwork = catchAsync(async (req, res) => {
   let price;
   if (user.isNewUser) {
     price = await artworkService.ethToUsd(20);
+    price = price.toFixed(18);
     const userUpdate = await userService.updateUserStatus(user._id);
+
   }
   else {
     price = await artworkService.ethToUsd(5);
+    price = price.toFixed(18);
   }
   const artwork = await artworkService.saveArtwork(body);
+
+
 
   let metaUrl;
   if (isAudioNFT) {
@@ -115,6 +120,7 @@ const saveArtwork = catchAsync(async (req, res) => {
       artwork: artwork._id,
     });
   }
+
   res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork, price, signature });
 });
 

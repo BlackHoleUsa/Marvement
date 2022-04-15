@@ -17,6 +17,7 @@ const EVENT = require('../triggers/custom-events').customEvent;
 const { addFilesToIPFS, pinMetaDataToIPFS } = require('../utils/helpers');
 const { HISTORY_TYPE, NOTIFICATION_TYPE, STATS_UPDATE_TYPE } = require('../utils/enums');
 const { MusicAlbum } = require('../models');
+const { ADMIN_DETAILS } = require('../config/config');
 
 
 const saveArtwork = catchAsync(async (req, res) => {
@@ -32,8 +33,9 @@ const saveArtwork = catchAsync(async (req, res) => {
       thumbNailData = await addFilesToIPFS(files[1].buffer, 'artwork_thumbnail_image');
     }
   }
-  if (req.body.isAlbum) {
+  if (req.body.albumId) {
     const album = await MusicAlbum.findById(req.body.albumId);
+    body.isInAlbum = true;
     if (album.tracks <= album.artworks.length) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Album is full');
       res.status(httpStatus.BAD_REQUEST).send('Album is full');
@@ -47,12 +49,17 @@ const saveArtwork = catchAsync(async (req, res) => {
   let price;
   if (user.isNewUser) {
     price = await artworkService.ethToUsd(20);
+    price = price.toFixed(18);
     const userUpdate = await userService.updateUserStatus(user._id);
+
   }
   else {
     price = await artworkService.ethToUsd(5);
+    price = price.toFixed(18);
   }
   const artwork = await artworkService.saveArtwork(body);
+
+
 
   let metaUrl;
   if (isAudioNFT) {
@@ -92,7 +99,9 @@ const saveArtwork = catchAsync(async (req, res) => {
     });
   }
   const updatedArtwork = await artworkService.updateArtworkMetaUrl(artwork._id, metaUrl);
-  const signature = await artworkService.getSignatureHash(user.address, price, metaUrl);
+  const messageHash = await artworkService.getSignatureHash(user.address, price, metaUrl);
+  const signMessage = await artworkService.signMessage(messageHash, ADMIN_DETAILS.ADMIN_ADDRESS, ADMIN_DETAILS.ADMIN_PRIVATE_KEY);
+  const signature = signMessage.signature;
 
   EVENT.emit('add-artwork-in-user', {
     artworkId: artwork._id,
@@ -109,12 +118,13 @@ const saveArtwork = catchAsync(async (req, res) => {
     message: `${user.userName} created the artwork`,
     type: HISTORY_TYPE.ARTWORK_CREATED,
   });
-  if (req.body.isAlbum) {
+  if (req.body.albumId) {
     EVENT.emit('insert-artwork-in album', {
       albumId: body.albumId,
       artwork: artwork._id,
     });
   }
+
   res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork, price, signature });
 });
 

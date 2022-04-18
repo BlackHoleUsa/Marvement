@@ -43,6 +43,7 @@ const SEARCH_FILTERS = {
   COLLECTIONS: 'collections',
   AUDIO: "audio",
   VIDEOS: 'videos',
+  GENRES: 'genre',
 };
 
 const AUCTION_FILTERS = {

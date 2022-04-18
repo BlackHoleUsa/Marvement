@@ -160,6 +160,7 @@ const getArtworkByGenre = {
     genre: Joi.string().required(),
     page: Joi.string().required(),
     perPage: Joi.string().required(),
+    keyword: Joi.string().optional(),
   }),
 };
 

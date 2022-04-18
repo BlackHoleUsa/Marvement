@@ -1,6 +1,6 @@
 const { User, Collection, Artwork, Auction, BuySell } = require('../models');
 const { getUserByAddress } = require('../services/user.service');
-const { AUCTION_CONTRACT_INSTANCE } = require('../config/contract.config');
+const { MINT_CONTRACT_INSTANCE, AUCTION_CONTRACT_INSTANCE } = require('../config/contract.config');
 const LISTENERS = require('./listeners.controller');
 const { auctionService, bidService, artworkService } = require('../services');
 const EVENT = require('../triggers/custom-events').customEvent;
@@ -45,7 +45,9 @@ const transfer = async (transferContract) => {
       await Artwork.findOneAndDelete({ _id: artwork._id });
       console.log('transfer event called unregistered');
     } else {
-      console.log('mint');
+      const response = await MINT_CONTRACT_INSTANCE.methods.tokenURI(tokenId);
+      console.log('mint ', response);
+
     }
   } catch (error) {
     console.log(error);

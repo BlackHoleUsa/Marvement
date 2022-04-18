@@ -46,8 +46,9 @@ const transfer = async (transferContract) => {
       console.log('transfer event called unregistered');
     } else {
       const artworkURL = await MINT_CONTRACT_INSTANCE.methods.tokenURI(tokenId).call();
-      const updatedArtwork = await Artwork.findOneAndUpdate({ artwork_url: artworkURL.toString() }, { tokenId: tokenId }, { new: true });
-      console.log("artwork tokenId updated", updatedArtwork);
+      console.log('From the blockchain', artworkURL);
+      const updatedArtwork = await Artwork.findOneAndUpdate({ meta_url: artworkURL.toString() }, { tokenId: tokenId }, { new: true });
+      console.log('artwork tokenId updated', updatedArtwork);
     }
   } catch (error) {
     console.log(error);

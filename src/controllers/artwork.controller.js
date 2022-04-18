@@ -351,11 +351,25 @@ const setAuctionBidders = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(response);
 });
 
+
 const getArtworkByGenre = catchAsync(async (req, res) => {
-  let = { genre, page, perPage } = req.query;
+  let = { genre, page, perPage, keyword } = req.query;
   genre = genre.toLowerCase();
-  const artWorks = await artworkService.getArtworkByGenre(genre, page, perPage);
-  res.status(httpStatus.OK).send(artWorks);
+  let artwork;
+  const artworks = await artworkService.getArtworkByGenre(genre, page, perPage);
+  let count = artworks.length;
+  if (keyword) {
+    if (artworks.length > 0) {
+      artwork = artworks.filter((art) => art.name.toLowerCase().includes(keyword.toLowerCase()));
+    }
+    count = artwork.length;
+    res.status(httpStatus.OK).send({ artwork, count });
+    return;
+  }
+  res.status(httpStatus.OK).send({ artworks, count });
+  return;
+
+
 });
 
 

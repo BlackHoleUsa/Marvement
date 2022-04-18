@@ -27,7 +27,6 @@ const ADMIN_DETAILS = {
 const saveArtwork = catchAsync(async (req, res) => {
   const { body } = req;
   const { files } = req;
-  body.genre = body.genre.toLowerCase();
   const { name, description, creater, collectionId, isAudioNFT } = body;
   let imgData;
   let thumbNailData;

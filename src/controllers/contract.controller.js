@@ -45,9 +45,9 @@ const transfer = async (transferContract) => {
       await Artwork.findOneAndDelete({ _id: artwork._id });
       console.log('transfer event called unregistered');
     } else {
-      const response = await MINT_CONTRACT_INSTANCE.methods.tokenURI(tokenId).call();
-      console.log(response);
-
+      const artworkURL = await MINT_CONTRACT_INSTANCE.methods.tokenURI(tokenId).call();
+      await Artwork.findOneAndUpdate({ artwork_url: artworkURL }, { tokenId: tokenId });
+      console.log("artwork tokenId updated");
     }
   } catch (error) {
     console.log(error);

@@ -113,10 +113,8 @@ const artworkSchema = mongoose.Schema(
     },
     genre: {
       type: String,
-    },
-    isAuctionOpen: {
-      type: Boolean,
-      default: false,
+      trim: true,
+      lowercase: true,
     },
     isMeta: {
       type: Boolean,

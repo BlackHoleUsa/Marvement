@@ -83,7 +83,7 @@ module.exports = {
   },
   ETH_CONTRACTS: {
     MINT_NFT_CONTRACT_ADDRESS: '0xcD115512cd665D50D4d0157b1198D308672fE7b5',    // ERC 721 address
-    AUCTION_CONTRACT_ADDRESS: '0xad2fB2710eC42297FB159fb502d6251a11FA896c',    // Auction address
+    AUCTION_CONTRACT_ADDRESS: '0x27F6E307d5AcF4De955016E04f0B07Dc9DF895ac',    // Auction address
     MINT_NFT_ABI: [
       {
         "anonymous": false,
@@ -811,10 +811,10 @@ module.exports = {
         "type": "function"
       }
     ],
-    WEB_SOCKET_INFURA_URL: 'wss://mainnet.infura.io/ws/v3/a3b23a55e0f04ba6bb97420b6bdd284c',
+    WEB_SOCKET_INFURA_URL: 'wss://rinkeby.infura.io/ws/v3/12c7d0ac7dff41f1a621d65199acf9b8',
   },
   ADMIN_DETAILS: {
     ADMIN_PRIVATE_KEY: 'c3982c0de5b9e25fb0953663584f52474c673a79dfc6184652791acdbd63b9cd',
-    ADMIN_ADDRESS: '0x192DDbb00E5aA7E3107f82030C4C8AAB1EB903B7'
-  }
+    ADMIN_ADDRESS: '0x192DDbb00E5aA7E3107f82030C4C8AAB1EB903B7',
+  },
 };

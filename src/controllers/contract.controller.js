@@ -51,28 +51,21 @@ const transfer = async (transferContract) => {
     console.log(error);
   }
 };
-const updateCollectionAddress = async (CollectionAddress, owner, colName) => {
-  const user = await User.findOne({ address: owner });
-
-  const collection = await Collection.findOneAndUpdate(
-    { owner: user._id, name: colName },
-    {
-      collectionAddress: CollectionAddress,
-    }
-  );
-  console.log(collection._id);
-  const artwork = await Artwork.findOneAndUpdate(
-    { collectionId: collection._id },
-    {
-      tokenId: 1,
-    }
-  );
-  console.log(artwork);
-  EVENT.emit('stats-artwork-mint', {
-    userId: user._id,
-    type: STATS_UPDATE_TYPE.ownedArts,
-  });
-  console.log('collection address and artwork token id updated successfully');
+const updateCollectionAddress = async (tokenId, owner, colName) => {
+  // let tokenId = tokenId.toString();
+  // const user = await User.findOne({ address: owner });
+  // const artwork = await Artwork.findOneAndUpdate(
+  //   { owner },
+  //   {
+  //     tokenId,
+  //   }
+  // );
+  // console.log(artwork);
+  // EVENT.emit('stats-artwork-mint', {
+  //   userId: user._id,
+  //   type: STATS_UPDATE_TYPE.ownedArts,
+  // });
+  // console.log('artwork token id updated successfully');
 };
 
 const handleNewAuction = async (colAddress, tokenId, aucId) => {

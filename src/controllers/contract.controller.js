@@ -1,6 +1,6 @@
 const { User, Collection, Artwork, Auction, BuySell } = require('../models');
 const { getUserByAddress } = require('../services/user.service');
-const { AUCTION_CONTRACT_INSTANCE } = require('../config/contract.config');
+const { MINT_CONTRACT_INSTANCE, AUCTION_CONTRACT_INSTANCE } = require('../config/contract.config');
 const LISTENERS = require('./listeners.controller');
 const { auctionService, bidService, artworkService } = require('../services');
 const EVENT = require('../triggers/custom-events').customEvent;
@@ -25,9 +25,9 @@ const transfer = async (transferContract) => {
   from = from.toLowerCase();
   to = to.toLowerCase();
   console.log("transferContract", transferContract);
-  let auctionContractAddress = "0xad2fB2710eC42297FB159fb502d6251a11FA896c";
+  let auctionContractAddress = "0x27F6E307d5AcF4De955016E04f0B07Dc9DF895ac";
   auctionContractAddress = auctionContractAddress.toLowerCase();
-  let mintContractAddress = "0xF610A19aBF2C4035650b11d9CD0E0ff9cE448f5e";
+  let mintContractAddress = "0xcD115512cd665D50D4d0157b1198D308672fE7b5";
   mintContractAddress = mintContractAddress.toLowerCase();
   const result = await User.find({ address: to });
   console.log(result);
@@ -45,34 +45,30 @@ const transfer = async (transferContract) => {
       await Artwork.findOneAndDelete({ _id: artwork._id });
       console.log('transfer event called unregistered');
     } else {
-      console.log('mint');
+      const artworkURL = await MINT_CONTRACT_INSTANCE.methods.tokenURI(tokenId).call();
+      console.log('From the blockchain', artworkURL);
+      const updatedArtwork = await Artwork.findOneAndUpdate({ meta_url: artworkURL.toString() }, { tokenId: tokenId }, { new: true });
+      console.log('artwork tokenId updated', updatedArtwork);
     }
   } catch (error) {
     console.log(error);
   }
 };
-const updateCollectionAddress = async (CollectionAddress, owner, colName) => {
-  const user = await User.findOne({ address: owner });
-
-  const collection = await Collection.findOneAndUpdate(
-    { owner: user._id, name: colName },
-    {
-      collectionAddress: CollectionAddress,
-    }
-  );
-  console.log(collection._id);
-  const artwork = await Artwork.findOneAndUpdate(
-    { collectionId: collection._id },
-    {
-      tokenId: 1,
-    }
-  );
-  console.log(artwork);
-  EVENT.emit('stats-artwork-mint', {
-    userId: user._id,
-    type: STATS_UPDATE_TYPE.ownedArts,
-  });
-  console.log('collection address and artwork token id updated successfully');
+const updateCollectionAddress = async (tokenId, owner, colName) => {
+  // let tokenId = tokenId.toString();
+  // const user = await User.findOne({ address: owner });
+  // const artwork = await Artwork.findOneAndUpdate(
+  //   { owner },
+  //   {
+  //     tokenId,
+  //   }
+  // );
+  // console.log(artwork);
+  // EVENT.emit('stats-artwork-mint', {
+  //   userId: user._id,
+  //   type: STATS_UPDATE_TYPE.ownedArts,
+  // });
+  // console.log('artwork token id updated successfully');
 };
 
 const handleNewAuction = async (colAddress, tokenId, aucId) => {

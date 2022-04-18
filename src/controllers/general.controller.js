@@ -14,7 +14,7 @@ const handleSearch = catchAsync(async (req, res) => {
     let artworksCount = await artworkService.searchArtworkByNameTotal(keyword);
     let musicArtwork = await artworkService.searchArtworkByMusic(keyword, page, perPage);
     let videoArtwork = await artworkService.searchArtworkByVideo(keyword, page, perPage);
-
+    let albumSearch = await artworkService.searchArtworkByAlbum(keyword, page, perPage);
     let count = 0;
     let data = {};
 
@@ -111,7 +111,6 @@ const getAppActivity = catchAsync(async (req, res) => {
   const { page, perPage } = req.query;
 
   const histories = await artworkService.getAllArtworksPaginated(page, perPage);
-
   res.status(httpStatus.OK).send({
     status: true,
     message: 'Successfull',

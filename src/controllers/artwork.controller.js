@@ -1,6 +1,8 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const ApiError = require('../utils/ApiError');
+const Web3 = require('web3');
+const web3 = new Web3();
 const {
   authService,
   userService,
@@ -16,6 +18,10 @@ const EVENT = require('../triggers/custom-events').customEvent;
 const { addFilesToIPFS, pinMetaDataToIPFS } = require('../utils/helpers');
 const { HISTORY_TYPE, NOTIFICATION_TYPE, STATS_UPDATE_TYPE } = require('../utils/enums');
 const { MusicAlbum } = require('../models');
+const ADMIN_DETAILS = {
+  ADMIN_PRIVATE_KEY: 'c3982c0de5b9e25fb0953663584f52474c673a79dfc6184652791acdbd63b9cd',
+  ADMIN_ADDRESS: '0x192DDbb00E5aA7E3107f82030C4C8AAB1EB903B7',
+};
 
 
 const saveArtwork = catchAsync(async (req, res) => {
@@ -31,21 +37,34 @@ const saveArtwork = catchAsync(async (req, res) => {
       thumbNailData = await addFilesToIPFS(files[1].buffer, 'artwork_thumbnail_image');
     }
   }
-  if (req.body.isAlbum) {
+  if (req.body.albumId) {
     const album = await MusicAlbum.findById(req.body.albumId);
+    body.isInAlbum = true;
     if (album.tracks <= album.artworks.length) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Album is full');
       res.status(httpStatus.BAD_REQUEST).send('Album is full');
       return;
     }
   }
-  console.log("Genre =>", req.body.genre);
-
   body.owner = body.creater;
   body.basePrice = body.price;
   body.thumbNail_url = thumbNailData;
-  const artwork = await artworkService.saveArtwork(body);
   const user = await userService.getUserById(creater);
+  let price;
+  if (user.isNewUser) {
+    price = await artworkService.ethToUsd(20);
+    price = price.toFixed(16);
+    const userUpdate = await userService.updateUserStatus(user._id);
+
+  }
+  else {
+    price = await artworkService.ethToUsd(5);
+    price = price.toFixed(16);
+  }
+  const artwork = await artworkService.saveArtwork(body);
+
+
+
   let metaUrl;
   if (isAudioNFT) {
     metaUrl = await pinMetaDataToIPFS({
@@ -84,6 +103,11 @@ const saveArtwork = catchAsync(async (req, res) => {
     });
   }
   const updatedArtwork = await artworkService.updateArtworkMetaUrl(artwork._id, metaUrl);
+  const messageHash = await artworkService.getSignatureHash(user.address, price, metaUrl);
+  const signMessage = await artworkService.signMessage(messageHash, ADMIN_DETAILS.ADMIN_ADDRESS, ADMIN_DETAILS.ADMIN_PRIVATE_KEY);
+  const signature = signMessage.signature;
+  price = await web3.utils.toWei(price.toString(), 'ether');
+
   EVENT.emit('add-artwork-in-user', {
     artworkId: artwork._id,
     userId: body.creater,
@@ -99,13 +123,14 @@ const saveArtwork = catchAsync(async (req, res) => {
     message: `${user.userName} created the artwork`,
     type: HISTORY_TYPE.ARTWORK_CREATED,
   });
-  if (req.body.isAlbum) {
+  if (req.body.albumId) {
     EVENT.emit('insert-artwork-in album', {
       albumId: body.albumId,
       artwork: artwork._id,
     });
   }
-  res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork });
+
+  res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork, price, signature });
 });
 
 const getUserArtworks = catchAsync(async (req, res) => {

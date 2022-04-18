@@ -1,5 +1,9 @@
 const { Artwork } = require('../models');
 const { MINT_STATUS } = require('../utils/enums');
+const axios = require('axios');
+const Web3 = require('web3');
+
+const web3 = new Web3();
 
 const getPopulatedArtwork = async (artworkId, fieldsToPopulate) => {
   return await Artwork.findOne({ _id: artworkId }).populate(fieldsToPopulate).lean();
@@ -125,7 +129,7 @@ const getUserFilteredArtworks = async (userId, page, perPage) => {
     .skip(page * perPage);
 };
 const getAllArtworksPaginated = async (page, perPage) => {
-  const artworks = await Artwork.find()
+  const artworks = await Artwork.find({ isInAlbum: 'false' }).sort({ _id: -1 }).populate('owner').populate('group').populate('sale').populate('auction').limit(parseInt(perPage))
     .populate('creater')
     .populate('owner')
     .populate('auction')
@@ -136,7 +140,7 @@ const getAllArtworksPaginated = async (page, perPage) => {
     .skip(page * perPage)
     .lean();
 
-  const count = await Artwork.find().countDocuments();
+  const count = await Artwork.find({ isInAlbum: 'false' }).countDocuments();
   return { artworks, count };
 };
 const getAllArtworks = async (
@@ -178,8 +182,7 @@ const getAllArtworks = async (
       .limit(parseInt(perPage))
       .skip(page * perPage);
   }
-  return await Artwork.find({})
-    .populate('owner')
+  return await Artwork.find({ isInAlbum: 'false' })
     .populate('creater')
     .populate('auction')
     .populate('sale')
@@ -310,8 +313,34 @@ const searchArtworkByVideo = async (keyword, page, perPage) => {
   return videos;
 };
 
+const ethToUsd = async (value) => {
+  try {
+    value = parseFloat(value);
+    const response = await axios.get('https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD');
+    if (response.status === 200) {
+      let price = response.data.RAW.ETH.USD.PRICE;
+      price = parseFloat(price);
+      const dollorPrice = value / price;
+      return dollorPrice;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+}
 
 
+const getSignatureHash = async (userAddress, price, tokenUrl) => {
+  price = await web3.utils.toWei(price.toString(), 'ether');
+  const data = web3.utils.soliditySha3(userAddress, price, tokenUrl);
+  return data;
+};
+
+const signMessage = async (msgHash, adminAddress, adminKey) => {
+  web3.eth.defaultAccount = adminAddress;
+  const signObj = web3.eth.accounts.sign(msgHash, adminKey);
+  return signObj;
+};
 module.exports = {
   saveArtwork,
   getUserArtworks,
@@ -347,4 +376,7 @@ module.exports = {
   getCountOfArtworkOfVideo,
   searchArtworkByMusic,
   searchArtworkByVideo,
+  ethToUsd,
+  getSignatureHash,
+  signMessage,
 };

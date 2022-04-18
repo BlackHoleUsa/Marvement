@@ -35,8 +35,31 @@ const createAlbum = async (userBody) => {
 };
 
 const getSingleAlbum = async (id) => {
-  const usr = await MusicAlbum.findById(id);
-  return usr.toObject();
+  const usr = await MusicAlbum.findById(id).populate({
+    path: 'artworks',
+
+    populate: [
+      {
+        path: 'creater',
+        model: 'User',
+      },
+      {
+
+        path: 'owner',
+        model: 'User',
+      },
+      {
+        path: 'sale',
+        model: 'BuySell',
+      },
+      {
+        path: 'auction',
+        model: 'Auction',
+      }
+
+    ],
+  }).lean();
+  return usr;
 };
 const getUserAlbums = async (userId) => {
   const usr = await MusicAlbum.find({ creater: userId }).populate('creater').lean();
@@ -55,14 +78,32 @@ const updateAlbum = async (id, userBody) => {
 };
 
 const getArtworksFromAlbum = async (id, perPage, page) => {
-  const artworks = await MusicAlbum.findById(id)
-    .populate({
-      path: 'artworks',
-      populate: {
+  console.log(id);
+  const artworks = await MusicAlbum.findById(id).populate({
+    path: 'artworks',
+
+    populate: [
+      {
         path: 'creater',
         model: 'User',
       },
-    }).lean();
+      {
+
+        path: 'owner',
+        model: 'User',
+      },
+      {
+        path: 'sale',
+        model: 'BuySell',
+      },
+      {
+        path: 'auction',
+        model: 'Auction',
+      }
+
+    ],
+  }).lean();
+  console.log(artworks);
   let count = artworks.artworks.length;
   const paginateArtworks = paginate(artworks.artworks, perPage, page);
   let result = {

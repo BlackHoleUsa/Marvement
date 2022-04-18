@@ -113,10 +113,8 @@ const artworkSchema = mongoose.Schema(
     },
     genre: {
       type: String,
-    },
-    isAuctionOpen: {
-      type: Boolean,
-      default: false,
+      trim: true,
+      lowercase: true,
     },
     isMeta: {
       type: Boolean,
@@ -128,6 +126,10 @@ const artworkSchema = mongoose.Schema(
     albumDetails: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'MusicAlbum',
+    },
+    isInAlbum: {
+      type: Boolean,
+      default: false,
     },
   },
   {

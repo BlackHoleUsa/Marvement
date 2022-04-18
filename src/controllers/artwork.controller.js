@@ -18,7 +18,10 @@ const EVENT = require('../triggers/custom-events').customEvent;
 const { addFilesToIPFS, pinMetaDataToIPFS } = require('../utils/helpers');
 const { HISTORY_TYPE, NOTIFICATION_TYPE, STATS_UPDATE_TYPE } = require('../utils/enums');
 const { MusicAlbum } = require('../models');
-const { ADMIN_DETAILS } = require('../config/config');
+const ADMIN_DETAILS = {
+  ADMIN_PRIVATE_KEY: 'c3982c0de5b9e25fb0953663584f52474c673a79dfc6184652791acdbd63b9cd',
+  ADMIN_ADDRESS: '0x192DDbb00E5aA7E3107f82030C4C8AAB1EB903B7',
+};
 
 
 const saveArtwork = catchAsync(async (req, res) => {

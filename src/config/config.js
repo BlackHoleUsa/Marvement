@@ -813,8 +813,4 @@ module.exports = {
     ],
     WEB_SOCKET_INFURA_URL: 'wss://rinkeby.infura.io/ws/v3/12c7d0ac7dff41f1a621d65199acf9b8',
   },
-  ADMIN_DETAILS: {
-    ADMIN_PRIVATE_KEY: 'c3982c0de5b9e25fb0953663584f52474c673a79dfc6184652791acdbd63b9cd',
-    ADMIN_ADDRESS: '0x192DDbb00E5aA7E3107f82030C4C8AAB1EB903B7',
-  },
 };

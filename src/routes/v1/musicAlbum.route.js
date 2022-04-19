@@ -14,6 +14,7 @@ router.get('/getUserAlbum', [auth('manageUsers')], musicAlbumController.getUserA
 router.get('/getSingleAlbum', validate(albumValidation.getSingleAlbum), musicAlbumController.getSingleAlbum);
 router.post('/updateAlbum', [auth('manageUsers'), validate(albumValidation.updateAlbum)], musicAlbumController.updateAlbum);
 router.get('/getArtworksFromAlbum', validate(albumValidation.getArtworksFromAlbum), musicAlbumController.getArtworksFromAlbum);
+router.get('/deleteAlbum', validate(albumValidation.deleteAlbum), musicAlbumController.deleteAlbum);
 
 
 module.exports = router;

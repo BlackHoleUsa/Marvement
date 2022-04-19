@@ -113,6 +113,18 @@ const getArtworksFromAlbum = async (id, perPage, page) => {
   return result;
 };
 
+const deleteAlbum = async (id) => {
+  const album = await MusicAlbum.findById(id);
+  let artworks = album.artworks;
+  if (artworks.length > 0) {
+    return false;
+  }
+  else {
+    await MusicAlbum.findByIdAndDelete(id);
+    return true;
+  }
+
+}
 module.exports = {
   createAlbum,
   getSingleAlbum,
@@ -120,4 +132,5 @@ module.exports = {
   updateAlbum,
   getArtworksFromAlbum,
   getUserAlbumsCount,
+  deleteAlbum,
 };

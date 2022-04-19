@@ -73,13 +73,22 @@ const getArtworksFromAlbum = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send({ status: true, message: 'Artworks fetched successfully', artworks: artwork, count: count });
 });
 
+const deleteAlbum = catchAsync(async (req, res) => {
+  const { albumId } = req.query;
+  const album = await musicAlbumService.deleteAlbum(albumId);
+  if (album) {
+    res.status(httpStatus.OK).send({ status: true, message: 'ALbum deleted successfully', album });
+  } else {
+    res.status(httpStatus.BAD_REQUEST).send({ status: false, message: 'Cannot delete Album Contain Artwork' });
+  }
 
-
+});
 module.exports = {
   createAlbum,
   getSingleAlbum,
   getUserAlbum,
   updateAlbum,
   getArtworksFromAlbum,
+  deleteAlbum,
 };
 

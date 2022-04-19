@@ -33,6 +33,11 @@ const getSingleAlbum = {
   }),
 };
 
+const deleteAlbum = {
+  query: Joi.object().keys({
+    albumId: Joi.string().required()
+  }),
+};
 
 
 
@@ -43,4 +48,5 @@ module.exports = {
   updateAlbum,
   getArtworksFromAlbum,
   getSingleAlbum,
+  deleteAlbum,
 };

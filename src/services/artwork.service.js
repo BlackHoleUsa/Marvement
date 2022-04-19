@@ -157,6 +157,7 @@ const getAllArtworks = async (
       .populate('auction')
       .populate('sale')
       .populate('albumDetails')
+      .lean()
       .sort({ _id: -1 })
       .limit(parseInt(perPage))
       .skip(page * perPage);
@@ -167,6 +168,8 @@ const getAllArtworks = async (
       .populate('creater')
       .populate('auction')
       .populate('sale')
+      .populate('albumDetails')
+      .lean()
       .sort({ _id: -1 })
       .limit(parseInt(perPage))
       .skip(page * perPage);
@@ -178,6 +181,7 @@ const getAllArtworks = async (
       .populate('auction')
       .populate('sale')
       .populate('albumDetails')
+      .lean()
       .sort({ _id: -1 })
       .limit(parseInt(perPage))
       .skip(page * perPage);
@@ -187,6 +191,7 @@ const getAllArtworks = async (
     .populate('auction')
     .populate('sale')
     .populate('albumDetails')
+    .lean()
     .sort({ _id: -1 })
     .limit(parseInt(perPage))
     .skip(page * perPage);

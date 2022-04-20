@@ -382,16 +382,17 @@ const getArtworkByGenre = catchAsync(async (req, res) => {
   genre = genre.toLowerCase();
   let artwork;
   const artworks = await artworkService.getArtworkByGenre(genre, page, perPage);
-  let count = artworks.length;
+  if (artworks.length === 0) {
+    res.status(httpStatus.OK).send({ status: true, message: 'Artwork is not found', artworks });
+    return;
+  }
   if (keyword) {
-    if (artworks.length > 0) {
-      artwork = artworks.filter((art) => art.name.toLowerCase().includes(keyword.toLowerCase()));
-    }
+    artwork = artworks.filter((art) => art.name.toLowerCase().includes(keyword.toLowerCase()));
     count = artwork.length;
     res.status(httpStatus.OK).send({ artwork, count });
     return;
   }
-  res.status(httpStatus.OK).send({ artworks, count });
+  res.status(httpStatus.OK).send({ status: true, message: 'Successfull', artworks });
   return;
 
 

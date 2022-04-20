@@ -346,6 +346,11 @@ const signMessage = async (msgHash, adminAddress, adminKey) => {
   const signObj = web3.eth.accounts.sign(msgHash, adminKey);
   return signObj;
 };
+
+
+const findArtworkAsAlbum = async (artworkId) => {
+  return await Artwork.findOne({ albumDetails: artworkId });
+};
 module.exports = {
   saveArtwork,
   getUserArtworks,
@@ -384,4 +389,5 @@ module.exports = {
   ethToUsd,
   getSignatureHash,
   signMessage,
+  findArtworkAsAlbum,
 };

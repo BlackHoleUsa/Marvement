@@ -120,11 +120,13 @@ const deleteAlbum = async (id) => {
     return false;
   }
   else {
+    const artwork = await artworkService.findArtworkAsAlbum(album._id);
+    await artworkService.deleteArtworkById(artwork._id);
     await MusicAlbum.findByIdAndDelete(id);
     return true;
   }
-
 }
+
 module.exports = {
   createAlbum,
   getSingleAlbum,

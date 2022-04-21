@@ -341,4 +341,7 @@ router.get('/getFilteredArtworks', [validate(artworkValidation.getFilteredArtwor
 
 router.get('/getArtworkByGenre', [validate(artworkValidation.getArtworkByGenre)], artworkController.getArtworkByGenre);
 
+router.get('/getArtworkForAdmin', [validate(artworkValidation.getArtworkForAdmin)], artworkController.artworkForAdmin);
+
+
 module.exports = router;

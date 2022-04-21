@@ -44,6 +44,7 @@ const SEARCH_FILTERS = {
   AUDIO: "audio",
   VIDEOS: 'videos',
   GENRES: 'genre',
+  ALBUM: 'album',
 };
 
 const AUCTION_FILTERS = {

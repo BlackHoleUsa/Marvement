@@ -21,6 +21,8 @@ const createArtworkVS = {
     isMeta: Joi.string().optional(),
     isAlbum: Joi.string().optional(),
     albumId: Joi.string().optional(),
+    tiktokLink: Joi.string().optional(),
+    instagramLink: Joi.string().optional(),
   }),
 };
 

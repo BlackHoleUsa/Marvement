@@ -46,6 +46,16 @@ const artworkSchema = mongoose.Schema(
       required: false,
       trim: true,
     },
+    instagramLink: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    tiktokLink: {
+      type: String,
+      required: false,
+      trim: true,
+    },
     thumbNail_url: {
       type: String,
       required: false,

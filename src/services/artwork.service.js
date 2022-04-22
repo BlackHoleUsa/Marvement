@@ -412,7 +412,7 @@ const getAllArtworkOfAlbumCount = async () => {
 };
 
 const getAllArtworkForAdmin = async (page, perPage) => {
-  const artwork = await Artwork.find({ isAlbum: false })
+  const artworks = await Artwork.find({ isAlbum: false })
     .populate('owner')
     .populate('group')
     .populate('sale')
@@ -423,6 +423,11 @@ const getAllArtworkForAdmin = async (page, perPage) => {
     .lean()
     .limit(parseInt(perPage))
     .skip(page * perPage);
+  const artwork = artworks.filter(artwork => !artwork.isAlbum).map(artwork => {
+    return {
+      ...artwork, isInAlbum: false
+    }
+  });
   const count = await Artwork.find({ isAlbum: false }).countDocuments();
   return { artwork, count };
 };

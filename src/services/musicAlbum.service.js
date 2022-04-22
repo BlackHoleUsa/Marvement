@@ -28,6 +28,7 @@ const createAlbum = async (userBody) => {
     artwork_thumbnail_image: null,
     albumDetails: usr._id,
     genre: usr.genre,
+    owner: userBody.creater,
   }
   await artworkService.saveArtwork(albumArt);
 

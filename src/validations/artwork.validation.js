@@ -166,8 +166,17 @@ const getArtworkByGenre = {
   }),
 };
 
+const getArtworkForAdmin = {
+  query: Joi.object().keys({
+    page: Joi.string().required(),
+    perPage: Joi.string().required(),
+  }),
+};
+
+
 
 module.exports = {
+  getArtworkForAdmin,
   createArtworkVS,
   getArtworksVS,
   addFavouriteVS,

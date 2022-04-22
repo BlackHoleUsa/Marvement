@@ -39,6 +39,13 @@ const handleSearch = catchAsync(async (req, res) => {
         count = videoArtwork.length;
         break;
 
+      case SEARCH_FILTERS.ALBUM:
+        data.artworks = albumSearch.artworks;
+        data.artwork = artworks;
+        count = albumSearch.count;
+        break;
+
+
 
       default:
         data = {
@@ -50,7 +57,6 @@ const handleSearch = catchAsync(async (req, res) => {
     res.status(httpStatus.OK).send({
       status: true,
       message: 'Successfull',
-      page,
       data,
       count,
     });
@@ -68,9 +74,9 @@ const handleSearch = catchAsync(async (req, res) => {
         break;
 
       case SEARCH_FILTERS.ARTWORKS:
-        artworks = await artworkService.getAllArtwork(page, perPage);
-        data.artworks = artworks;
-        count = await artworkService.getAllArtworksCount1();
+        artworks = await artworkService.getAllArtworkSearch(page, perPage);
+        data.artworks = artworks.artwork;
+        count = artworks.count;
         break;
 
       case SEARCH_FILTERS.COLLECTIONS:
@@ -89,6 +95,12 @@ const handleSearch = catchAsync(async (req, res) => {
         artworks = await artworkService.getAllArtworkOfVideo(page, perPage);
         data.artwork = artworks;
         count = await artworkService.getCountOfArtworkOfVideo();
+        break;
+
+      case SEARCH_FILTERS.ALBUM:
+        artworks = await artworkService.getAllArtworkOfAlbum(page, perPage);
+        data.artwork = artworks;
+        count = await artworkService.getAllArtworkOfAlbumCount();
         break;
 
       default:

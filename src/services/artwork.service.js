@@ -19,6 +19,7 @@ const getUserArtworks = async (userId, page, perPage) => {
     .populate('auction')
     .populate('sale')
     .populate('owner')
+    .populate('albumDetails')
     .sort({ _id: -1 })
     .limit(parseInt(perPage))
     .skip(page * perPage)
@@ -140,7 +141,8 @@ const getAllArtworksPaginated = async (page, perPage) => {
     .skip(page * perPage)
     .lean();
 
-  const count = await Artwork.find({ isInAlbum: 'false' }).countDocuments();
+
+  const count = artworks.filter(artwork => artwork.isInAlbum === false).length;
   return { artworks, count };
 };
 const getAllArtworks = async (
@@ -203,7 +205,7 @@ const getAllArtworksCount = async (
   artwork_type = undefined
 ) => {
   if (artwork_type != undefined) {
-    return await Artwork.find({ artwork_type })
+    await Artwork.find({ artwork_type })
       .populate('owner').countDocuments();
   }
   if (isAuctionOpen != undefined) {
@@ -215,7 +217,9 @@ const getAllArtworksCount = async (
       .populate('owner').countDocuments();
   }
   return await Artwork.find({})
-    .populate('owner').countDocuments();
+    .populate('owner').countDoucments();
+  // const count = artworks.filter(artwork => artwork.isInAlbum === false).length;
+  // return count;
 };
 const searchArtworkByNameTotal = async (keyword, page, perPage, artist, min, max) => {
   const query = {};
@@ -241,19 +245,44 @@ const searchArtworkByNameTotal = async (keyword, page, perPage, artist, min, max
     .populate('auction').countDocuments();
 };
 const getAllArtworksCount1 = async () => {
-  return await Artwork.find().countDocuments();
+  const artworks = await Artwork.find();
+
+  const count = artworks.filter(artwork => artwork.isInAlbum === false).length;
+  return count;
+
 };
 const getAllArtwork = async (page, perPage) => {
-  return await Artwork.find().sort({ _id: -1 }).populate('owner').populate('group').populate('sale').populate('auction').limit(parseInt(perPage))
+  const artworks = await Artwork.find().sort({ _id: -1 })
+    .populate('owner')
+    .populate('group')
+    .populate('sale')
+    .populate('creater')
+    .populate('auction')
+    .populate('albumDetails')
+    .lean()
+    .limit(parseInt(perPage))
     .skip(page * perPage);
+  const count = artworks.filter(artwork => artwork.isInAlbum === false).length;
+  return { artworks, count };
+
 };
 const getUserArtworksCount = async (userId) => {
-  return await Artwork.find({ owner: userId }).countDocuments();
+  const artwork = await Artwork.find({ owner: userId });
+
+  const count = artwork.filter(artwork => artwork.isInAlbum === false).length;
+  return count;
+
+
 };
 
 const getArtworkByGenre = async (genre, page, perPage) => {
   const artwork = await Artwork.find({ genre: genre })
     .populate('creater')
+    .populate('owner')
+    .populate('auction')
+    .populate('sale')
+    .populate('albumDetails')
+    .sort({ _id: -1 })
     .limit(parseInt(perPage))
     .skip(page * perPage)
     .lean();
@@ -311,11 +340,24 @@ const searchArtworkByVideo = async (keyword, page, perPage) => {
   if (keyword) {
     query.name = { $regex: keyword, $options: 'i' };
   }
-  const videoArtwork = await Artwork.find(query);
-  const videos = videoArtwork.filter((video) => {
-    return video.artwork_type === 'videos';
+  const videos = await Artwork.find(query);
+  const video = videos.filter((alb) => {
+    return alb.artwork_type === "videos";
   })
   return videos;
+};
+
+const searchArtworkByAlbum = async (keyword, page, perPage) => {
+  let query = {};
+  if (keyword) {
+    query.name = { $regex: keyword, $options: 'i' };
+  }
+  const album = await Artwork.find(query);
+  const albums = album.filter((alb) => {
+    return alb.isAlbum === true;
+  })
+  const count = albums.length;
+  return { albums, count };
 };
 
 const ethToUsd = async (value) => {
@@ -351,8 +393,61 @@ const signMessage = async (msgHash, adminAddress, adminKey) => {
 const findArtworkAsAlbum = async (artworkId) => {
   return await Artwork.findOne({ albumDetails: artworkId });
 };
+
+const getAllArtworkOfAlbum = async (page, perPage) => {
+  return await Artwork.find({ isAlbum: true })
+    .populate('owner')
+    .populate('creater')
+    .populate('auction')
+    .populate('sale')
+    .populate('albumDetails')
+    .sort({ _id: -1 })
+    .limit(parseInt(perPage))
+    .skip(page * perPage);
+};
+
+const getAllArtworkOfAlbumCount = async () => {
+  return await Artwork.find({ isAlbum: true }).countDocuments();
+};
+
+const getAllArtworkForAdmin = async (page, perPage) => {
+  const artwork = await Artwork.find({})
+    .populate('owner')
+    .populate('group')
+    .populate('sale')
+    .populate('auction')
+    .populate('creater')
+    .populate('albumDetails')
+    .sort({ _id: -1 })
+    .lean()
+    .limit(parseInt(perPage))
+    .skip(page * perPage);
+  const count = await Artwork.find({}).countDocuments();
+  return { artwork, count };
+};
+
+const getAllArtworkSearch = async (page, perPage) => {
+  const artwork = await Artwork.find({ isAlbum: false })
+    .populate('owner')
+    .populate('group')
+    .populate('sale')
+    .populate('auction')
+    .populate('creater')
+    .populate('albumDetails')
+    .sort({ _id: -1 })
+    .lean()
+    .limit(parseInt(perPage))
+    .skip(page * perPage);
+  const count = await Artwork.find({ isAlbum: false }).countDocuments();
+  return { artwork, count };
+};
+
 module.exports = {
   saveArtwork,
+  getAllArtworkSearch,
+  searchArtworkByAlbum,
+  getAllArtworkOfAlbum,
+  getAllArtworkOfAlbumCount,
   getUserArtworks,
   increaseArtworkViews,
   updateArtwork,
@@ -390,4 +485,6 @@ module.exports = {
   getSignatureHash,
   signMessage,
   findArtworkAsAlbum,
+  getAllArtworkForAdmin,
+
 };

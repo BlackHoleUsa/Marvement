@@ -398,6 +398,12 @@ const getArtworkByGenre = catchAsync(async (req, res) => {
 
 });
 
+const artworkForAdmin = catchAsync(async (req, res) => {
+  const { page, perPage } = req.query;
+  const artWorks = await artworkService.getAllArtworkForAdmin(page, perPage);
+  res.status(httpStatus.OK).send({ status: true, message: 'Successfull', data: artWorks });
+});
+
 
 module.exports = {
   saveArtwork,
@@ -423,4 +429,5 @@ module.exports = {
   getAllArtworks,
   setAuctionBidders,
   getArtworkByGenre,
+  artworkForAdmin,
 };

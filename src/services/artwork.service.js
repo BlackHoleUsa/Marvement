@@ -217,7 +217,7 @@ const getAllArtworksCount = async (
       .populate('owner').countDocuments();
   }
   return await Artwork.find({})
-    .populate('owner').countDoucments();
+    .populate('owner').countDocuments();
   // const count = artworks.filter(artwork => artwork.isInAlbum === false).length;
   // return count;
 };

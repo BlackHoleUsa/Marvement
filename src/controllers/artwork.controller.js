@@ -317,6 +317,7 @@ const getAllArtworks = catchAsync(async (req, res) => {
   if (!artwork_type) {
     const artWorks = await artworkService.getAllArtworks(page, perPage, isAuctionOpen, openForSale);
     const count = await artworkService.getAllArtworksCount(isAuctionOpen, openForSale);
+    console.log(count);
     res.status(httpStatus.OK).send({ status: true, message: 'Successfull', data: artWorks, count });
   } else {
     const artWorks = await artworkService.getAllArtworks(page, perPage, undefined, undefined, artwork_type);
@@ -380,19 +381,20 @@ const setAuctionBidders = catchAsync(async (req, res) => {
 const getArtworkByGenre = catchAsync(async (req, res) => {
   let = { genre, page, perPage, keyword } = req.query;
   genre = genre.toLowerCase();
-  let artwork;
-  const artworks = await artworkService.getArtworkByGenre(genre, page, perPage);
-  if (artworks.length === 0) {
+  const artworkss = await artworkService.getArtworkByGenre(genre, page, perPage);
+  let artwork = artworkss.art;
+  let count = artworkss.count;
+  if (artwork.length === 0) {
     res.status(httpStatus.OK).send({ status: true, message: 'Artwork is not found', artworks });
     return;
   }
   if (keyword) {
-    artwork = artworks.filter((art) => art.name.toLowerCase().includes(keyword.toLowerCase()));
+    artwork = artwork.filter((art) => art.name.toLowerCase().includes(keyword.toLowerCase()));
     count = artwork.length;
     res.status(httpStatus.OK).send({ artwork, count });
     return;
   }
-  res.status(httpStatus.OK).send({ status: true, message: 'Successfull', artworks });
+  res.status(httpStatus.OK).send({ status: true, message: 'Successfull', artwork, count });
   return;
 
 

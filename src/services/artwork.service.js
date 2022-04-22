@@ -216,10 +216,10 @@ const getAllArtworksCount = async (
     return await Artwork.find({ openForSale: true })
       .populate('owner').countDocuments();
   }
-  const artworks = await Artwork.find({})
-    .populate('owner')
-  const count = artworks.filter(artwork => artwork.isInAlbum === false).length;
-  return count;
+  return await Artwork.find({})
+    .populate('owner').countDoucments();
+  // const count = artworks.filter(artwork => artwork.isInAlbum === false).length;
+  // return count;
 };
 const searchArtworkByNameTotal = async (keyword, page, perPage, artist, min, max) => {
   const query = {};

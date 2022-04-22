@@ -25,8 +25,8 @@ const handleSearch = catchAsync(async (req, res) => {
         break;
 
       case SEARCH_FILTERS.ARTWORKS:
-        data.artworks = artworks;
-        count = artworksCount;
+        data.artworks = artworks.artwork;
+        count = artworks.count;
         break;
 
       case SEARCH_FILTERS.AUDIO:
@@ -40,8 +40,7 @@ const handleSearch = catchAsync(async (req, res) => {
         break;
 
       case SEARCH_FILTERS.ALBUM:
-        data.artworks = albumSearch.artworks;
-        data.artwork = artworks;
+        data.artworks = albumSearch.albums;
         count = albumSearch.count;
         break;
 

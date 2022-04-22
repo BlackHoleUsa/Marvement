@@ -317,7 +317,6 @@ const getAllArtworks = catchAsync(async (req, res) => {
   if (!artwork_type) {
     const artWorks = await artworkService.getAllArtworks(page, perPage, isAuctionOpen, openForSale);
     const count = await artworkService.getAllArtworksCount(isAuctionOpen, openForSale);
-    console.log(count);
     res.status(httpStatus.OK).send({ status: true, message: 'Successfull', data: artWorks, count });
   } else {
     const artWorks = await artworkService.getAllArtworks(page, perPage, undefined, undefined, artwork_type);
@@ -368,11 +367,8 @@ const setAuctionBidders = catchAsync(async (req, res) => {
   const { artworkId } = req.query;
   const { userId, aucId } = req.body;
   const response = await auctionService.setAuctionBidders(artworkId, userId);
-  console.log("auctionId", aucId);
   let bids = await bidService.getAuctionBids(aucId);
-  console.log("bids", bids);
   const amount = Math.max.apply(null, bids?.map(bid => bid?.bid_amount));
-  console.log('amounts -> ', amount);
   await auctionService.setmaxBid(artworkId, amount);
   res.status(httpStatus.CREATED).send(response);
 });
@@ -382,19 +378,22 @@ const getArtworkByGenre = catchAsync(async (req, res) => {
   let = { genre, page, perPage, keyword } = req.query;
   genre = genre.toLowerCase();
   const artworkss = await artworkService.getArtworkByGenre(genre, page, perPage);
-  let artwork = artworkss.art;
+  let artworks = artworkss.art;
+
   let count = artworkss.count;
-  if (artwork.length === 0) {
+  if (artworks.length === 0) {
     res.status(httpStatus.OK).send({ status: true, message: 'Artwork is not found', artworks });
     return;
   }
   if (keyword) {
-    artwork = artwork.filter((art) => art.name.toLowerCase().includes(keyword.toLowerCase()));
+
+
+    artworks = artworkss.filter((art) => art.name.toLowerCase().includes(keyword.toLowerCase()));
     count = artwork.length;
-    res.status(httpStatus.OK).send({ artwork, count });
+    res.status(httpStatus.OK).send({ artworks, count });
     return;
   }
-  res.status(httpStatus.OK).send({ status: true, message: 'Successfull', artwork, count });
+  res.status(httpStatus.OK).send({ status: true, message: 'Successfull', artworks, count });
   return;
 
 

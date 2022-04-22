@@ -278,7 +278,6 @@ const getAllUsers = async (page, perPage) => {
     .sort({ _id: -1 })
     .limit(parseInt(perPage))
     .skip(page * perPage);
-  console.log(users);
   return users;
 };
 const removeCollection = async (collectionId, userId) => {

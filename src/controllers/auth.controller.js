@@ -21,7 +21,6 @@ async function helper(owner, symbol) {
     collectionId: col1._id,
     userId: owner,
   });
-  console.log("in helper");
 }
 
 const register = catchAsync(async (req, res) => {

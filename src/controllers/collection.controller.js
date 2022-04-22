@@ -12,7 +12,6 @@ const createCollection = catchAsync(async (req, res) => {
   if (await collectionService.collectionExistsWithSymbol(owner, symbol)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Collection with symbol already exists');
   }
-  console.log(req.body);
   let col = await collectionService.saveCollection(req.body);
   let cover, profile;
   if (files.length > 0) {

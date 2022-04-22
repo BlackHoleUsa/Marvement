@@ -314,6 +314,8 @@ const getArtworkHistory = catchAsync(async (req, res) => {
 
 const getAllArtworks = catchAsync(async (req, res) => {
   const { artwork_type, page, perPage, isAuctionOpen, openForSale } = req.query;
+  console.log(req.query);
+
   if (!artwork_type) {
     const artWorks = await artworkService.getAllArtworks(page, perPage, isAuctionOpen, openForSale);
     const count = await artworkService.getAllArtworksCount(isAuctionOpen, openForSale);

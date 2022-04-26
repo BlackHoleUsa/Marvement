@@ -1391,7 +1391,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    WEB_SOCKET_INFURA_URL: 'wss://rinkeby.infura.io/ws/v3/12c7d0ac7dff41f1a621d65199acf9b8',
+    WEB_SOCKET_INFURA_URL: 'wss://ws-nd-840-393-875.p2pify.com/e43f8c88e93597fde7ec5186387243d4',
   },
   ETH_CONTRACTS: {
     MINT_NFT_CONTRACT_ADDRESS: '0x5BEb80E7de86fca638E6E2227263Ad1794f07561',    // ERC 721 address

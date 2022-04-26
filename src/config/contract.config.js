@@ -1,7 +1,9 @@
-const { ETH_CONTRACTS } = require('./config');
+const { ETH_CONTRACTS, POLY_CONTRACTS } = require('./config');
 const Web3 = require('web3');
 
 const web3_Instance = new Web3(new Web3.providers.WebsocketProvider(ETH_CONTRACTS.WEB_SOCKET_INFURA_URL));
+
+const web3_Instance_POLY = new Web3(new Web3.providers.WebsocketProvider(POLY_CONTRACTS.WEB_SOCKET_INFURA_URL));
 
 const MINT_CONTRACT_INSTANCE = new web3_Instance.eth.Contract(
   ETH_CONTRACTS.MINT_NFT_ABI,
@@ -13,7 +15,22 @@ const AUCTION_CONTRACT_INSTANCE = new web3_Instance.eth.Contract(
   ETH_CONTRACTS.AUCTION_CONTRACT_ADDRESS
 );
 
+
+const MINT_CONTRACT_INSTANCE_POLY = new web3_Instance_POLY.eth.Contract(
+  POLY_CONTRACTS.MINT_NFT_ABI,
+  POLY_CONTRACTS.MINT_NFT_CONTRACT_ADDRESS
+);
+
+
+
+const AUCTION_CONTRACT_INSTANCE_POLY = new web3_Instance_POLY.eth.Contract(
+  POLY_CONTRACTS.AUC_ABI,
+  POLY_CONTRACTS.AUCTION_CONTRACT_ADDRESS
+);
+
 module.exports = {
   MINT_CONTRACT_INSTANCE,
-  AUCTION_CONTRACT_INSTANCE
+  AUCTION_CONTRACT_INSTANCE,
+  MINT_CONTRACT_INSTANCE_POLY,
+  AUCTION_CONTRACT_INSTANCE_POLY
 };

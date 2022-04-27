@@ -82,7 +82,7 @@ module.exports = {
     bucket: envVars.AWS_BUCKET,
   },
   POLY_CONTRACTS: {
-    MINT_NFT_CONTRACT_ADDRESS: '0x6a096Df018ef12746d040Ead202530401648390a',
+    MINT_NFT_CONTRACT_ADDRESS: '0x336684F253C18c05A42899cDf5DB7b66f3CD8e48',
     AUCTION_CONTRACT_ADDRESS: '0xc43102732248A83b2F8Bb087065a3372B2b21442',
     MINT_NFT_ABI: [
       {
@@ -1391,7 +1391,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    WEB_SOCKET_INFURA_URL: 'wss://ws-nd-840-393-875.p2pify.com/e43f8c88e93597fde7ec5186387243d4',
+    WEB_SOCKET_INFURA_URL: 'wss://polygon-mumbai.g.alchemy.com/v2/8aEOyIS4N_N6ytkm4tnDsSzvt3N1xBFP',
   },
   ETH_CONTRACTS: {
     MINT_NFT_CONTRACT_ADDRESS: '0x5BEb80E7de86fca638E6E2227263Ad1794f07561',    // ERC 721 address

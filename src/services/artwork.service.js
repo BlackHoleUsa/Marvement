@@ -103,7 +103,13 @@ const searchArtworkByName = async (keyword, page, perPage, artist, min, max) => 
     ];
   }
 
-  const artworks = await Artwork.find(query).lean()
+  const artworks = await Artwork.find(query)
+    .populate('creater')
+    .populate('owner')
+    .populate('auction')
+    .populate('sale')
+    .lean()
+    .sort({ _id: -1 })
     .limit(parseInt(perPage))
     .skip(page * perPage);
 

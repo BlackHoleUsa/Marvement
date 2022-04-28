@@ -15,7 +15,7 @@ const saveArtwork = async (params) => {
 };
 
 const getUserArtworks = async (userId, page, perPage) => {
-  return await Artwork.find({ owner: userId, isAlbum: false })
+  return await Artwork.find({ owner: userId, isAlbum: false, isInAlbum: false })
     .populate('auction')
     .populate('sale')
     .populate('owner')
@@ -117,7 +117,7 @@ const searchArtworkByName = async (keyword, page, perPage, artist, min, max) => 
 };
 
 const getLatestArtworks = async () => {
-  return await Artwork.find()
+  return await Artwork.find({ isInAlbum: false, isAlbum: false })
     .populate('owner')
     .populate('creater')
     .populate('auction')
@@ -280,7 +280,7 @@ const getAllArtwork = async (page, perPage) => {
 
 };
 const getUserArtworksCount = async (userId) => {
-  return await Artwork.find({ owner: userId, isAlbum: 'false' }).countDocuments();
+  return await Artwork.find({ owner: userId, isAlbum: 'false', isInAlbum: false }).countDocuments();
 
 
 };
@@ -454,7 +454,7 @@ const getAllArtworkForAdmin = async (page, perPage) => {
 };
 
 const getAllArtworkSearch = async (page, perPage) => {
-  const artwork = await Artwork.find({ isAlbum: false })
+  const artwork = await Artwork.find({ isAlbum: false, isInAlbum: false })
     .populate('owner')
     .populate('group')
     .populate('sale')
@@ -466,13 +466,7 @@ const getAllArtworkSearch = async (page, perPage) => {
     .limit(parseInt(perPage))
     .skip(page * perPage);
 
-  // const artwork = artworks.filter(artwork => !artwork.isAlbum).map(artwork => {
-  //   return {
-  //     ...artwork, isAlbum: false
-  //   }
-  // });
-
-  const countArtwrok = Artwork.find({ isAlbum: false });
+  const countArtwrok = Artwork.find({ isAlbum: false, isInAlbum: false });
   const count = await countArtwrok.count();
   return { artwork, count };
 };

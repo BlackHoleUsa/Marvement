@@ -129,10 +129,23 @@ const setPlatformFee = catchAsync(async (req, res) => {
 });
 const setRoyality = catchAsync(async (req, res) => {
   const { address } = req.query;
+  console.log(req.body);
+  console.log(address);
   // eslint-disable-next-line radix
-  const royality = parseInt(req.body.royality);
-  const response = await userService.setRoyality(address, royality);
-  res.status(httpStatus.CREATED).send(response);
+  if (req.body.Eroyality) {
+    const Eroyality = parseInt(req.body.Eroyality);
+    const response = await userService.setERoyality(address, Eroyality);
+    res.status(httpStatus.CREATED).send(response);
+    return;
+  }
+  if (req.body.Proyality) {
+    const Proyality = parseInt(req.body.Proyality);
+    const response = await userService.setPRoyality(address, Proyality);
+
+    res.status(httpStatus.CREATED).send(response);
+    return;
+
+  }
 });
 
 const getRoyality = catchAsync(async (req, res) => {

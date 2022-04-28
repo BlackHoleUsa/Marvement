@@ -25,22 +25,22 @@ const handleSearch = catchAsync(async (req, res) => {
         break;
 
       case SEARCH_FILTERS.ARTWORKS:
-        data.artworks = artworks.artwork;
+        data.artwork = artworks.artwork;
         count = artworks.count;
         break;
 
       case SEARCH_FILTERS.AUDIO:
-        data.artworks = musicArtwork;
+        data.artwork = musicArtwork;
         count = musicArtwork.length;
         break;
 
       case SEARCH_FILTERS.VIDEOS:
-        data.artworks = videoArtwork;
+        data.artwork = videoArtwork;
         count = videoArtwork.length;
         break;
 
       case SEARCH_FILTERS.ALBUM:
-        data.artworks = albumSearch.albums;
+        data.artwork = albumSearch.albums;
         count = albumSearch.count;
         break;
 
@@ -49,7 +49,7 @@ const handleSearch = catchAsync(async (req, res) => {
       default:
         data = {
           users,
-          artworks,
+          artwork,
         };
     }
 
@@ -62,7 +62,7 @@ const handleSearch = catchAsync(async (req, res) => {
   } else {
     let users;
     let data = {};
-    let artworks;
+    let artwork;
     let collections;
     let count;
     switch (filter) {
@@ -73,9 +73,9 @@ const handleSearch = catchAsync(async (req, res) => {
         break;
 
       case SEARCH_FILTERS.ARTWORKS:
-        artworks = await artworkService.getAllArtworkSearch(page, perPage);
-        data.artworks = artworks.artwork;
-        count = artworks.count;
+        artwork = await artworkService.getAllArtworkSearch(page, perPage);
+        data.artwork = artwork.artwork;
+        count = artwork.count;
         break;
 
       case SEARCH_FILTERS.COLLECTIONS:
@@ -85,27 +85,27 @@ const handleSearch = catchAsync(async (req, res) => {
         break;
 
       case SEARCH_FILTERS.AUDIO:
-        artworks = await artworkService.getAllArtworkOfMusic(page, perPage);
-        data.artwork = artworks;
+        artwork = await artworkService.getAllArtworkOfMusic(page, perPage);
+        data.artwork = artwork;
         count = await artworkService.getCountOfArtworkOfMusic();
         break;
 
       case SEARCH_FILTERS.VIDEOS:
-        artworks = await artworkService.getAllArtworkOfVideo(page, perPage);
-        data.artwork = artworks;
+        artwork = await artworkService.getAllArtworkOfVideo(page, perPage);
+        data.artwork = artwork;
         count = await artworkService.getCountOfArtworkOfVideo();
         break;
 
       case SEARCH_FILTERS.ALBUM:
-        artworks = await artworkService.getAllArtworkOfAlbum(page, perPage);
-        data.artwork = artworks;
+        artwork = await artworkService.getAllArtworkOfAlbum(page, perPage);
+        data.artwork = artwork;
         count = await artworkService.getAllArtworkOfAlbumCount();
         break;
 
       default:
         data = {
           users,
-          artworks,
+          artwork,
           collections,
         };
     }

@@ -142,7 +142,7 @@ const getUserFilteredArtworks = async (userId, page, perPage) => {
 const getAllArtworksPaginated = async (page, perPage) => {
   // use in explore as Get App Activity
 
-  const artworks = await Artwork.find({ isInAlbum: { $ne: false } })
+  const artworks = await Artwork.find({ isInAlbum: false })
     .populate('creater')
     .populate('owner')
     .populate('auction')

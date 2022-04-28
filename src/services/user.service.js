@@ -297,14 +297,17 @@ const removeOwnedArtworks = async (userId) => {
 const setPlatformFee = async (userAddress, platformFee) => {
   return await User.findOneAndUpdate({ address: userAddress }, { platformfee: platformFee }, { new: true }).lean();
 };
-const setRoyality = async (userAddress, royality) => {
-  return await User.findOneAndUpdate({ address: userAddress }, { royality: royality }, { new: true }).lean();
+const setERoyality = async (userAddress, royality) => {
+  return await User.findOneAndUpdate({ address: userAddress }, { Eroyality: royality }, { new: true }).lean();
+};
+const setPRoyality = async (userAddress, royality) => {
+  return await User.findOneAndUpdate({ address: userAddress }, { Proyality: royality }, { new: true }).lean();
 };
 const getPlatformFee = async (userAddress) => {
   return await User.findOne({ address: userAddress }, { platformfee: 1 }).lean();
 };
 const getRoyality = async (userAddress) => {
-  return await User.findOne({ address: userAddress }, { royality: 1 }).lean();
+  return await User.findOne({ address: userAddress }).lean();
 };
 
 module.exports = {
@@ -336,7 +339,8 @@ module.exports = {
   removeOwnedArtworks,
   setPlatformFee,
   getPlatformFee,
-  setRoyality,
+  setERoyality,
+  setPRoyality,
   getRoyality,
   updateUserStatus,
 };

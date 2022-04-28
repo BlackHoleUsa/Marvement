@@ -108,7 +108,12 @@ const userSchema = mongoose.Schema(
       required: false,
       default: 0,
     },
-    royality: {
+    Eroyality: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    Proyality: {
       type: Number,
       required: false,
       default: 0,

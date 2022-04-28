@@ -90,7 +90,9 @@ const setRoyality = {
     address: Joi.string().required(),
   }),
   body: Joi.object().keys({
-    royality: Joi.number().required(),
+    Eroyality: Joi.number().optional(),
+    Proyality: Joi.number().optional(),
+
   }),
 };
 

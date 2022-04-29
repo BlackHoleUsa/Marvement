@@ -25,9 +25,9 @@ const transfer = async (transferContract) => {
   from = from.toLowerCase();
   to = to.toLowerCase();
   console.log("transferContract", transferContract);
-  let auctionContractAddress = "0x2DaDBD5a4B1C8e70fd9Bd08cab83599d3D7Ca2F6";
+  let auctionContractAddress = "0xad2fB2710eC42297FB159fb502d6251a11FA896c";
   auctionContractAddress = auctionContractAddress.toLowerCase();
-  let mintContractAddress = "0xA23D02Ea0873A9ED220a2B991f8566290D74E781";
+  let mintContractAddress = "0xF610A19aBF2C4035650b11d9CD0E0ff9cE448f5e";
   mintContractAddress = mintContractAddress.toLowerCase();
   const result = await User.find({ address: to });
   console.log(result);

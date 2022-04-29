@@ -82,8 +82,8 @@ module.exports = {
     bucket: envVars.AWS_BUCKET,
   },
   POLY_CONTRACTS: {
-    MINT_NFT_CONTRACT_ADDRESS: '0xA23D02Ea0873A9ED220a2B991f8566290D74E781',
-    AUCTION_CONTRACT_ADDRESS: '0x2DaDBD5a4B1C8e70fd9Bd08cab83599d3D7Ca2F6',
+    MINT_NFT_CONTRACT_ADDRESS: '0xF610A19aBF2C4035650b11d9CD0E0ff9cE448f5e', // ERC 721 address
+    AUCTION_CONTRACT_ADDRESS: '0xad2fB2710eC42297FB159fb502d6251a11FA896c', // Auction address
     MINT_NFT_ABI: [
       {
         "inputs": [
@@ -1391,11 +1391,11 @@ module.exports = {
         "type": "function"
       }
     ],
-    WEB_SOCKET_INFURA_URL: 'wss://polygon-mumbai.g.alchemy.com/v2/8aEOyIS4N_N6ytkm4tnDsSzvt3N1xBFP',
+    WEB_SOCKET_INFURA_URL: 'wss://polygon-mainnet.g.alchemy.com/v2/FuUVLp4WLdZPYpsyWZq4_Xua6z0sEUdm',
   },
   ETH_CONTRACTS: {
-    MINT_NFT_CONTRACT_ADDRESS: '0x5BEb80E7de86fca638E6E2227263Ad1794f07561',    // ERC 721 address
-    AUCTION_CONTRACT_ADDRESS: '0x34ba4EF67C65E7865BF4dF3013Ad65a9d18edB4C',    // Auction address
+    MINT_NFT_CONTRACT_ADDRESS: '0xF610A19aBF2C4035650b11d9CD0E0ff9cE448f5e',    // ERC 721 address
+    AUCTION_CONTRACT_ADDRESS: '0xad2fB2710eC42297FB159fb502d6251a11FA896c',    // Auction address
     MINT_NFT_ABI: [
       {
         "inputs": [
@@ -2703,6 +2703,6 @@ module.exports = {
         "type": "function"
       }
     ],
-    WEB_SOCKET_INFURA_URL: 'wss://rinkeby.infura.io/ws/v3/12c7d0ac7dff41f1a621d65199acf9b8',
+    WEB_SOCKET_INFURA_URL: 'wss://mainnet.infura.io/ws/v3/a3b23a55e0f04ba6bb97420b6bdd284c', // Infura link
   },
 };

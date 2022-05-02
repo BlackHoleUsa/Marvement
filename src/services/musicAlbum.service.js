@@ -3,12 +3,42 @@ const web3 = require('web3');
 const { userService } = require('.');
 const { User, Stats } = require('../models');
 const ApiError = require('../utils/ApiError');
-const { MusicAlbum } = require('../models');
+const { MusicAlbum, Post } = require('../models');
 const artworkService = require('./artwork.service');
 
 function paginate(array, page_size, page_number) {
   // human-readable page numbers usually start with 1, so we reduce 1 in the first argument
   return array.slice(page_number * page_size, page_number * page_size + page_size);
+}
+
+const createPost = async (userBody) => {
+  const post = await Post.create(userBody);
+  return post.toObject();
+}
+
+const approvePost = async (id) => {
+  const post = await Post.findByIdAndUpdate({ _id: id }, { $set: { isApproved: 'true', isRejected: 'false' } }, { new: true });
+  return post;
+}
+
+const getAllApprovePosts = async () => {
+  const posts = await Post.find({ isApproved: 'true' });
+  return posts
+}
+
+const getAllUnApprovedPost = async () => {
+  const posts = await Post.find({ isApproved: 'false' });
+  return posts
+}
+
+const rejectPost = async (id, reason) => {
+  const post = await Post.findByIdAndUpdate({ _id: id }, { $set: { isRejected: 'true', note: reason } }, { new: true });
+  return post;
+}
+
+const getAllRejectPosts = async () => {
+  const posts = await Post.find({ isRejected: 'true' });
+  return posts
 }
 
 
@@ -44,6 +74,7 @@ const getSingleAlbum = async (id) => {
         path: 'creater',
         model: 'User',
       },
+
       {
 
         path: 'owner',
@@ -134,4 +165,10 @@ module.exports = {
   getArtworksFromAlbum,
   getUserAlbumsCount,
   deleteAlbum,
+  createPost,
+  approvePost,
+  getAllUnApprovedPost,
+  getAllApprovePosts,
+  rejectPost,
+  getAllRejectPosts,
 };

@@ -3,3 +3,4 @@ module.exports.userController = require('./user.controller');
 module.exports.contractController = require('./contract.controller');
 module.exports.generalController = require('./general.controller');
 module.exports.contractPolyController = require('./contractPoly.controller');
+module.exports.postControlller = require('./post.controller');

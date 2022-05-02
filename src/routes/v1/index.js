@@ -8,7 +8,7 @@ const salesRoute = require('./sales.route');
 const auctionRoute = require('./auction.route');
 const generalRoute = require('./general.route');
 const musicRoute = require('./musicAlbum.route');
-
+const postRoute = require('./post.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -45,6 +45,10 @@ const defaultRoutes = [
   {
     path: '/album',
     route: musicRoute,
+  },
+  {
+    path: '/post',
+    route: postRoute,
   }
 ];
 

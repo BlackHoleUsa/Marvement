@@ -10,3 +10,4 @@ module.exports.Notification = require('./notification.model');
 module.exports.Transaction = require('./transaction.model');
 module.exports.Stats = require('./stats.model');
 module.exports.MusicAlbum = require('./musicAlbum.model');
+module.exports.Post = require('./post.model');

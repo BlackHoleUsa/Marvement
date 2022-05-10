@@ -14,3 +14,5 @@ EVENT.addListener('create-stats', LISTENERS.createStats);
 EVENT.addListener('stats-artwork-mint', LISTENERS.userStatsUpdate);
 EVENT.addListener('add-Album-In-User', LISTENERS.addAlbumInUser);
 EVENT.addListener('insert-artwork-in album', LISTENERS.addArtworkInAlbum);
+EVENT.addListener('add-price-counter', LISTENERS.addPriceCounter);
+EVENT.addListener('increase-price-in-counter', LISTENERS.incrementPriceCounter);

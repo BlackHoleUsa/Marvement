@@ -18,7 +18,7 @@ require('./config/aws.config');
 require('./triggers/triggers');
 require('./triggers/contract.triggers');
 // require('./triggers/cron-job');
-
+const EVENT = require('./triggers/custom-events').customEvent;
 const app = express();
 
 if (config.env !== 'test') {
@@ -84,4 +84,5 @@ app.use(errorConverter);
 // handle error
 app.use(errorHandler);
 
+EVENT.emit('add-price-counter');
 module.exports = app;

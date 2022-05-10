@@ -1,6 +1,6 @@
 const { User, Collection, MusicAlbum, Artwork, Auction, History, Notification, Transaction, Stats, Album } = require('../models');
 const { MINT_STATUS, STATS_UPDATE_TYPE } = require('../utils/enums');
-
+const { priceService } = require('../services/index');
 const addCollectionInUser = async (params) => {
   const { collectionId, userId } = params;
   await User.findOneAndUpdate(
@@ -162,6 +162,14 @@ const userStatsUpdate = async (params) => {
   console.log('STATS done');
 }
 
+const addPriceCounter = async () => {
+  await priceService.addPriceCounter();
+  console.log('price counter added ');
+};
+const incrementPriceCounter = async () => {
+  await priceService.incrementPriceCounter();
+  console.log('price counter increment');
+};
 module.exports = {
   addCollectionInUser,
   addArtworkInUser,
@@ -175,4 +183,6 @@ module.exports = {
   userStatsUpdate,
   addAlbumInUser,
   addArtworkInAlbum,
+  addPriceCounter,
+  incrementPriceCounter,
 };

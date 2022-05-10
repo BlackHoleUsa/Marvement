@@ -13,6 +13,7 @@ const {
   bidService,
   auctionService,
   historyService,
+  priceService,
 } = require('../services');
 const EVENT = require('../triggers/custom-events').customEvent;
 const { addFilesToIPFS, pinMetaDataToIPFS } = require('../utils/helpers');
@@ -102,9 +103,15 @@ const saveArtwork = catchAsync(async (req, res) => {
       artwork_url: imgData,
     });
   }
+  EVENT.emit('increase-price-in-counter');
   const updatedArtwork = await artworkService.updateArtworkMetaUrl(artwork._id, metaUrl);
   const messageHash = await artworkService.getSignatureHash(user.address, price, metaUrl);
   const signMessage = await artworkService.signMessage(messageHash, ADMIN_DETAILS.ADMIN_ADDRESS, ADMIN_DETAILS.ADMIN_PRIVATE_KEY);
+
+  const priceHash = await artworkService.getSignatureHash(ADMIN_DETAILS.ADMIN_ADDRESS, price, priceService.getPriceCounter());
+  const priceMessage = await artworkService.signMessage(priceHash, ADMIN_DETAILS.ADMIN_ADDRESS, ADMIN_DETAILS.ADMIN_PRIVATE_KEY);
+
+  const priceSignature = priceMessage.signature;
   const signature = signMessage.signature;
   price = await web3.utils.toWei(price.toString(), 'ether');
 
@@ -130,7 +137,7 @@ const saveArtwork = catchAsync(async (req, res) => {
     });
   }
 
-  res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork, price, signature });
+  res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork, price, signature, "priceSignature": priceSignature });
 });
 
 const getUserArtworks = catchAsync(async (req, res) => {

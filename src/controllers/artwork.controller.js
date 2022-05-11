@@ -149,6 +149,7 @@ const saveArtwork = catchAsync(async (req, res) => {
       artwork: artwork._id,
     });
   }
+  console.log("co")
   const { counter } = await priceService.getPriceCounter();
   res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork, price, "priceSignature": priceSignature, txIdentifier: counter });
 });

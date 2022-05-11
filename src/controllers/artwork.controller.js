@@ -51,33 +51,32 @@ const saveArtwork = catchAsync(async (req, res) => {
   body.basePrice = body.price;
   body.thumbNail_url = thumbNailData;
   const user = await userService.getUserById(creater);
-  let price;
-  if (user.isNewUser) {
-    if (req.body.isMeta) {
-      price = await artworkService.polyToUsd(20);
-      price = price.toFixed(16);
-      const userUpdate = await userService.updateUserStatus(user._id);
-    }
-    else {
+  // if (user.isNewUser) {
+  //   if (req.body.isMeta) {
+  //     price = await artworkService.polyToUsd(20);
+  //     price = price.toFixed(16);
+  //     const userUpdate = await userService.updateUserStatus(user._id);
+  //   }
+  //   else {
 
-      price = await artworkService.ethToUsd(20);
-      price = price.toFixed(16);
-      const userUpdate = await userService.updateUserStatus(user._id);
-    }
+  //     price = await artworkService.ethToUsd(20);
+  //     price = price.toFixed(16);
+  //     const userUpdate = await userService.updateUserStatus(user._id);
+  //   }
 
-  }
-  else {
-    if (req.body.isMeta) {
-      price = await artworkService.polyToUsd(5);
-      price = price.toFixed(16);
-      return;
-    }
-    else {
-      price = price.toFixed(16);
-      price = await artworkService.ethToUsd(5);
-    }
+  // }
+  // else {
+  //   if (req.body.isMeta) {
+  //     price = await artworkService.polyToUsd(5);
+  //     price = price.toFixed(16);
+  //     return;
+  //   }
+  //   else {
+  //     price = price.toFixed(16);
+  //     price = await artworkService.ethToUsd(5);
+  //   }
 
-  }
+  // }
   const artwork = await artworkService.saveArtwork(body);
 
 
@@ -120,6 +119,7 @@ const saveArtwork = catchAsync(async (req, res) => {
     });
   }
   EVENT.emit('increase-price-in-counter');
+  let price = 0.0022;
   const updatedArtwork = await artworkService.updateArtworkMetaUrl(artwork._id, metaUrl);
   const messageHash = await artworkService.getSignatureHash(user.address, price, metaUrl);
   const signMessage = await artworkService.signMessage(messageHash, ADMIN_DETAILS.ADMIN_ADDRESS, ADMIN_DETAILS.ADMIN_PRIVATE_KEY);

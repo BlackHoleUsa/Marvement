@@ -73,15 +73,12 @@ const saveArtwork = catchAsync(async (req, res) => {
       return;
     }
     else {
-      price = price.toFixed(16);
       price = await artworkService.ethToUsd(5);
+      price = price.toFixed(16);
     }
 
   }
   const artwork = await artworkService.saveArtwork(body);
-
-
-
   let metaUrl;
   if (isAudioNFT) {
     metaUrl = await pinMetaDataToIPFS({
@@ -152,8 +149,8 @@ const saveArtwork = catchAsync(async (req, res) => {
       artwork: artwork._id,
     });
   }
-
-  res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork, price, "priceSignature": priceSignature });
+  const { counter } = await priceService.getPriceCounter();
+  res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork, price, "priceSignature": priceSignature, txIdentifier: counter });
 });
 
 const getUserArtworks = catchAsync(async (req, res) => {

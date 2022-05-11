@@ -404,6 +404,22 @@ const ethToUsd = async (value) => {
 
 }
 
+const polyToUsd = async (value) => {
+  try {
+    value = parseFloat(value);
+    const response = await axios.get('https://min-api.cryptocompare.com/data/pricemultifull?fsyms=POLY&tsyms=USD');
+    if (response.status === 200) {
+      let price = response.data.RAW.POLY.USD.PRICE;
+      price = parseFloat(price);
+      const dollorPrice = value / price;
+      return dollorPrice;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
 
 const getSignatureHash = async (userAddress, price, tokenUrl) => {
   price = await web3.utils.toWei(price.toString(), 'ether');
@@ -517,6 +533,7 @@ module.exports = {
   searchArtworkByMusic,
   searchArtworkByVideo,
   ethToUsd,
+  polyToUsd,
   getSignatureHash,
   signMessage,
   findArtworkAsAlbum,

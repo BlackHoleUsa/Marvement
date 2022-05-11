@@ -63,6 +63,7 @@
     "express-mongo-sanitize": "^2.0.0",
     "express-multipart-file-parser": "^0.1.2",
     "express-rate-limit": "^5.0.0",
+    "force": "^0.0.3",
     "helmet": "^4.1.0",
     "http-status": "^1.4.0",
     "ipfs": "^0.58.1",

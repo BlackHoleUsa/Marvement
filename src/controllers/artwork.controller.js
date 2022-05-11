@@ -53,14 +53,30 @@ const saveArtwork = catchAsync(async (req, res) => {
   const user = await userService.getUserById(creater);
   let price;
   if (user.isNewUser) {
-    price = await artworkService.ethToUsd(20);
-    price = price.toFixed(16);
-    const userUpdate = await userService.updateUserStatus(user._id);
+    if (req.body.isMeta) {
+      price = await artworkService.polyToUsd(20);
+      price = price.toFixed(16);
+      const userUpdate = await userService.updateUserStatus(user._id);
+    }
+    else {
+
+      price = await artworkService.ethToUsd(20);
+      price = price.toFixed(16);
+      const userUpdate = await userService.updateUserStatus(user._id);
+    }
 
   }
   else {
-    price = await artworkService.ethToUsd(5);
-    price = price.toFixed(16);
+    if (req.body.isMeta) {
+      price = await artworkService.polyToUsd(5);
+      price = price.toFixed(16);
+      return;
+    }
+    else {
+      price = price.toFixed(16);
+      price = await artworkService.ethToUsd(5);
+    }
+
   }
   const artwork = await artworkService.saveArtwork(body);
 
@@ -137,7 +153,7 @@ const saveArtwork = catchAsync(async (req, res) => {
     });
   }
 
-  res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork, price, signature, "priceSignature": priceSignature });
+  res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork, price, "priceSignature": priceSignature });
 });
 
 const getUserArtworks = catchAsync(async (req, res) => {

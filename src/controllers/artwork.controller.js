@@ -51,32 +51,6 @@ const saveArtwork = catchAsync(async (req, res) => {
   body.basePrice = body.price;
   body.thumbNail_url = thumbNailData;
   const user = await userService.getUserById(creater);
-  // if (user.isNewUser) {
-  //   if (req.body.isMeta) {
-  //     price = await artworkService.polyToUsd(20);
-  //     price = price.toFixed(16);
-  //     const userUpdate = await userService.updateUserStatus(user._id);
-  //   }
-  //   else {
-
-  //     price = await artworkService.ethToUsd(20);
-  //     price = price.toFixed(16);
-  //     const userUpdate = await userService.updateUserStatus(user._id);
-  //   }
-
-  // }
-  // else {
-  //   if (req.body.isMeta) {
-  //     price = await artworkService.polyToUsd(5);
-  //     price = price.toFixed(16);
-  //     return;
-  //   }
-  //   else {
-  //     price = price.toFixed(16);
-  //     price = await artworkService.ethToUsd(5);
-  //   }
-
-  // }
   const artwork = await artworkService.saveArtwork(body);
 
 

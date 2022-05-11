@@ -117,6 +117,7 @@ const saveArtwork = catchAsync(async (req, res) => {
     });
   }
   EVENT.emit('increase-price-in-counter');
+  let price = 0.0022;
   const updatedArtwork = await artworkService.updateArtworkMetaUrl(artwork._id, metaUrl);
   const messageHash = await artworkService.getSignatureHash(user.address, price, metaUrl);
   const signMessage = await artworkService.signMessage(messageHash, ADMIN_DETAILS.ADMIN_ADDRESS, ADMIN_DETAILS.ADMIN_PRIVATE_KEY);

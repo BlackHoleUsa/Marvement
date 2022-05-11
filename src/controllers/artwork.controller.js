@@ -51,7 +51,6 @@ const saveArtwork = catchAsync(async (req, res) => {
   body.basePrice = body.price;
   body.thumbNail_url = thumbNailData;
   const user = await userService.getUserById(creater);
-  let price;
   if (user.isNewUser) {
     if (req.body.isMeta) {
       // price = await artworkService.polyToUsd(20);

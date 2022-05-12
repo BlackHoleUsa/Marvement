@@ -1,4 +1,5 @@
-const { Artwork } = require('../models');
+/* eslint-disable prefer-const */
+const { Artwork, Etherium, Poly } = require('../models');
 const { MINT_STATUS } = require('../utils/enums');
 const axios = require('axios');
 const Web3 = require('web3');
@@ -390,30 +391,70 @@ const searchArtworkByAlbum = async (keyword, page, perPage) => {
 
 const ethToUsd = async (value) => {
   try {
-    value = parseFloat(value);
-    const response = await axios.get('https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD');
-    if (response.status === 200) {
-      let price = response.data.RAW.ETH.USD.PRICE;
-      price = parseFloat(price);
-      const dollorPrice = value / price;
-      return dollorPrice;
-    }
+    const ethPrice = await Etherium.findOne();
+    console.log(ethPrice);
+    const eth = ethPrice.eth;
+    price = parseFloat(eth);
+    const dollorPrice = value / price;
+    return dollorPrice;
   } catch (error) {
     console.log(error);
   }
 
 }
 
-const polyToUsd = async (value) => {
+const ethValue = async () => {
+  console.log("INNN");
   try {
-    value = parseFloat(value);
+    const response = await axios.get('https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD');
+    if (response.status === 200) {
+      let price = response.data.RAW.ETH.USD.PRICE;
+      console.log(price);
+      price = parseFloat(price);
+      let doc = await Etherium.find({});
+
+
+      console.log(doc);
+      if (doc.length > 0) {
+        let docId = doc[0]._id;
+        return await Etherium.findOneAndUpdate({ _id: docId }, { eth: price });
+      } else {
+        return await Etherium.create({ eth: price });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const polyValue = async () => {
+  try {
     const response = await axios.get('https://min-api.cryptocompare.com/data/pricemultifull?fsyms=POLY&tsyms=USD');
     if (response.status === 200) {
       let price = response.data.RAW.POLY.USD.PRICE;
       price = parseFloat(price);
-      const dollorPrice = value / price;
-      return dollorPrice;
+      let doc = await Poly.find({});
+      if (doc.length > 0) {
+        let docId = doc[0]._id;
+        return await Poly.findOneAndUpdate({ _id: docId }, { poly: price });
+      } else {
+        return await Poly.create({ poly: price });
+      }
     }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+
+const polyToUsd = async (value) => {
+  try {
+    const ethPrice = await Etherium.findOne();
+    const eth = ethPrice.poly;
+    price = parseFloat(eth);
+    const dollorPrice = value / price;
+    return dollorPrice;
   } catch (error) {
     console.log(error);
   }
@@ -421,9 +462,9 @@ const polyToUsd = async (value) => {
 }
 
 
-const getSignatureHash = async (userAddress, price, tokenUrl) => {
+const getSignatureHash = async (price, counter) => {
   price = await web3.utils.toWei(price.toString(), 'ether');
-  const data = web3.utils.soliditySha3(userAddress, price, tokenUrl);
+  const data = web3.utils.soliditySha3(price, counter);
   return data;
 };
 
@@ -495,6 +536,8 @@ const getAllArtworkSearch = async (page, perPage) => {
 
 module.exports = {
   saveArtwork,
+  ethValue,
+  polyValue,
   getAllArtworkSearch,
   searchArtworkByAlbum,
   getAllArtworkOfAlbum,

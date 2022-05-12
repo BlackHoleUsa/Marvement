@@ -5,7 +5,6 @@ const musicAlbum = mongoose.Schema(
   {
     coverImage: {
       type: String,
-
     },
     name: {
       type: String,

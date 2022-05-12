@@ -90,17 +90,30 @@ const saveArtwork = catchAsync(async (req, res) => {
       artwork_url: imgData,
     });
   }
-  EVENT.emit('increase-price-in-counter');
-  let price = 0.0022;
-  const updatedArtwork = await artworkService.updateArtworkMetaUrl(artwork._id, metaUrl);
-  const messageHash = await artworkService.getSignatureHash(user.address, price, metaUrl);
-  const signMessage = await artworkService.signMessage(messageHash, ADMIN_DETAILS.ADMIN_ADDRESS, ADMIN_DETAILS.ADMIN_PRIVATE_KEY);
 
-  const priceHash = await artworkService.getSignatureHash(ADMIN_DETAILS.ADMIN_ADDRESS, price, priceService.getPriceCounter());
+  let price;
+
+  EVENT.emit('increase-price-in-counter');
+  if (user.isNewUser) {
+    price = await artworkService.ethToUsd(20);
+    console.log('price', price);
+    price = price.toFixed(8);
+    await userService.updateUser({ _id: user._id }, { isNewUser: false });
+
+  }
+  else {
+    console.log("IN");
+    price = await artworkService.ethToUsd(5);
+    price = price.toFixed(8);
+    console.log('price', price);
+  }
+
+  const updatedArtwork = await artworkService.updateArtworkMetaUrl(artwork._id, metaUrl);
+  let counter2 = await priceService.getPriceCounter();
+  const priceHash = await artworkService.getSignatureHash(price, counter2.counter);
   const priceMessage = await artworkService.signMessage(priceHash, ADMIN_DETAILS.ADMIN_ADDRESS, ADMIN_DETAILS.ADMIN_PRIVATE_KEY);
 
   const priceSignature = priceMessage.signature;
-  const signature = signMessage.signature;
   price = await web3.utils.toWei(price.toString(), 'ether');
 
   EVENT.emit('add-artwork-in-user', {

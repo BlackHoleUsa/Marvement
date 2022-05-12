@@ -11,4 +11,5 @@ module.exports.Transaction = require('./transaction.model');
 module.exports.Stats = require('./stats.model');
 module.exports.MusicAlbum = require('./musicAlbum.model');
 module.exports.Price = require('./price.model');
-
+module.exports.Etherium = require('./etherium.model');
+module.exports.Poly = require('./poly.model');

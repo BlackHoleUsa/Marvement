@@ -17,6 +17,7 @@ const { fileParser } = require('express-multipart-file-parser');
 require('./config/aws.config');
 require('./triggers/triggers');
 require('./triggers/contract.triggers');
+require('./triggers/cron-job')();
 // require('./triggers/cron-job');
 const EVENT = require('./triggers/custom-events').customEvent;
 const app = express();

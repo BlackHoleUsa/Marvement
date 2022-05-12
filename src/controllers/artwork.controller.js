@@ -92,29 +92,31 @@ const saveArtwork = catchAsync(async (req, res) => {
   }
 
   let price;
+  console.log(user);
 
   EVENT.emit('increase-price-in-counter');
   if (user.isNewUser) {
     price = await artworkService.ethToUsd(20);
-    console.log('price', price);
     price = price.toFixed(8);
-    await userService.updateUser({ _id: user._id }, { isNewUser: false });
-
+    const newUser = await userService.updateUserStatus(user._id);
   }
   else {
-    console.log("IN");
+
     price = await artworkService.ethToUsd(5);
     price = price.toFixed(8);
-    console.log('price', price);
+    console.log("Price in eth ", price);
   }
 
-  const updatedArtwork = await artworkService.updateArtworkMetaUrl(artwork._id, metaUrl);
+  console.log(price);
+
   let counter2 = await priceService.getPriceCounter();
+
   const priceHash = await artworkService.getSignatureHash(price, counter2.counter);
   const priceMessage = await artworkService.signMessage(priceHash, ADMIN_DETAILS.ADMIN_ADDRESS, ADMIN_DETAILS.ADMIN_PRIVATE_KEY);
 
   const priceSignature = priceMessage.signature;
   price = await web3.utils.toWei(price.toString(), 'ether');
+  const updatedArtwork = await artworkService.updateArtworkMetaUrl(artwork._id, metaUrl);
 
   EVENT.emit('add-artwork-in-user', {
     artworkId: artwork._id,

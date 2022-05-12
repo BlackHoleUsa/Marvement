@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable prefer-const */
 const { Artwork, Etherium, Poly } = require('../models');
 const { MINT_STATUS } = require('../utils/enums');
@@ -404,17 +405,12 @@ const ethToUsd = async (value) => {
 }
 
 const ethValue = async () => {
-  console.log("INNN");
   try {
     const response = await axios.get('https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD');
     if (response.status === 200) {
       let price = response.data.RAW.ETH.USD.PRICE;
-      console.log(price);
       price = parseFloat(price);
       let doc = await Etherium.find({});
-
-
-      console.log(doc);
       if (doc.length > 0) {
         let docId = doc[0]._id;
         return await Etherium.findOneAndUpdate({ _id: docId }, { eth: price });

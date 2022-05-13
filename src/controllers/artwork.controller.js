@@ -94,25 +94,28 @@ const saveArtwork = catchAsync(async (req, res) => {
   let price;
   EVENT.emit('increase-price-in-counter');
   if (user.isNewUser) {
-    price = await artworkService.ethToUsd(20);
-    price = price.toFixed(8);
-    const newUser = await userService.updateUserStatus(user._id);
-  }
-  else {
-    price = await artworkService.ethToUsd(5);
-    price = price.toFixed(8);
-  }
-  console.log('req.body.isMeta', req.body.isMeta);
-  if (user.isNewUser && req.body.isMeta) {
     price = await artworkService.polyToUsd(20);
     price = price.toFixed(8);
     const newUser = await userService.updateUserStatus(user._id);
     console.log('New user price in meta', price);
   }
-  else if (req.body.isMeta) {
+  else {
     price = await artworkService.polyToUsd(5);
     price = price.toFixed(8);
     console.log('price in meta', price)
+    
+  }
+  console.log('req.body.isMeta', req.body.isMeta);
+  
+  if (user.isNewUser && req.body.isMeta) {
+    price = await artworkService.ethToUsd(20);
+    price = price.toFixed(8);
+    const newUser = await userService.updateUserStatus(user._id);
+  }
+  else if (req.body.isMeta) {
+    
+    price = await artworkService.ethToUsd(5);
+    price = price.toFixed(8);
   }
 
   let counter2 = await priceService.getPriceCounter();

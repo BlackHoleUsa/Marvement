@@ -427,8 +427,6 @@ const polyValue = async () => {
 
 const polyToUsd = async (value) => {
   try {
-    // const polyPrice = await Poly.findOne();
-    // const poly = polyPrice.poly;
     let price = parseFloat(await polyValue());
     const dollarPrice = value / price;
     return dollarPrice;

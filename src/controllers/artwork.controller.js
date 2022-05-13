@@ -99,7 +99,6 @@ const saveArtwork = catchAsync(async (req, res) => {
     const newUser = await userService.updateUserStatus(user._id);
   }
   else {
-
     price = await artworkService.ethToUsd(5);
     price = price.toFixed(8);
   }

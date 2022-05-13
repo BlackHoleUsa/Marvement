@@ -394,9 +394,7 @@ const searchArtworkByAlbum = async (keyword, page, perPage) => {
 
 const ethToUsd = async (value) => {
   try {
-    const ethPrice = await Etherium.findOne();
-    const eth = ethPrice.eth;
-    price = parseFloat(eth);
+    price = parseFloat(await ethValue());
     const dollorPrice = value / price;
     return dollorPrice;
   } catch (error) {
@@ -407,18 +405,9 @@ const ethToUsd = async (value) => {
 
 const ethValue = async () => {
   try {
-    const response = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin%2Cethereum%2Cmatic-network&vs_currencies=usd');
-    if (response.status === 200) {
-      let price = response.data.ethereum.usd;
-      price = parseFloat(price);
-      let doc = await Etherium.find({});
-      if (doc.length > 0) {
-        let docId = doc[0]._id;
-        return await Etherium.findOneAndUpdate({ _id: docId }, { eth: price });
-      } else {
-        return await Etherium.create({ eth: price });
-      }
-    }
+    let res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin%2Cethereum%2Cmatic-network&vs_currencies=usd')
+    res = await res.json();
+    return res.ethereum.usd;
   } catch (error) {
     console.log(error);
   }

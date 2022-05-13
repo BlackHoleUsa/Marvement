@@ -93,6 +93,7 @@ const saveArtwork = catchAsync(async (req, res) => {
 
   let price;
   EVENT.emit('increase-price-in-counter');
+  console.log()
   if (user.isNewUser && req.body.isMeta.toString().toLowerCase() === 'true') {
     price = await artworkService.ethToUsd(20);
     price = price.toFixed(8);
@@ -149,7 +150,7 @@ const saveArtwork = catchAsync(async (req, res) => {
   }
   console.log("co")
   const { counter } = await priceService.getPriceCounter();
-  res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork, price, "priceSignature": priceSignature, txIdentifier: counter });
+  res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork, price, "priceSignature": priceSignature, txIdentifier: counter,coutercheck:2 });
 });
 
 const getUserArtworks = catchAsync(async (req, res) => {

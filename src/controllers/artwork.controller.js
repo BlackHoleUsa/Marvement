@@ -92,8 +92,6 @@ const saveArtwork = catchAsync(async (req, res) => {
   }
 
   let price;
-  console.log(user);
-
   EVENT.emit('increase-price-in-counter');
   if (user.isNewUser) {
     price = await artworkService.ethToUsd(20);
@@ -104,10 +102,19 @@ const saveArtwork = catchAsync(async (req, res) => {
 
     price = await artworkService.ethToUsd(5);
     price = price.toFixed(8);
-    console.log("Price in eth ", price);
   }
-
-  console.log(price);
+  console.log('req.body.isMeta', req.body.isMeta);
+  if (user.isNewUser && req.body.isMeta) {
+    price = await artworkService.polyToUsd(20);
+    price = price.toFixed(8);
+    const newUser = await userService.updateUserStatus(user._id);
+    console.log('New user price in meta', price);
+  }
+  else if (req.body.isMeta) {
+    price = await artworkService.polyToUsd(5);
+    price = price.toFixed(8);
+    console.log('price in meta', price)
+  }
 
   let counter2 = await priceService.getPriceCounter();
 
@@ -325,8 +332,6 @@ const getArtworkHistory = catchAsync(async (req, res) => {
 
 const getAllArtworks = catchAsync(async (req, res) => {
   const { artwork_type, page, perPage, isAuctionOpen, openForSale } = req.query;
-  console.log(req.query);
-
   if (!artwork_type) {
     const artWorks = await artworkService.getAllArtworks(page, perPage, isAuctionOpen, openForSale);
     const count = await artworkService.getAllArtworksCount(isAuctionOpen, openForSale);

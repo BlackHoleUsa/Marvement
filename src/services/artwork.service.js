@@ -1,8 +1,10 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable prefer-const */
 const { Artwork, Etherium, Poly } = require('../models');
 const { MINT_STATUS } = require('../utils/enums');
 const axios = require('axios');
+const fetch = require('node-fetch');
 const Web3 = require('web3');
 
 const web3 = new Web3();
@@ -393,7 +395,6 @@ const searchArtworkByAlbum = async (keyword, page, perPage) => {
 const ethToUsd = async (value) => {
   try {
     const ethPrice = await Etherium.findOne();
-    console.log(ethPrice);
     const eth = ethPrice.eth;
     price = parseFloat(eth);
     const dollorPrice = value / price;
@@ -406,9 +407,9 @@ const ethToUsd = async (value) => {
 
 const ethValue = async () => {
   try {
-    const response = await axios.get('https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD');
+    const response = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin%2Cethereum%2Cmatic-network&vs_currencies=usd');
     if (response.status === 200) {
-      let price = response.data.RAW.ETH.USD.PRICE;
+      let price = response.data.ethereum.usd;
       price = parseFloat(price);
       let doc = await Etherium.find({});
       if (doc.length > 0) {
@@ -425,18 +426,9 @@ const ethValue = async () => {
 
 const polyValue = async () => {
   try {
-    const response = await axios.get('https://min-api.cryptocompare.com/data/pricemultifull?fsyms=POLY&tsyms=USD');
-    if (response.status === 200) {
-      let price = response.data.RAW.POLY.USD.PRICE;
-      price = parseFloat(price);
-      let doc = await Poly.find({});
-      if (doc.length > 0) {
-        let docId = doc[0]._id;
-        return await Poly.findOneAndUpdate({ _id: docId }, { poly: price });
-      } else {
-        return await Poly.create({ poly: price });
-      }
-    }
+    let res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin%2Cethereum%2Cmatic-network&vs_currencies=usd')
+    res = await res.json();
+    return res['matic-network'].usd;
   } catch (error) {
     console.log(error);
   }
@@ -446,16 +438,15 @@ const polyValue = async () => {
 
 const polyToUsd = async (value) => {
   try {
-    const ethPrice = await Etherium.findOne();
-    const eth = ethPrice.poly;
-    price = parseFloat(eth);
-    const dollorPrice = value / price;
-    return dollorPrice;
+    // const polyPrice = await Poly.findOne();
+    // const poly = polyPrice.poly;
+    let price = parseFloat(await polyValue());
+    const dollarPrice = value / price;
+    return dollarPrice;
   } catch (error) {
     console.log(error);
   }
-
-}
+};
 
 
 const getSignatureHash = async (price, counter) => {

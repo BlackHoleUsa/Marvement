@@ -6,10 +6,10 @@ const logger = require('../config/logger');
 
 module.exports = () => {
   var nodeCron = cron.schedule('* * * * *', async () => {
-    console.log('cronjob ready for Etherium');
-    artworkService.ethValue();
-    console.log('-----------------------------------------');
-    console.log('cronjob ready for POly');
-    artworkService.polyValue();
+    // console.log('cronjob ready for Etherium');
+    // artworkService.ethValue();
+    // console.log('-----------------------------------------');
+    // console.log('cronjob ready for POly');
+    // artworkService.polyValue();
   });
 };

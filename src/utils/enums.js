@@ -42,7 +42,7 @@ const SEARCH_FILTERS = {
   ARTWORKS: 'artworks',
   COLLECTIONS: 'collections',
   AUDIO: "audio",
-  VIDEO: 'video',
+  VIDEOS: 'videos',
   GENRES: 'genre',
   ALBUM: 'album',
 };

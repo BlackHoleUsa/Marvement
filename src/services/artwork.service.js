@@ -326,7 +326,7 @@ const getAllArtworkOfMusic = async (page, perPage) => {  // get all artwork of m
 };
 
 const getAllArtworkOfVideo = async (page, perPage) => {  // get all artwork of music
-  return await Artwork.find({ artwork_type: 'videos' })
+  return await Artwork.find({ artwork_type: 'video' })
     .populate('owner')
     .populate('creater')
     .populate('auction')

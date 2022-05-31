@@ -1391,7 +1391,7 @@ module.exports = {
         "type": "function"
       }
     ],
-    WEB_SOCKET_INFURA_URL: 'wss://polygon-mainnet.g.alchemy.com/v2/CxQMoN-uzu-ROVa_PM53UUL0vhhJcSjn',
+    WEB_SOCKET_INFURA_URL: 'wss://polygon-mainnet.g.alchemy.com/v2/8c0YQk5ujz3fPOgBhy7bmmGeFxSKI1_I',
   },
   ETH_CONTRACTS: {
     MINT_NFT_CONTRACT_ADDRESS: '0xF610A19aBF2C4035650b11d9CD0E0ff9cE448f5e',    // ERC 721 address

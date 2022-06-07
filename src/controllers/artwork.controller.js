@@ -41,7 +41,7 @@ const saveArtwork = catchAsync(async (req, res) => {
     const album = await MusicAlbum.findById(req.body.albumId);
     body.isInAlbum = true;
     console.log('album.artworks.lengt', album.artworks.length);
-    if (parseInt(album.tracks) === parseInt(album.artworks.length)) {
+    if (parseInt(album.tracks) > parseInt(album.artworks.length)) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Album is full');
       res.status(httpStatus.BAD_REQUEST).send('Album is full');
       return;

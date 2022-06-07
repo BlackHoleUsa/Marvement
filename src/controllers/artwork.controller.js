@@ -24,7 +24,6 @@ const ADMIN_DETAILS = {
   ADMIN_ADDRESS: '0x192DDbb00E5aA7E3107f82030C4C8AAB1EB903B7',
 };
 
-
 const saveArtwork = catchAsync(async (req, res) => {
   const { body } = req;
   const { files } = req;
@@ -41,7 +40,8 @@ const saveArtwork = catchAsync(async (req, res) => {
   if (req.body.albumId) {
     const album = await MusicAlbum.findById(req.body.albumId);
     body.isInAlbum = true;
-    if (album.tracks <= album.artworks.length) {
+    console.log('album.artworks.lengt', album.artworks.length);
+    if (parseInt(album.tracks) === parseInt(album.artworks.length)) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Album is full');
       res.status(httpStatus.BAD_REQUEST).send('Album is full');
       return;
@@ -93,18 +93,16 @@ const saveArtwork = catchAsync(async (req, res) => {
 
   let price;
   EVENT.emit('increase-price-in-counter');
-  console.log()
+  console.log();
   if (user.isNewUser && req.body.isMeta.toString().toLowerCase() === 'true') {
     price = await artworkService.ethToUsd(20);
     price = price.toFixed(8);
     const newUser = await userService.updateUserStatus(user._id);
     console.log('New user price in meta', price);
-  }
-  else if (req.body.isMeta.toString().toLowerCase() === 'true') {
+  } else if (req.body.isMeta.toString().toLowerCase() === 'true') {
     price = await artworkService.ethToUsd(5);
     price = price.toFixed(8);
-    console.log('price in meta', price)
-
+    console.log('price in meta', price);
   }
   console.log('req.body.isMeta', req.body.isMeta);
 
@@ -112,8 +110,7 @@ const saveArtwork = catchAsync(async (req, res) => {
     price = await artworkService.polyToUsd(20);
     price = price.toFixed(8);
     const newUser = await userService.updateUserStatus(user._id);
-  }
-  else if (req.body.isMeta.toString().toLowerCase() === 'false') {
+  } else if (req.body.isMeta.toString().toLowerCase() === 'false') {
     price = await artworkService.polyToUsd(5);
     price = price.toFixed(8);
   }
@@ -121,7 +118,11 @@ const saveArtwork = catchAsync(async (req, res) => {
   let counter2 = await priceService.getPriceCounter();
 
   const priceHash = await artworkService.getSignatureHash(price, counter2.counter);
-  const priceMessage = await artworkService.signMessage(priceHash, ADMIN_DETAILS.ADMIN_ADDRESS, ADMIN_DETAILS.ADMIN_PRIVATE_KEY);
+  const priceMessage = await artworkService.signMessage(
+    priceHash,
+    ADMIN_DETAILS.ADMIN_ADDRESS,
+    ADMIN_DETAILS.ADMIN_PRIVATE_KEY
+  );
 
   const priceSignature = priceMessage.signature;
   price = await web3.utils.toWei(price.toString(), 'ether');
@@ -148,9 +149,17 @@ const saveArtwork = catchAsync(async (req, res) => {
       artwork: artwork._id,
     });
   }
-  console.log("co")
+  console.log('co');
   const { counter } = await priceService.getPriceCounter();
-  res.status(httpStatus.OK).send({ status: true, message: 'artwork saved successfully', updatedArtwork, price, "priceSignature": priceSignature, txIdentifier: counter,coutercheck:2 });
+  res.status(httpStatus.OK).send({
+    status: true,
+    message: 'artwork saved successfully',
+    updatedArtwork,
+    price,
+    priceSignature: priceSignature,
+    txIdentifier: counter,
+    coutercheck: 2,
+  });
 });
 
 const getUserArtworks = catchAsync(async (req, res) => {
@@ -388,11 +397,13 @@ const setAuctionBidders = catchAsync(async (req, res) => {
   const { userId, aucId } = req.body;
   const response = await auctionService.setAuctionBidders(artworkId, userId);
   let bids = await bidService.getAuctionBids(aucId);
-  const amount = Math.max.apply(null, bids?.map(bid => bid?.bid_amount));
+  const amount = Math.max.apply(
+    null,
+    bids?.map((bid) => bid?.bid_amount)
+  );
   await auctionService.setmaxBid(artworkId, amount);
   res.status(httpStatus.CREATED).send(response);
 });
-
 
 const getArtworkByGenre = catchAsync(async (req, res) => {
   let = { genre, page, perPage, keyword } = req.query;
@@ -406,8 +417,6 @@ const getArtworkByGenre = catchAsync(async (req, res) => {
     return;
   }
   if (keyword) {
-
-
     artworks = artworkss.filter((art) => art.name.toLowerCase().includes(keyword.toLowerCase()));
     count = artwork.length;
     res.status(httpStatus.OK).send({ artworks, count });
@@ -415,8 +424,6 @@ const getArtworkByGenre = catchAsync(async (req, res) => {
   }
   res.status(httpStatus.OK).send({ status: true, message: 'Successfull', artworks, count });
   return;
-
-
 });
 
 const artworkForAdmin = catchAsync(async (req, res) => {
@@ -424,7 +431,6 @@ const artworkForAdmin = catchAsync(async (req, res) => {
   const artWorks = await artworkService.getAllArtworkForAdmin(page, perPage);
   res.status(httpStatus.OK).send({ status: true, message: 'Successfull', data: artWorks });
 });
-
 
 module.exports = {
   saveArtwork,
